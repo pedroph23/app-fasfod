@@ -6,14 +6,14 @@ services:
     ports:
       - "8080:8080"
     volumes: 
-      - "./app-fastfood:/app-fastfood"
+      - ./app-fastfood:/app-fastfood
 
   postgres:
     container_name: postgres_container
     image: postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-appfastfood}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      POSTGRES_USER: appfastfood
+      POSTGRES_PASSWORD: 123456
       PGDATA: /data/postgres
     volumes:
         - postgres:/data/postgres
@@ -27,16 +27,19 @@ services:
     container_name: pgadmin_container
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
-      - "5050:5050"
+      - "5050:80"
     volumes:
-       - pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - postgres
+    depends_on:
+      - postgres
 
 volumes:
-  docker-volumes:
   postgres:
   pgadmin:
 networks:
