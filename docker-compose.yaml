@@ -1,6 +1,6 @@
 services:
   app-techchallenge-fastfood:
-    image: "app-techchallenge-fastfood-gp24"
+    build: .
     networks:
       - techchallenge-fastfood-net
     ports:
