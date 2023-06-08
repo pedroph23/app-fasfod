@@ -1,0 +1,46 @@
+services:
+  app-techchallenge-fastfood:
+    image: "app-techchallenge-fastfood-gp24"
+    networks:
+      - techchallenge-fastfood-net
+    ports:
+      - "8080:8080"
+    volumes: 
+      - "./app-fastfood:/app-fastfood"
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appfastfood}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      PGDATA: /data/postgres
+    volumes:
+        - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:5050"
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+
+volumes:
+  docker-volumes:
+  postgres:
+  pgadmin:
+networks:
+    techchallenge-fastfood-net:
+      driver: bridge
+    postgres:
+      driver: bridge
