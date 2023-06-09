@@ -1,8 +1,8 @@
 services:
   app-techchallenge-fastfood:
     build: 
-      context: .
-      dockerfile: Dockerfile
+      context: ./app
+      dockerfile: ../infra/Dockerfile
     image: app-fastfood-gp24:${VERSAO}
     networks:
       - techchallenge-fastfood-net
