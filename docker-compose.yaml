@@ -1,12 +1,13 @@
 services:
   app-techchallenge-fastfood:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     networks:
       - techchallenge-fastfood-net
     ports:
       - "8080:8080"
-    volumes: 
-      - ./app-fastfood:/app-fastfood
+
 
   postgres:
     container_name: postgres_container

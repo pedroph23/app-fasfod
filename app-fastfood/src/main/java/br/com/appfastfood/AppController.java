@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 public class AppController {
-    @GetMapping("/")
+    @GetMapping("/helloWorld")
     public String getMessage() {
         return "Hello from Docker!";
     }

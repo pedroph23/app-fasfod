@@ -1,13 +1,7 @@
 FROM amazoncorretto:17-alpine-jdk
 
-
 WORKDIR /app-fastfood
-
-#RUN ./mvnw clean install
-CMD ["./mvnw","clean", "install"]
-
-# COPY target/app-fastfood-0.0.1-SNAPSHOT.jar app-fastfood-0.0.1-SNAPSHOT.jar
-
-ENTRYPOINT ["java","-jar","/app-fastfood/target/app-fastfood-0.0.1-SNAPSHOT.jar"]
-
-EXPOSE 8080
+RUN rm -rf /app-fastfood/target/*
+COPY ./app-fastfood /app-fastfood
+RUN ./mvnw  dependency:purge-local-repository clean install
+CMD ["sh", "-c", " java -jar /app-fastfood/target/*.jar"]
