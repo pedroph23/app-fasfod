@@ -1,8 +1,10 @@
 services:
   app-techchallenge-fastfood:
     build: 
-      context: ./app
-      dockerfile: ../infra/Dockerfile
+      context: ../
+      dockerfile: infra/Dockerfile
+      args:
+      - AMBIENTE=${AMBIENTE}
     image: app-fastfood-gp24:${VERSAO}
     networks:
       - techchallenge-fastfood-net
