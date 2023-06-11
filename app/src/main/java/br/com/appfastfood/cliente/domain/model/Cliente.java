@@ -1,23 +1,21 @@
 package br.com.appfastfood.cliente.domain.model; 
  
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
+@Embeddable
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Embedded
     private Nome nome;
-
+    @Embedded
     private Cpf cpf;
-
+    @Embedded
     private Email email;
 
     protected Cliente() {
@@ -37,16 +35,16 @@ public class Cliente {
         return id;
     }
 
-    public Nome getNome() {
-        return nome;
+    public String getNome() {
+        return nome.getNome();
     }
 
-    public Cpf getCpf() {
-        return cpf;
+    public String getCpf() {
+        return cpf.getCpf();
     }
 
-    public Email getEmail() {
-        return email;
+    public String getEmail() {
+        return email.getEmail();
     }
 
     @Override
