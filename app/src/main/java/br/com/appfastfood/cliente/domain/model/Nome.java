@@ -25,5 +25,8 @@ public class Nome {
         }
     }
 
-    // getters
+    public String getNome() {
+        return nome;
+    }
+// getters
 }

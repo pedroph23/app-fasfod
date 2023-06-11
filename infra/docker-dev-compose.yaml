@@ -1,6 +1,6 @@
 services:
   app-techchallenge-fastfood:
-    build: 
+    build:
       context: ../
       dockerfile: infra/Dockerfile
       args:
@@ -10,11 +10,13 @@ services:
       - techchallenge-fastfood-net
     ports:
       - "8080:8080"
+      - "5005:5005"
     environment:
       - SPRING_PROFILES_ACTIVE=${AMBIENTE}
       - SPRING_DATASOURCE_URL=${DB_URL}
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PW}
+      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"
     depends_on:
       - postgres
     scale: 1
@@ -27,7 +29,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PW}
       PGDATA: /var/lib/postgresql/data
-      POSTGRES_DB: fastfood
+      POSTGRES_DB: ${DB_NAME}
     volumes:
         - postgres:/var/lib/postgresql/data
     ports:

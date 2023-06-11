@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClienteDomainServiceImpl implements ClienteDomainService {
-    private final ClienteRepository clienteRepository;
+    private  ClienteRepository clienteRepository;
 
     public ClienteDomainServiceImpl(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;

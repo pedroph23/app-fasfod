@@ -9,6 +9,10 @@ public class Email {
     @Column(name = "email")
     private String email;
 
+    public String getEmail() {
+        return email;
+    }
+
     // Construtor vazio para JPA
     protected Email() {
     }

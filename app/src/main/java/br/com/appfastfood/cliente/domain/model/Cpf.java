@@ -9,6 +9,10 @@ public class Cpf {
     @Column(name = "cpf")
     private String cpf;
 
+    public String getCpf() {
+        return cpf;
+    }
+
     // Construtor vazio para JPA
     protected Cpf() {
     }
