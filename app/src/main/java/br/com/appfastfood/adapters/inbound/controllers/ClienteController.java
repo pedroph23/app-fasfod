@@ -1,3 +1,7 @@
+package br.com.appfastfood.adapters.inbound.controllers;
+
+import br.com.appfastfood.cliente.application.services.ClienteService;
+import br.com.appfastfood.cliente.domain.model.Cliente;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +16,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<Object> cadastrarCliente(@RequestBody Cliente cliente) {
         Cliente novoCliente = clienteService.cadastrarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
     }

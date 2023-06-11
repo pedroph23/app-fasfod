@@ -1,5 +1,8 @@
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+package br.com.appfastfood.cliente.domain.model;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Email {
