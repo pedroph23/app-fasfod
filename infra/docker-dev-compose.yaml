@@ -10,38 +10,47 @@ services:
       - techchallenge-fastfood-net
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=${AMBIENTE}
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PW}
+    depends_on:
+      - postgres
+    scale: 1
 
 
-  # postgres:
-  #   container_name: postgres_container
-  #   image: postgres
-  #   environment:
-  #     POSTGRES_USER: appfastfood
-  #     POSTGRES_PASSWORD: 123456
-  #     PGDATA: /data/postgres
-  #   volumes:
-  #       - postgres:/data/postgres
-  #   ports:
-  #     - "5432:5432"
-  #   networks:
-  #     - postgres
-  #   restart: unless-stopped
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PW}
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: fastfood
+    volumes:
+        - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - techchallenge-fastfood-net
+    restart: unless-stopped
 
-  # pgadmin:
-  #   container_name: pgadmin_container
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   ports:
-  #     - "5050:80"
-  #   volumes:
-  #     - pgadmin:/var/lib/pgadmin
-  #   networks:
-  #     - postgres
-  #   depends_on:
-  #     - postgres
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - techchallenge-fastfood-net
+    depends_on:
+      - postgres
 
 volumes:
   postgres:
