@@ -1,8 +1,11 @@
 
 package br.com.appfastfood.cliente.domain.services; 
  
-import br.com.appfastfood.cliente.domain.model.Cliente; 
+import br.com.appfastfood.cliente.domain.model.Cliente;
+import br.com.appfastfood.cliente.domain.repositories.ClienteRepository;
 import org.springframework.stereotype.Service;
+
+
 
 @Service
 public class ClienteDomainServiceImpl implements ClienteDomainService {
