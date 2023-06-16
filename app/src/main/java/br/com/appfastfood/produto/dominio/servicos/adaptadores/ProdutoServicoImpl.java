@@ -17,17 +17,17 @@ public class ProdutoServicoImpl implements ProdutoServico {
 
     @Override
     public void cadastrar(Produto produto) {
-             this.produtoRepositorio.cadastrar(produto);
+        this.produtoRepositorio.cadastrar(produto);
     }
 
     @Override
     public void remover(Long id) {
-             this.produtoRepositorio.remover(id);
+        this.produtoRepositorio.remover(id);
     }
 
     @Override
-    public Produto atualizar(Long id, Produto p) {
-        Produto produtoAlterado = this.produtoRepositorio.atualizar(id,p);
+    public Produto atualizar(Long id, Produto produto) {
+        Produto produtoAlterado = this.produtoRepositorio.atualizar(id, produto);
         return produtoAlterado;
     }
 
