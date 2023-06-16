@@ -1,16 +1,20 @@
 package br.com.appfastfood.produto.infraestrutura.entidades;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 
 import java.math.BigDecimal;
-@Entity
+import java.util.UUID;
+
+@Entity(name = "produto")
 public class ProdutoEntidade {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    protected ProdutoEntidade() {
-    }
+    protected ProdutoEntidade() {}
 
     private String nome;
     private BigDecimal preco;
@@ -20,6 +24,14 @@ public class ProdutoEntidade {
 
     public ProdutoEntidade(Long id, String nome, BigDecimal preco, String uriImagem, String categoria, String descricao) {
         this.id = id;
+        this.nome = nome;
+        this.preco = preco;
+        this.uriImagem = uriImagem;
+        this.categoria = categoria;
+        this.descricao = descricao;
+    }
+
+    public ProdutoEntidade(String nome, BigDecimal preco, String uriImagem, String categoria, String descricao) {
         this.nome = nome;
         this.preco = preco;
         this.uriImagem = uriImagem;

@@ -13,7 +13,7 @@ public interface ProdutoRepositorio {
      */
     void cadastrar (Produto produto);
     void remover (Long id);
-    Produto atualizar(Long id, Produto p);
+    Produto atualizar(Long id, Produto produtos);
     Optional<List<Produto>> buscarPorCategoria(String categoria);
 
 } 

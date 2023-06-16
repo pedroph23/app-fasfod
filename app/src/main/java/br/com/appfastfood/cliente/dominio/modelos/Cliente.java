@@ -8,11 +8,10 @@ public class Cliente {
     private Cpf cpf;
     private Email email;
 
-
     public Cliente(Nome nome, Cpf cpf, Email email) {
-        if (nome == null && cpf == null && email == null) {
-            throw new IllegalArgumentException("Pelo menos um dos atributos (nome, cpf, email) deve ser preenchido");
-        }
+
+        this.verificaCampos();
+
         this.id = UUID.randomUUID();
         this.nome = nome;
         this.cpf = cpf;
@@ -33,5 +32,11 @@ public class Cliente {
 
     public String getEmail() {
         return email.getEmail();
+    }
+
+    private void verificaCampos() {
+        if (nome == null && cpf == null && email == null) {
+            throw new IllegalArgumentException("Pelo menos um dos atributos (nome, cpf, email) deve ser preenchido");
+        }
     }
 }

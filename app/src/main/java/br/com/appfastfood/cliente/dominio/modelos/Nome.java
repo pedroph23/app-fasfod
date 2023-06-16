@@ -2,9 +2,6 @@ package br.com.appfastfood.cliente.dominio.modelos;
 
 public class Nome {
     private String nome;
-
-    // Construtor vazio para JPA    }
-
     public Nome(String nome) {
         validarNome(nome);
         this.nome = nome;
