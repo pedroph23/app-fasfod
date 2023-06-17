@@ -1,11 +1,12 @@
 package br.com.appfastfood.produto.infraestrutura;
 
-import br.com.appfastfood.produto.dominio.modelos.Produto;
+import br.com.appfastfood.produto.dominio.modelos.*;
 import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,13 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
 
     @Override
     public Optional<List<Produto>> buscarPorCategoria(String categoria) {
-        return Optional.empty();
+        List<Produto> produtos = new ArrayList<>();
+        Optional<List<ProdutoEntidade>> produtoEntidadeCategoria = this.springDataProdutoRepository.findProdutoEntidadeByCategoria(categoria);
+        produtoEntidadeCategoria.get().forEach(produtoEntidade -> {
+           Produto produto = new Produto(new Nome(produtoEntidade.getNome()),new Preco(produtoEntidade.getPreco()),new UriImagem(produtoEntidade.getUriImagem()),new Categoria(produtoEntidade.getCategoria()).getCategoria(), new Descricao(produtoEntidade.getDescricao()) );
+           produtos.add(produto);
+        });
+        return Optional.of(produtos);
+
     }
 }
