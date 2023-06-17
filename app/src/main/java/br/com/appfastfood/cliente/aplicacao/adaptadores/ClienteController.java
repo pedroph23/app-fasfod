@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/clientes")
 public class ClienteController {
     private ClienteServico clienteServico;
 
@@ -22,13 +21,20 @@ public class ClienteController {
         this.clienteServico = clienteServico;
     }
 
-    @PostMapping
+    @PostMapping("/clientes")
     public ResponseEntity cadastrar(@RequestBody RequisicaoCliente requisicaoCliente) {
         Cliente clienteRequest = new Cliente(
                 new Nome(requisicaoCliente.getNome()),
-                new Cpf(requisicaoCliente.getNome()),
+                new Cpf(requisicaoCliente.getCpf()),
                 new Email(requisicaoCliente.getEmail()));
         this.clienteServico.cadastrar(clienteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/clientes/{id}")
+    public ResponseEntity<RequisicaoCliente> buscarPorCpf(@PathVariable("id") String cpf) {
+        Cliente cliente = this.clienteServico.buscarPorCpf(cpf);
+        RequisicaoCliente clienteJson = new RequisicaoCliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(clienteJson);
     }
 }

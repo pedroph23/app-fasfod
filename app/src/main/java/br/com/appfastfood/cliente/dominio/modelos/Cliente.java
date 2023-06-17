@@ -3,23 +3,16 @@ package br.com.appfastfood.cliente.dominio.modelos;
 import java.util.UUID;
 
 public class Cliente {
-    private UUID id;
     private Nome nome;
     private Cpf cpf;
     private Email email;
 
     public Cliente(Nome nome, Cpf cpf, Email email) {
 
-        this.verificaCampos();
-
-        this.id = UUID.randomUUID();
+        this.verificaCampos(nome,cpf,email);
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
-    }
-
-    public UUID getId() {
-        return id;
     }
 
     public String getNome() {
@@ -34,7 +27,7 @@ public class Cliente {
         return email.getEmail();
     }
 
-    private void verificaCampos() {
+    private void verificaCampos(Nome nome, Cpf cpf, Email email) {
         if (nome == null && cpf == null && email == null) {
             throw new IllegalArgumentException("Pelo menos um dos atributos (nome, cpf, email) deve ser preenchido");
         }

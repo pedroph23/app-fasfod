@@ -7,6 +7,6 @@ import java.util.UUID;
 
 public interface ClienteServico {
     UUID cadastrar(Cliente cliente);
-    Cliente buscarPorCpf(Cliente cliente);
+    Cliente buscarPorCpf(String cpf);
 
 }
