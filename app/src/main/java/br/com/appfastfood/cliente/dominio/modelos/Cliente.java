@@ -7,12 +7,17 @@ public class Cliente {
     private Cpf cpf;
     private Email email;
 
-    public Cliente(Nome nome, Cpf cpf, Email email) {
+    public Cliente(String nome, String cpf, String email) {
+        validarCampos(nome,cpf,email);
+        this.nome = new Nome(nome);
+        this.cpf = new Cpf(cpf);
+        this.email = new Email(email);
+    }
 
-        this.verificaCampos(nome,cpf,email);
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
+    private void validarCampos(String nome, String cpf, String email) {
+        if(Validacoes.validaCamposVaziosOuNulos(nome,cpf,email)){
+            throw new IllegalArgumentException("Todos os campos são obrigatórios!");
+        }
     }
 
     public String getNome() {
@@ -27,9 +32,5 @@ public class Cliente {
         return email.getEmail();
     }
 
-    private void verificaCampos(Nome nome, Cpf cpf, Email email) {
-        if (nome == null && cpf == null && email == null) {
-            throw new IllegalArgumentException("Pelo menos um dos atributos (nome, cpf, email) deve ser preenchido");
-        }
-    }
+
 }

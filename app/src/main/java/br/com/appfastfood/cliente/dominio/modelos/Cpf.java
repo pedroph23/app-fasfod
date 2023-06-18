@@ -12,10 +12,9 @@ public class Cpf {
     }
 
     private void validarCpf(String cpf) {
-        if (cpf == null || cpf.isEmpty() || cpf.length() != 11 || !cpf.matches("\\d+")) {
+        if (!Validacoes.validaPadraoRegex(cpf, "^[0-9]{11}$")) {
             throw new IllegalArgumentException("CPF inválido");
         }
     }
-
 
 }

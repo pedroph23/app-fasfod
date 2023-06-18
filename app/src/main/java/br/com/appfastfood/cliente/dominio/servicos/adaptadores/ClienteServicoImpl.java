@@ -20,8 +20,9 @@ public class ClienteServicoImpl implements ClienteServico {
     }
 
     @Override
-    public UUID cadastrar(Cliente entidadeCliente) {
-        UUID id = clienteRepositorio.cadastrar(entidadeCliente);
+    public UUID cadastrar(String nome, String cpf, String email) {
+        Cliente cliente = new Cliente(nome,cpf,email);
+        UUID id = clienteRepositorio.cadastrar(cliente);
         return id;
     }
 
@@ -29,7 +30,7 @@ public class ClienteServicoImpl implements ClienteServico {
     public Cliente buscarPorCpf(String cpf) {
         if (clienteRepositorio.buscarPorCpf(cpf).isPresent()) {
             EntidadeCliente entidade = clienteRepositorio.buscarPorCpf(cpf).get();
-            return new Cliente(new Nome(entidade.getNome()), new Cpf(entidade.getCpf()), new Email(entidade.getEmail()));
+            return new Cliente(entidade.getNome(), entidade.getCpf(), entidade.getEmail());
         }
         return new Cliente(null, null, null);
 

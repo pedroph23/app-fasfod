@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
 
 @RestController
 public class ClienteController {
@@ -23,12 +22,12 @@ public class ClienteController {
 
     @PostMapping("/clientes")
     public ResponseEntity cadastrar(@RequestBody RequisicaoCliente requisicaoCliente) {
-        Cliente clienteRequest = new Cliente(
-                new Nome(requisicaoCliente.getNome()),
-                new Cpf(requisicaoCliente.getCpf()),
-                new Email(requisicaoCliente.getEmail()));
-        this.clienteServico.cadastrar(clienteRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        try {
+            this.clienteServico.cadastrar(requisicaoCliente.getNome(), requisicaoCliente.getCpf(), requisicaoCliente.getEmail());
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping("/clientes/{id}")

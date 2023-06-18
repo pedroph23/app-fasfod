@@ -8,10 +8,11 @@ public class Nome {
     }
 
     private void validarNome(String nome) {
-        if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Nome inválido");
+        if(Validacoes.validaTamanhoMaximoDoCampo(nome, 30)){
+            throw new IllegalArgumentException("Nome invalido!");
         }
     }
+
 
     public String getNome() {
         return nome;
