@@ -1,10 +1,5 @@
 package br.com.appfastfood.cliente.dominio.modelos;
 
-import br.com.appfastfood.cliente.exceptions.FormatoEmailException;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Email {
     private String email;
     public String getEmail() {

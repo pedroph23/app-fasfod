@@ -14,7 +14,7 @@ public class Validacoes {
     }
 
     public static boolean validaCamposVaziosOuNulos(String nome, String cpf, String email) {
-        return estaBrancoOuNulo(nome) || estaBrancoOuNulo(cpf) || estaBrancoOuNulo(email);
+        return estaBrancoOuNulo(nome) && estaBrancoOuNulo(cpf) && estaBrancoOuNulo(email);
     }
 
     private static boolean estaBrancoOuNulo(String campo) {

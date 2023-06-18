@@ -7,6 +7,7 @@ import br.com.appfastfood.cliente.dominio.modelos.Email;
 import br.com.appfastfood.cliente.dominio.modelos.Nome;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
+import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
 import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
 
 import java.util.UUID;
@@ -32,8 +33,7 @@ public class ClienteServicoImpl implements ClienteServico {
             EntidadeCliente entidade = clienteRepositorio.buscarPorCpf(cpf).get();
             return new Cliente(entidade.getNome(), entidade.getCpf(), entidade.getEmail());
         }
-        return new Cliente(null, null, null);
-
+        throw new ClienteNaoEncontradoException();
     }
 }
 
