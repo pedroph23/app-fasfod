@@ -31,7 +31,7 @@ public class UriImagem {
     }
 
     private void isEmpty(String nome) {
-        if(nome.isEmpty()) {
+        if(nome == null || nome.isEmpty()) {
             throw new UriImagemObrigatorioException();
         }
     }

@@ -13,7 +13,7 @@ public class Descricao {
         return descricao;
     }
     private void isValid(String descricao) {
-        if(descricao.isEmpty()) {
+        if(descricao == null || descricao.isEmpty()) {
             throw new DescricaoObrigatorioException();
         }
     }
