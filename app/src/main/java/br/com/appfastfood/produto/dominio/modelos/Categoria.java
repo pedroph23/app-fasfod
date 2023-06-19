@@ -26,7 +26,7 @@ public class Categoria {
     }
 
     private void isEmpty(String categoria) {
-        if(categoria.isEmpty()) {
+        if(categoria == null || categoria.isEmpty()) {
             throw new CategoriaObrigatorioException();
         }
     }
