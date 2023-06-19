@@ -5,6 +5,7 @@ import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExc
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
+import br.com.appfastfood.configuracoes.logs.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +30,8 @@ public class ClienteControllerTest {
     @Autowired
     private ClienteController clienteController;
 
+    @Mock
+    private Log log;
     @MockBean
     private ClienteServico clienteServico;
 

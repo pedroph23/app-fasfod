@@ -9,6 +9,7 @@ import br.com.appfastfood.cliente.dominio.modelos.Email;
 import br.com.appfastfood.cliente.dominio.modelos.Nome;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
+import br.com.appfastfood.configuracoes.logs.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ClienteController {
     private ClienteServico clienteServico;
-
-    public ClienteController(ClienteServico clienteServico) {
+    private Log logger;
+    public ClienteController(ClienteServico clienteServico, Log logger) {
         this.clienteServico = clienteServico;
+        this.logger = logger;
     }
 
     @PostMapping("/clientes")
@@ -29,6 +31,7 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }catch (IllegalArgumentException e){
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
     }
