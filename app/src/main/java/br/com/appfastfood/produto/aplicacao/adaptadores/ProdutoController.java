@@ -1,9 +1,10 @@
 package br.com.appfastfood.produto.aplicacao.adaptadores;
 
+import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.configuracoes.logs.Log;
 import br.com.appfastfood.produto.aplicacao.adaptadores.requisicao.ProdutoRequisicao;
 import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
 import br.com.appfastfood.produto.dominio.modelos.*;
-import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import br.com.appfastfood.produto.exceptions.*;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ProdutoController {
 
     private ProdutoServico produtoServico;
+    private Log logger;
 
-    public ProdutoController(ProdutoServico produtoServico) {
+    public ProdutoController(ProdutoServico produtoServico, Log logger) {
         this.produtoServico = produtoServico;
+        this.logger = logger;
     }
 
     @PostMapping
@@ -47,19 +50,33 @@ public class ProdutoController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(produtoResposta);
         } catch (CategoriaNaoEncontradaException cnee) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cnee.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(cnee.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (CategoriaObrigatorioException coe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(coe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(coe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (DescricaoObrigatorioException doe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(doe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(doe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (NomeObrigatorioException noe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(noe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(noe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (PrecoObrigatorioException poe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(poe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(poe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (UriImagemFormatoInvalidoException uifie) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uifie.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(uifie.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (UriImagemObrigatorioException uioe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uioe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(uioe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
     }
     @DeleteMapping("/{id}")
@@ -93,21 +110,34 @@ public class ProdutoController {
 
             return ResponseEntity.status(HttpStatus.OK).body(produtoResposta);
         } catch (CategoriaNaoEncontradaException cnee) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(cnee.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(cnee.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (CategoriaObrigatorioException coe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(coe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(coe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (DescricaoObrigatorioException doe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(doe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(doe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (NomeObrigatorioException noe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(noe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(noe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (PrecoObrigatorioException poe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(poe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(poe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (UriImagemFormatoInvalidoException uifie) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uifie.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(uifie.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         } catch (UriImagemObrigatorioException uioe) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uioe.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(uioe.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
-
     }
 
     @GetMapping()
@@ -125,10 +155,11 @@ public class ProdutoController {
                     .uriImagem(produto.getUriImagem().getUriImagem())
                     .build()).toList();
 
-
             return ResponseEntity.status(HttpStatus.OK).body(produtosResposta);
         } catch (CategoriaNaoEncontradaException e) {
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            logger.aviso(jsonExcecao.toString());
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
 
     }
