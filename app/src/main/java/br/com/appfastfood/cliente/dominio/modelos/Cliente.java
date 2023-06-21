@@ -3,24 +3,21 @@ package br.com.appfastfood.cliente.dominio.modelos;
 import java.util.UUID;
 
 public class Cliente {
-    private UUID id;
     private Nome nome;
     private Cpf cpf;
     private Email email;
 
-
-    public Cliente(Nome nome, Cpf cpf, Email email) {
-        if (nome == null && cpf == null && email == null) {
-            throw new IllegalArgumentException("Pelo menos um dos atributos (nome, cpf, email) deve ser preenchido");
-        }
-        this.id = UUID.randomUUID();
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
+    public Cliente(String nome, String cpf, String email) {
+        validarCampos(nome,cpf,email);
+        this.nome = new Nome(nome);
+        this.cpf = new Cpf(cpf);
+        this.email = new Email(email);
     }
 
-    public UUID getId() {
-        return id;
+    private void validarCampos(String nome, String cpf, String email) {
+        if(Validacoes.validaCamposVaziosOuNulos(nome,cpf,email)){
+            throw new IllegalArgumentException("Todos os campos são obrigatórios!");
+        }
     }
 
     public String getNome() {
@@ -34,4 +31,6 @@ public class Cliente {
     public String getEmail() {
         return email.getEmail();
     }
+
+
 }

@@ -6,7 +6,7 @@ import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import java.util.UUID;
 
 public interface ClienteServico {
-    UUID cadastrar(Cliente cliente);
-    Cliente buscarPorCpf(Cliente cliente);
+    UUID cadastrar(String nome, String cpf, String email);
+    Cliente buscarPorCpf(String cpf);
 
 }

@@ -2,19 +2,17 @@ package br.com.appfastfood.cliente.dominio.modelos;
 
 public class Nome {
     private String nome;
-
-    // Construtor vazio para JPA    }
-
     public Nome(String nome) {
         validarNome(nome);
         this.nome = nome;
     }
 
     private void validarNome(String nome) {
-        if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Nome inválido");
+        if(Validacoes.validaTamanhoMaximoDoCampo(nome, 30)){
+            throw new IllegalArgumentException("Nome invalido!");
         }
     }
+
 
     public String getNome() {
         return nome;
