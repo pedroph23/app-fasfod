@@ -13,7 +13,7 @@ public class Nome {
         return nome;
     }
     private void isValid(String nome) {
-        if(nome.isEmpty()) {
+        if(nome == null || nome.isEmpty()) {
             throw new NomeObrigatorioException();
         }
     }

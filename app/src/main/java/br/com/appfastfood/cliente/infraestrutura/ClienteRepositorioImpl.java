@@ -4,6 +4,7 @@ import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
 import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
 import org.springframework.stereotype.Component;
+import org.springframework.util.DigestUtils;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -18,7 +19,8 @@ public class ClienteRepositorioImpl implements ClienteRepositorio {
     }
     @Override
     public Optional<EntidadeCliente> buscarPorCpf(String cpf) {
-        return clienteRepository.findById(UUID.randomUUID());
+        UUID id = UUID.nameUUIDFromBytes(DigestUtils.md5Digest(cpf.getBytes()));
+        return clienteRepository.findById(id);
     }
 
     @Override

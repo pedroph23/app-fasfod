@@ -38,4 +38,29 @@ public class ProdutoEntidade {
         this.categoria = categoria;
         this.descricao = descricao;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public String getUriImagem() {
+        return uriImagem;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
 }
+

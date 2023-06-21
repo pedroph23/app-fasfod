@@ -2,8 +2,13 @@
 package br.com.appfastfood.cliente.dominio.servicos.adaptadores;
  
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
+import br.com.appfastfood.cliente.dominio.modelos.Cpf;
+import br.com.appfastfood.cliente.dominio.modelos.Email;
+import br.com.appfastfood.cliente.dominio.modelos.Nome;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
+import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
+import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
 
 import java.util.UUID;
 
@@ -16,13 +21,19 @@ public class ClienteServicoImpl implements ClienteServico {
     }
 
     @Override
-    public UUID cadastrar(Cliente entidadeCliente) {
-      UUID id =  clienteRepositorio.cadastrar(entidadeCliente);
-      return id;
+    public UUID cadastrar(String nome, String cpf, String email) {
+        Cliente cliente = new Cliente(nome,cpf,email);
+        UUID id = clienteRepositorio.cadastrar(cliente);
+        return id;
     }
 
     @Override
-    public Cliente buscarPorCpf(Cliente cliente) {
-        return null;
+    public Cliente buscarPorCpf(String cpf) {
+        if (clienteRepositorio.buscarPorCpf(cpf).isPresent()) {
+            EntidadeCliente entidade = clienteRepositorio.buscarPorCpf(cpf).get();
+            return new Cliente(entidade.getNome(), entidade.getCpf(), entidade.getEmail());
+        }
+        throw new ClienteNaoEncontradoException();
     }
 }
+

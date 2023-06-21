@@ -2,6 +2,7 @@ package br.com.appfastfood.cliente.infraestrutura.entidades;
  
 
 import jakarta.persistence.*;
+import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -9,7 +10,6 @@ import java.util.UUID;
 @Entity
 public class EntidadeCliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID  id;
     private String nome;
     private String cpf;
@@ -21,6 +21,7 @@ public class EntidadeCliente {
     }
 
     public EntidadeCliente(String nome, String cpf, String email) {
+        this.id  = UUID.nameUUIDFromBytes(DigestUtils.md5Digest(cpf.getBytes()));
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
