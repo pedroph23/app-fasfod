@@ -30,8 +30,7 @@ public class ClienteControllerTest {
     @Autowired
     private ClienteController clienteController;
 
-    @Mock
-    private Log log;
+
     @MockBean
     private ClienteServico clienteServico;
 

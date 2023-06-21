@@ -31,7 +31,7 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }catch (IllegalArgumentException e){
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-            logger.aviso(jsonExcecao.toString());
+            //logger.aviso(jsonExcecao.toString());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
     }

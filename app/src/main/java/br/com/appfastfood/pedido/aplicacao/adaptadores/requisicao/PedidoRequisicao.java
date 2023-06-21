@@ -31,7 +31,7 @@ public class PedidoRequisicao {
     }
 
     public Cliente ClienteMock(){
-        return new Cliente(new br.com.appfastfood.cliente.dominio.modelos.Nome("Teste"), new Cpf("12345678900"),new Email("teste@teste.com"));
+       return null;
         //return new Cliente(new Nome("Lina Caike Pedro Filipe Marcus"), new Cpf("12345678900"), new Email("teste@gmail.com"));
     }
 }
