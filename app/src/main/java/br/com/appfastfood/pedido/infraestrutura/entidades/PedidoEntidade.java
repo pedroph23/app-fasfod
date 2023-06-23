@@ -1,4 +1,4 @@
-package br.com.appfastfood.pedido.dominio.modelos;
+package br.com.appfastfood.pedido.infraestrutura.entidades;
 import java.math.BigDecimal;
 import java.util.Map;
 
@@ -13,13 +13,13 @@ import jakarta.persistence.Id;
 
 
 @Entity(name = "pedido")
-public class Pedido { 
+public class PedidoEntidade { 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
-    protected Pedido() {}
+    protected PedidoEntidade() {}
 
     private Map<Produto, Long> produto;
     private Cliente cliente;
@@ -28,14 +28,14 @@ public class Pedido {
 
 
     
-    public Pedido(Long id , Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
+    public PedidoEntidade(Long id , Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
         this.id = id;
         this.produto = produto;
         this.cliente = cliente;
         this.valorTotal = valorTotal;
         this.status = status;
     }
-    public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
+    public PedidoEntidade(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
         this.produto = produto;
          this.cliente = cliente;
         this.valorTotal = valorTotal;

@@ -1,30 +1,31 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.dominio.modelos.Cpf;
-import br.com.appfastfood.cliente.dominio.modelos.Email;
+import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.AtualizarPedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
-import br.com.appfastfood.produto.dominio.modelos.Categoria;
-import br.com.appfastfood.produto.dominio.modelos.Descricao;
-import br.com.appfastfood.produto.dominio.modelos.Nome;
-import br.com.appfastfood.produto.dominio.modelos.Preco;
+import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
-import br.com.appfastfood.produto.dominio.modelos.UriImagem;
+import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
+
 
 @RestController
-@RequestMapping("/pedido")
+// @RequestMapping("/pedido")
 public class PedidoController {
     private PedidoServico pedidoServico;
 
@@ -32,23 +33,72 @@ public class PedidoController {
         this.pedidoServico = pedidoServico;
     }
 
-    @PostMapping
+   @PostMapping("/pedido")
     public ResponseEntity<Object> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
-        Pedido pedido = new Pedido(
-            pedidoRequisicao.ProdutoMock(),
-            pedidoRequisicao.getQuantidade(),
-            pedidoRequisicao.ClienteMock(),
-            BigDecimal.valueOf(10.10),
-            StatusPedidoEnum.emPreparacao
-        );
+       try {
+            
+            Pedido pedido = new Pedido(
+                pedidoRequisicao.getProduto(),
+                pedidoRequisicao.getCliente(),
+                pedidoRequisicao.getValorTotal(),
+                pedidoRequisicao.getStatus()
+            );
+            
+            this.pedidoServico.criar(pedido);
 
-        this.pedidoServico.criar(pedido);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+            // PedidoResposta pedidoResposta = PedidoResposta
+            //         .builder()
+            //         .nome(pedido.getProduto().)
+            //         .preco(produto.getPreco().getPreco())
+            //         .descricao(produto.getDescricao().getDescricao())
+            //         .categoria(produto.getCategoria().name())
+            //         .uriImagem(produto.getUriImagem().getUriImagem())
+            //         .build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+
+        } catch (IllegalArgumentException e) {
+              RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }
+
     }
 
-    @PostMapping("atualizar-pedido")
-    public ResponseEntity<?> atualizar(PedidoRequisicao pedidoRequisicao){
-        Pedido pedidoResultado = this.pedidoServico.atualizar(pedidoRequisicao);
-        return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
+    @PostMapping("atualizar-status")
+    public ResponseEntity<?> atualizarStatus(AtualizarPedidoRequisicao pedido){
+        try {
+        
+           
+           Pedido pedidoResultado = this.pedidoServico.atualizar(pedido);
+           return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
+            
+        } catch (IllegalArgumentException e) {
+              RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }
     }
+
+    // @GetMapping()
+    // public ResponseEntity ListarPedidos(@RequestParam(value = "id") Long id){
+
+    //     try {
+    //         List<Pedido> pedido = this.pedidoServico.buscarPor(id);
+
+    //         List<ProdutoResposta> produtosResposta =  produtos.stream().map(produto -> ProdutoResposta
+    //                 .builder()
+    //                 .nome(produto.getNome().getNome())
+    //                 .preco(produto.getPreco().getPreco())
+    //                 .descricao(produto.getDescricao().getDescricao())
+    //                 .categoria(produto.getCategoria().name())
+    //                 .uriImagem(produto.getUriImagem().getUriImagem())
+    //                 .build()).toList();
+
+    //         return ResponseEntity.status(HttpStatus.OK).body(produtosResposta);
+    //     } catch (CategoriaNaoEncontradaException e) {
+    //         RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+    //         logger.aviso(jsonExcecao.toString());
+    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+    //     }
+
+    // }
+
 } 
