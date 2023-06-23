@@ -6,6 +6,14 @@ public class AtualizarPedidoRequisicao {
     private Long id;
     private StatusPedidoEnum status;
 
+    
+    public Long getId() {
+        return id;
+    }
+    public StatusPedidoEnum getStatus() {
+        return status;
+    }
+
 
 
     

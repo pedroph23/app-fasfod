@@ -1,13 +1,7 @@
 package br.com.appfastfood.pedido.infraestrutura;
-
-import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
-import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
-import br.com.appfastfood.produto.infraestrutura.SpringDataProdutoRepository;
-
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +30,12 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
     public Optional<List<Pedido>> listarTodosOsPedidos() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'listarTodosOsPedidos'");
+    }
+
+    @Override
+    public Pedido buscarPedidoPorId(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarPedidoPorId'");
     }   
    
 }

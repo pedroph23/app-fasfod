@@ -7,5 +7,5 @@ public interface PedidoRepositorio {
     void criar(Pedido pedido);
     Pedido atualizar(Pedido pedidoRequisicao);
     Optional<List<Pedido>> listarTodosOsPedidos();
-      Pedido buscarPedidoPorId(Long id);
+    Pedido buscarPedidoPorId(Long id);
 } 
