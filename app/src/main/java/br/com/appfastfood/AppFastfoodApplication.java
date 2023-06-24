@@ -8,9 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "Especificação da aplicação de Fast Food"))
+@OpenAPIDefinition(info = @Info(
+		title = "API - Fast Food",
+		version = "0.0.3-SNAPSHOT",
+		description = "Seja bem vindo(a) a especificação da API de Fast Food! O sistema possui tudo sobre Clientes, Produtos, Pedidos."
+))
 public class AppFastfoodApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(AppFastfoodApplication.class, args);
 	}
