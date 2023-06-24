@@ -1,14 +1,19 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.UUID;
 
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
+import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 
 
@@ -20,67 +25,44 @@ public class PedidoEntidade {
 
 
     protected PedidoEntidade() {}
-
-    private Map<Produto, Long> produto;
-    private Cliente cliente;
+    
+    private Long idProduto;
+    private UUID clienteId;
     private BigDecimal valorTotal;
-    private StatusPedidoEnum status;
+    private String status;
 
 
-    
-    public PedidoEntidade(Long id , Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
+    public PedidoEntidade(Long id, Long idProduto, UUID clienteId, BigDecimal valorTotal, String status) {
         this.id = id;
-        this.produto = produto;
-        this.cliente = cliente;
-        this.valorTotal = valorTotal;
-        this.status = status;
-    }
-    public PedidoEntidade(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
-        this.produto = produto;
-         this.cliente = cliente;
+        this.idProduto = idProduto;
+        this.clienteId = clienteId;
         this.valorTotal = valorTotal;
         this.status = status;
     }
 
-    
+
     public Long getId() {
         return id;
     }
 
 
-    public Map<Produto, Long> getProduto() {
-        return produto;
+    public Long getIdProduto() {
+        return idProduto;
     }
 
-    public void setProduto(Map<Produto, Long> produto) {
-        this.produto = produto;
+
+    public UUID getClienteId() {
+        return clienteId;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
 
     public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
-    }
 
-    public StatusPedidoEnum getStatus() {
+    public String getStatus() {
         return status;
     }
-
-    public void setStatus(StatusPedidoEnum status) {
-        this.status = status;
-    }
-
-
-   
 
 } 

@@ -1,52 +1,22 @@
 package br.com.appfastfood.pedido.dominio.modelos;
 import java.math.BigDecimal;
 import java.util.Map;
-
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-
-
-@Entity(name = "pedido")
 public class Pedido { 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-
-    protected Pedido() {}
-
     private Map<Produto, Long> produto;
     private Cliente cliente;
     private BigDecimal valorTotal;
     private StatusPedidoEnum status;
 
-
-    
-    public Pedido(Long id , Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
-        this.id = id;
-        this.produto = produto;
-        this.cliente = cliente;
-        this.valorTotal = valorTotal;
-        this.status = status;
-    }
     public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
         this.produto = produto;
          this.cliente = cliente;
         this.valorTotal = valorTotal;
         this.status = status;
     }
-
-    
-    public Long getId() {
-        return id;
-    }
-
 
     public Map<Produto, Long> getProduto() {
         return produto;
