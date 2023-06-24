@@ -9,6 +9,7 @@ import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 public interface PedidoServico {
     void criar(Pedido pedido);
     Pedido atualizar(AtualizarPedidoRequisicao pedido);
-    Optional<List<Pedido>> listarTodosOsPedidos();
+    // Optional<List<Pedido>> listarTodosOsPedidos();
     Pedido buscarPedidoPorId(Long id);
+    List<Pedido> listarTodosPedidos();
 } 

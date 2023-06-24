@@ -9,6 +9,7 @@ import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 
 
 public class PedidoServicoImpl implements PedidoServico{
@@ -38,14 +39,19 @@ public class PedidoServicoImpl implements PedidoServico{
     }
 
 
-    @Override
-    public Optional<List<Pedido>> listarTodosOsPedidos() {
-       return this.pedidoRepositorio.listarTodosOsPedidos();
-    }
+    // @Override
+    // public Optional<List<Pedido>> listarTodosOsPedidos() {
+    //    return this.pedidoRepositorio.listarTodosOsPedidos();
+    // }
 
     @Override
     public Pedido buscarPedidoPorId(Long id) {
         return this.pedidoRepositorio.buscarPedidoPorId(id);
+    }
+    
+    @Override
+    public List<Pedido> listarTodosPedidos() {
+        return this.pedidoRepositorio.listarTodosOsPedidos().get();
     }
 
 }

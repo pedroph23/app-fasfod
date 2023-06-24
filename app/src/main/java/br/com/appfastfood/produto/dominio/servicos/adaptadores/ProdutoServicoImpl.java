@@ -35,4 +35,5 @@ public class ProdutoServicoImpl implements ProdutoServico {
     public List<Produto> buscarPorCategoria(String categoria) {
         return this.produtoRepositorio.buscarPorCategoria(categoria).get();
     }
+ 
 }

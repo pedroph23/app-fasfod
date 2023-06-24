@@ -77,28 +77,28 @@ public class PedidoController {
         }
     }
 
-    // @GetMapping()
-    // public ResponseEntity ListarPedidos(@RequestParam(value = "id") Long id){
+    @GetMapping("listar")
+    public ResponseEntity ListarPedidos(){
 
-    //     try {
-    //         List<Pedido> pedido = this.pedidoServico.buscarPor(id);
+        try {
+            List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
 
-    //         List<ProdutoResposta> produtosResposta =  produtos.stream().map(produto -> ProdutoResposta
-    //                 .builder()
-    //                 .nome(produto.getNome().getNome())
-    //                 .preco(produto.getPreco().getPreco())
-    //                 .descricao(produto.getDescricao().getDescricao())
-    //                 .categoria(produto.getCategoria().name())
-    //                 .uriImagem(produto.getUriImagem().getUriImagem())
-    //                 .build()).toList();
+            // List<ProdutoResposta> produtosResposta =  pedido.stream().map(pedido -> ProdutoResposta
+            //         .builder()
+            //         .nome(pedido.getNome().getNome())
+            //         .preco(pedido.getPreco().getPreco())
+            //         .descricao(pedido.getDescricao().getDescricao())
+            //         .categoria(pedido.getCategoria().name())
+            //         .uriImagem(pedido.getUriImagem().getUriImagem())
+            //         .build()).toList();
 
-    //         return ResponseEntity.status(HttpStatus.OK).body(produtosResposta);
-    //     } catch (CategoriaNaoEncontradaException e) {
-    //         RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-    //         logger.aviso(jsonExcecao.toString());
-    //        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-    //     }
+            return ResponseEntity.status(HttpStatus.OK).body(pedido);
+        } catch (CategoriaNaoEncontradaException e) {
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+           // logger.aviso(jsonExcecao.toString());
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }
 
-    // }
+    }
 
 } 
