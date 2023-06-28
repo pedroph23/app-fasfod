@@ -1,7 +1,11 @@
 package br.com.appfastfood.pedido.infraestrutura;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
+import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
+
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +19,10 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         this.springDataPedidoRepository = springDataPedidoRepository;
     }
 
-     @Override
-    public void criar(Pedido pedido) {
-        
+    @Override
+    public void criar(PedidoEntidade pedido) {
+        PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(10), "RECEBIDO");
+        springDataPedidoRepository.save(pedidoDb);
     }
 
     @Override
@@ -27,15 +32,14 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
     }
 
     @Override
-    public Optional<List<Pedido>> listarTodosOsPedidos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarTodosOsPedidos'");
+    public List<PedidoEntidade> listarTodosOsPedidos() {
+        return springDataPedidoRepository.findAll();
     }
 
     @Override
-    public Pedido buscarPedidoPorId(Long id) {
+    public Optional<PedidoEntidade> buscarPedidoPorId(Long id) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarPedidoPorId'");
+        return springDataPedidoRepository.findById(id);
     }   
    
 }

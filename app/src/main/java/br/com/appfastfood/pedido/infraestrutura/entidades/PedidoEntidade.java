@@ -1,19 +1,9 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.UUID;
-
-import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
-import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.produto.dominio.modelos.Produto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 
 
@@ -26,15 +16,18 @@ public class PedidoEntidade {
 
     protected PedidoEntidade() {}
     
-    private Long idProduto;
-    private UUID clienteId;
+    private String idProduto;
+    private String quantidadeProduto;
+    private String clienteId;
     private BigDecimal valorTotal;
     private String status;
 
 
-    public PedidoEntidade(Long id, Long idProduto, UUID clienteId, BigDecimal valorTotal, String status) {
+    public PedidoEntidade(Long id, String idProduto, String quantidadeProduto, String clienteId, BigDecimal valorTotal,
+            String status) {
         this.id = id;
         this.idProduto = idProduto;
+        this.quantidadeProduto = quantidadeProduto;
         this.clienteId = clienteId;
         this.valorTotal = valorTotal;
         this.status = status;
@@ -46,12 +39,17 @@ public class PedidoEntidade {
     }
 
 
-    public Long getIdProduto() {
+    public String getIdProduto() {
         return idProduto;
     }
 
 
-    public UUID getClienteId() {
+    public String getQuantidadeProduto() {
+        return quantidadeProduto;
+    }
+
+
+    public String getClienteId() {
         return clienteId;
     }
 
@@ -64,5 +62,6 @@ public class PedidoEntidade {
     public String getStatus() {
         return status;
     }
+
 
 } 

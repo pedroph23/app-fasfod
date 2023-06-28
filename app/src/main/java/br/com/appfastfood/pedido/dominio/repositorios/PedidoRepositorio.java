@@ -3,9 +3,10 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
+import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 public interface PedidoRepositorio {
-    void criar(Pedido pedido);
+    void criar(PedidoEntidade pedido);
     Pedido atualizar(Pedido pedidoRequisicao);
-    Optional<List<Pedido>> listarTodosOsPedidos();
-    Pedido buscarPedidoPorId(Long id);
+    List<PedidoEntidade> listarTodosOsPedidos();
+    Optional<PedidoEntidade> buscarPedidoPorId(Long id);
 } 
