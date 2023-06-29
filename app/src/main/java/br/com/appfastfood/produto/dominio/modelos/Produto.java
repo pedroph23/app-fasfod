@@ -5,18 +5,24 @@ import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
 import java.math.BigDecimal;
 
 public class Produto {
+    private Long id;
     private Nome nome;
     private Preco preco;
     private UriImagem uriImagem;
     private CategoriaEnum categoria;
     private Descricao descricao;
 
-    public Produto(Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
+    public Produto(Long id, Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
+        this.id = id;
         this.nome = nome;
         this.preco = preco;
         this.uriImagem = uriImagem;
         this.categoria = categoria;
         this.descricao = descricao;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Nome getNome() {
@@ -38,4 +44,5 @@ public class Produto {
     public Descricao getDescricao() {
         return descricao;
     }
+
 }

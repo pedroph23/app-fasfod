@@ -43,12 +43,6 @@ public class PedidoServicoImpl implements PedidoServico{
         return this.pedidoRepositorio.atualizar(pedidoAtualizado);
     }
 
-
-    // @Override
-    // public Optional<List<Pedido>> listarTodosOsPedidos() {
-    //    return this.pedidoRepositorio.listarTodosOsPedidos();
-    // }
-
     @Override
     public Pedido buscarPedidoPorId(Long id) {
         Optional<PedidoEntidade> pedidoBusca = this.pedidoRepositorio.buscarPedidoPorId(id);
@@ -67,7 +61,7 @@ public class PedidoServicoImpl implements PedidoServico{
     }
     
     @Override
-    public List<PedidoEntidade> listarTodosPedidos() {
+    public List<Pedido> listarTodosPedidos() {
         return this.pedidoRepositorio.listarTodosOsPedidos();
     }
 

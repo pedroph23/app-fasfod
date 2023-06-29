@@ -7,6 +7,6 @@ import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 public interface PedidoRepositorio {
     void criar(PedidoEntidade pedido);
     Pedido atualizar(Pedido pedidoRequisicao);
-    List<PedidoEntidade> listarTodosOsPedidos();
+    List<Pedido> listarTodosOsPedidos();
     Optional<PedidoEntidade> buscarPedidoPorId(Long id);
 } 

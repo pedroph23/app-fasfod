@@ -49,6 +49,7 @@ public class ProdutoController {
 
         try {
             Produto produto = new Produto(
+                    produtoRequisicao.getId(),
                     new Nome(produtoRequisicao.getNome()),
                     new Preco(produtoRequisicao.getPreco()),
                     new UriImagem(produtoRequisicao.getUriImagem()),
@@ -124,6 +125,7 @@ public class ProdutoController {
 
         try {
             Produto produto = new Produto(
+                    produtoRequisicao.getId(),
                     new Nome(produtoRequisicao.getNome()),
                     new Preco(produtoRequisicao.getPreco()),
                     new UriImagem(produtoRequisicao.getUriImagem()),

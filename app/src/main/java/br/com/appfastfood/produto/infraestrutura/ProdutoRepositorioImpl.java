@@ -72,6 +72,7 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
             if(produtoEntidadeCategoria.isPresent() && !produtoEntidadeCategoria.get().isEmpty()) {
                 produtoEntidadeCategoria.get().forEach(produtoEntidade -> {
                     Produto produto = new Produto(
+                            produtoEntidade.getId(),
                             new Nome(produtoEntidade.getNome()),
                             new Preco(produtoEntidade.getPreco()),
                             new UriImagem(produtoEntidade.getUriImagem()),
@@ -84,5 +85,17 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
         }
 
         throw new CategoriaNaoEncontradaException();
+    }
+
+    @Override
+    public Produto buscarProdutoPorId(Long id){
+        ProdutoEntidade produtoBusca = this.springDataProdutoRepository.findProdutoById(id);
+        Produto produtoRetorno = new Produto(produtoBusca.getId(), 
+                                    new Nome(produtoBusca.getNome()), 
+                                    new Preco(produtoBusca.getPreco()), 
+                                    new UriImagem(produtoBusca.getUriImagem()), 
+                                    new Categoria(produtoBusca.getCategoria()).getCategoria(), 
+                                    new Descricao(produtoBusca.getDescricao()));
+        return produtoRetorno;
     }
 }

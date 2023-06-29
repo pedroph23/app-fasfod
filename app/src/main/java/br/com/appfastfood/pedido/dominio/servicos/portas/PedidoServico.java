@@ -12,5 +12,5 @@ public interface PedidoServico {
     Pedido atualizar(AtualizarPedidoRequisicao pedido);
     // Optional<List<Pedido>> listarTodosOsPedidos();
     Pedido buscarPedidoPorId(Long id);
-    List<PedidoEntidade> listarTodosPedidos();
+    List<Pedido> listarTodosPedidos();
 } 

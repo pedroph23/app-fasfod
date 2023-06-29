@@ -19,7 +19,7 @@ public class ProdutoTest {
         CategoriaEnum categoria = CategoriaEnum.bebida;
         Descricao descricao = mock(Descricao.class);
 
-        Produto produto = new Produto(nome, preco, uriImagem, categoria, descricao);
+        Produto produto = new Produto(null, nome, preco, uriImagem, categoria, descricao);
 
         assertEquals(nome, produto.getNome());
         assertEquals(preco, produto.getPreco());

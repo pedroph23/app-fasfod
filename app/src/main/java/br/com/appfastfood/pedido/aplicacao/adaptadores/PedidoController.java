@@ -1,5 +1,6 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,9 @@ import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisic
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
+import br.com.appfastfood.produto.infraestrutura.ProdutoRepositorioImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
@@ -62,7 +65,16 @@ public class PedidoController {
     @GetMapping("/listar")
     public ResponseEntity<Object> ListarPedidos(){
         try {
-            List<PedidoEntidade> pedido = this.pedidoServico.listarTodosPedidos();
+            List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
+            // List<Produto> produtosBusca = new ArrayList<>();
+            // for (Pedido pedidoBusca : pedido){
+            //     String[] idsProdutos = pedidoBusca.getIdProduto().split(",");
+            //     for (String id : idsProdutos){
+            //         Produto produtoBuscaId = new ProdutoRepositorioImpl(null).buscarProdutoPorId(Long.parseLong(id));
+            //         produtosBusca.add(produtoBuscaId);
+            //     }
+            // }
+
             return ResponseEntity.status(HttpStatus.OK).body(pedido);
         } catch (CategoriaNaoEncontradaException e) {
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
