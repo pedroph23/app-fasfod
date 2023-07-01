@@ -31,7 +31,7 @@ public class PedidoServicoImpl implements PedidoServico{
     }
     @Override
     public Pedido atualizar(AtualizarPedidoRequisicao pedido) {
-      Optional<PedidoEntidade> pedidoBusca = this.pedidoRepositorio.buscarPedidoPorId(pedido.getId());
+      Pedido pedidoBusca = this.pedidoRepositorio.buscarPedidoPorId(pedido.getId());
       
       Pedido pedidoAtualizado = new Pedido(null, null, null, null);
        if (pedido.getStatus() == StatusPedidoEnum.EM_PREPARACAO) {
@@ -45,19 +45,7 @@ public class PedidoServicoImpl implements PedidoServico{
 
     @Override
     public Pedido buscarPedidoPorId(Long id) {
-        Optional<PedidoEntidade> pedidoBusca = this.pedidoRepositorio.buscarPedidoPorId(id);
-        Optional<List<Produto>> produtoBusca = new ProdutoRepositorioImpl(null).buscarPorCategoria("null");
-        Map<Produto, Long> listaProdutos = new HashMap<>();
-        if (!pedidoBusca.isPresent()){
-            //validar o retorno
-        }
-        BigDecimal valorTotal = BigDecimal.valueOf(0);
-        for (Produto prod : produtoBusca.get()){
-            listaProdutos.put(prod, 1L);
-            valorTotal.add(prod.getPreco().getPreco());
-        }
-        Pedido pedidoRetorno = new Pedido(listaProdutos, null, pedidoBusca.get().getValorTotal(), StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()));
-        return pedidoRetorno;
+       return this.pedidoRepositorio.buscarPedidoPorId(id);
     }
     
     @Override

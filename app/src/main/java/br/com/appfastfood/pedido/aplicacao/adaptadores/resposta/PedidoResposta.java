@@ -6,14 +6,15 @@ import java.util.Map;
 
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
+import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 @Builder()
 @Getter
 
 public class PedidoResposta {
     
-    private Map<Produto, Long> produto;
-    private Cliente cliente;
+    private Map<ProdutoResposta, Long> produto;
+    private String idCliente;
     private BigDecimal valorTotal;
-    private StatusPedidoEnum status;
+    private String status;
 }

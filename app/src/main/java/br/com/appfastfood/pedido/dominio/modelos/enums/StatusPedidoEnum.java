@@ -1,7 +1,7 @@
 package br.com.appfastfood.pedido.dominio.modelos.enums;
 
 public enum StatusPedidoEnum {
-    RECEBIDO(1, "recebido"),
+    RECEBIDO(1, "RECEBIDO"),
     EM_PREPARACAO(2, "emPreparacao"),
     PRONTO(3, "pronto"),
     FINALIZADO(4, "finalizado");
