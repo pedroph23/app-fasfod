@@ -5,4 +5,5 @@ import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 
 public interface SpringDataPedidoRepository extends JpaRepository<PedidoEntidade, Long> {
      PedidoEntidade findPedidoEntidadeById(Long id);
+   
 }

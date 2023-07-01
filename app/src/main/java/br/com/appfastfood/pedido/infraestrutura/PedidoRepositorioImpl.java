@@ -1,4 +1,5 @@
 package br.com.appfastfood.pedido.infraestrutura;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.AtualizarPedidoRequisicao;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
@@ -7,11 +8,10 @@ import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
 import br.com.appfastfood.produto.infraestrutura.ProdutoRepositorioImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
-
+// import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-@Import(ProdutoServicoImpl.class)
+
 public class PedidoRepositorioImpl implements PedidoRepositorio {
 
     @Autowired
@@ -34,14 +34,37 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
 
     @Override
     public void criar(PedidoEntidade pedido) {
-        PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(10), "RECEBIDO");
+        PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(10), "RECEBIDO", "01:00");
         springDataPedidoRepository.save(pedidoDb);
     }
 
     @Override
-    public Pedido atualizar(Pedido pedidoRequisicao) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+    public Boolean atualizar(Long id) {
+
+    Optional<PedidoEntidade> pedidoBusca =  this.springDataPedidoRepository.findById(id);
+        if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.RECEBIDO){
+          
+             pedidoBusca.get().setStatus("EM_PREPARACAO");
+        }
+        
+        if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.EM_PREPARACAO){
+          
+              pedidoBusca.get().setStatus("PRONTO");
+        }
+          if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.PRONTO){
+         
+               pedidoBusca.get().setStatus("FINALIZADO");
+        }
+
+        if (StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.FINALIZADO){
+            return false;
+        }
+        
+         this.springDataPedidoRepository.save(pedidoBusca.get());
+
+        return true;
+
+  
     }
 
     @Override
@@ -51,7 +74,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         List<Pedido> pedidoRetorno = new ArrayList<>();
         
         for (PedidoEntidade pedidoBusca : pedido){
-            Pedido pedidoObj = new Pedido(null, null, null, null);
+            Pedido pedidoObj = new Pedido(null, null, null, null,null);
             Map<Produto, Long> prods = new HashMap<>();
             pedidoObj.setCliente(null);
             //pedidoObj.setValorTotal(pedidoObj.getValorTotal().add(pedidoBusca.getValorTotal()));
@@ -86,7 +109,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
             listaProdutos.put(produtoBuscaId, Long.parseLong(quantidades[i]));
         }
 
-        Pedido pedidoRetorno = new Pedido(listaProdutos, null, pedidoEntidadeBusca.get().getValorTotal(), StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()));
+        Pedido pedidoRetorno = new Pedido(listaProdutos, null, pedidoEntidadeBusca.get().getValorTotal(), StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()),pedidoEntidadeBusca.get().getTempoEspera());
         return pedidoRetorno;
     }   
    

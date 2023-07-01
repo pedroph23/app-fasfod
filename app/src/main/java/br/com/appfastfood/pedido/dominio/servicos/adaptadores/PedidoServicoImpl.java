@@ -30,17 +30,9 @@ public class PedidoServicoImpl implements PedidoServico{
         this.pedidoRepositorio.criar(pedido);
     }
     @Override
-    public Pedido atualizar(AtualizarPedidoRequisicao pedido) {
-      Pedido pedidoBusca = this.pedidoRepositorio.buscarPedidoPorId(pedido.getId());
-      
-      Pedido pedidoAtualizado = new Pedido(null, null, null, null);
-       if (pedido.getStatus() == StatusPedidoEnum.EM_PREPARACAO) {
-             pedidoAtualizado.setStatus(StatusPedidoEnum.PRONTO);
-       } if (pedido.getStatus() == StatusPedidoEnum.PRONTO) {
-             pedidoAtualizado.setStatus(StatusPedidoEnum.FINALIZADO);
-       }
-                
-        return this.pedidoRepositorio.atualizar(pedidoAtualizado);
+    public Boolean atualizar(Long id) {
+  
+     return this.pedidoRepositorio.atualizar(id);
     }
 
     @Override

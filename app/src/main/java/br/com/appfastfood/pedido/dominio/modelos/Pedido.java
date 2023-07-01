@@ -10,12 +10,14 @@ public class Pedido {
     private Cliente cliente;
     private BigDecimal valorTotal;
     private StatusPedidoEnum status;
+    private String tempoEspera;
 
-    public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status){
+    public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status, String tempoEspera){
         this.produto = produto;
          this.cliente = cliente;
         this.valorTotal = valorTotal;
         this.status = status;
+        this.tempoEspera = tempoEspera;
     }
 
     public Map<Produto, Long> getProduto() {
@@ -50,6 +52,11 @@ public class Pedido {
         this.status = status;
     }
 
+    public String getTempoEspera() {
+        return tempoEspera;
+    }
+
+  
 
    
 

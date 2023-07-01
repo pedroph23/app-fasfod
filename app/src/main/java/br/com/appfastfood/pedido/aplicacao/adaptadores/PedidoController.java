@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +51,7 @@ public class PedidoController {
     public ResponseEntity<Object> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
        try {
             
-            PedidoEntidade pedido = new PedidoEntidade(null, pedidoRequisicao.getIdProduto().toString(), pedidoRequisicao.getQuantidadeProduto().toString(), pedidoRequisicao.getIdCliente().toString(), BigDecimal.valueOf(10), "recebido");
+            PedidoEntidade pedido = new PedidoEntidade(null, pedidoRequisicao.getIdProduto().toString(), pedidoRequisicao.getQuantidadeProduto().toString(), pedidoRequisicao.getIdCliente().toString(), BigDecimal.valueOf(10), "recebido","01:00");
             
             this.pedidoServico.criar(pedido);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
@@ -62,7 +63,7 @@ public class PedidoController {
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/atualizar-status")
      @Operation(summary = "Atualizar status do pedido", description = "Funcionalidade de atualizar o status do pedido passando o parametro 'id' do pedido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
@@ -70,9 +71,10 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity<?> atualizarStatus(AtualizarPedidoRequisicao pedido){
+    public ResponseEntity<?> atualizarStatus(@RequestParam(value = "id") Long id){
         try {
-           Pedido pedidoResultado = this.pedidoServico.atualizar(pedido);
+           Boolean pedidoResultado = this.pedidoServico.atualizar(id);
+
            return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
             
         } catch (IllegalArgumentException e) {
