@@ -39,7 +39,7 @@ public class ProdutoController {
     @PostMapping
     @Operation(summary = "Cadastrar Produto", description = "Funcionalidade de criar um produto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Produto cadastrado com suceso",
+            @ApiResponse(responseCode = "201", description = "Produto cadastrado com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProdutoResposta.class)) }),
             @ApiResponse(responseCode = "400", description = "",
@@ -115,7 +115,7 @@ public class ProdutoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar Produto", description = "Funcionalidade de atualização de um produto passando o parametro 'id' e o corpo da requisição")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Produto atualizado com suceso",
+            @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProdutoResposta.class))}),
             @ApiResponse(responseCode = "400", description = "",
@@ -179,7 +179,7 @@ public class ProdutoController {
     @GetMapping()
     @Operation(summary = "Buscar Produtos por Categoria", description = "Funcionalidade que retorna uma lista de produtos por um filtro de Categoria")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Produtos filtrados com suceso",
+            @ApiResponse(responseCode = "200", description = "Produtos filtrados com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = List.class, subTypes = { ProdutoResposta.class }))}),
             @ApiResponse(responseCode = "400", description = "",
