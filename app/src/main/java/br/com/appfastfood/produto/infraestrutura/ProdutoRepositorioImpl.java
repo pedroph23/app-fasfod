@@ -90,6 +90,11 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
     @Override
     public Produto buscarProdutoPorId(Long id){
         ProdutoEntidade produtoBusca = this.springDataProdutoRepository.findProdutoById(id);
+        
+        if (produtoBusca == null){
+            throw new IDNaoEncontradoException();
+        }
+
         Produto produtoRetorno = new Produto(produtoBusca.getId(), 
                                     new Nome(produtoBusca.getNome()), 
                                     new Preco(produtoBusca.getPreco()), 

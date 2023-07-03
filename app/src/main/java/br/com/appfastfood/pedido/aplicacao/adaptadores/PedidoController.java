@@ -1,10 +1,11 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
 import java.math.BigDecimal;
 import java.util.List;
+
+import org.hibernate.mapping.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
-import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.AtualizarPedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
+import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
+import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,12 +54,12 @@ public class PedidoController {
     public ResponseEntity<Object> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
        try {
             
-            PedidoEntidade pedido = new PedidoEntidade(null, pedidoRequisicao.getIdProduto().toString(), pedidoRequisicao.getQuantidadeProduto().toString(), pedidoRequisicao.getIdCliente().toString(), BigDecimal.valueOf(10), "recebido","01:00");
+            PedidoEntidade pedido = new PedidoEntidade(null, pedidoRequisicao.getIdProduto().toString(), pedidoRequisicao.getQuantidadeProduto().toString(), pedidoRequisicao.getIdCliente().toString(), BigDecimal.valueOf(0), "recebido","01:00");
             
             this.pedidoServico.criar(pedido);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
-        } catch (IllegalArgumentException e) {
+        } catch (IDNaoEncontradoException e) {
               RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
@@ -73,13 +76,14 @@ public class PedidoController {
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity<?> atualizarStatus(@RequestParam(value = "id") Long id){
         try {
-           Boolean pedidoResultado = this.pedidoServico.atualizar(id);
-
-           return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
-            
-        } catch (IllegalArgumentException e) {
-              RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+            Pedido pedidoResultado = this.pedidoServico.atualizar(id);
+            return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
+        } catch (IDPedidoNaoEncontradoException e) {
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }catch(PedidoJaFinalizadoException e){
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
     }
 
@@ -93,12 +97,20 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity buscarPedidoPorID(@RequestParam(value = "id") Long id){
-        Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
+    public ResponseEntity buscarPedidoPorID(@RequestParam(value = "id") Long id) throws JsonProcessingException {
+        try {
+            Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(pedidoRetorno);
+            return ResponseEntity.status(HttpStatus.OK).body(json);
+        } catch (IDPedidoNaoEncontradoException e) {
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }
+        
     }
 
-    @GetMapping("/listar")
+    @GetMapping("/listar-pedidos")
        @Operation(summary = "Buscar todos pedidos", description = "Funcionalidade que retorna todos pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedidos filtrado com sucesso",
@@ -112,6 +124,7 @@ public class PedidoController {
             List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(pedido);
+           
             return ResponseEntity.status(HttpStatus.OK).body(json);
         } catch (CategoriaNaoEncontradaException e) {
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());

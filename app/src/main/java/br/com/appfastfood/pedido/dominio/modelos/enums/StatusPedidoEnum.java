@@ -2,9 +2,9 @@ package br.com.appfastfood.pedido.dominio.modelos.enums;
 
 public enum StatusPedidoEnum {
     RECEBIDO(1, "RECEBIDO"),
-    EM_PREPARACAO(2, "emPreparacao"),
-    PRONTO(3, "pronto"),
-    FINALIZADO(4, "finalizado");
+    EM_PREPARACAO(2, "EM_PREPARACAO"),
+    PRONTO(3, "PRONTO"),
+    FINALIZADO(4, "FINALIZADO");
 
     private final int id;
     private final String nome;

@@ -3,10 +3,13 @@ import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.AtualizarPedid
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
+import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
+import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import br.com.appfastfood.produto.infraestrutura.ProdutoRepositorioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -20,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-
+@Import(ProdutoServicoImpl.class)
 public class PedidoRepositorioImpl implements PedidoRepositorio {
 
     @Autowired
@@ -34,59 +37,61 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
 
     @Override
     public void criar(PedidoEntidade pedido) {
-        PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(10), "RECEBIDO", "01:00");
+        Double valorTotal = 0D;
+        String[] idsProdutos = pedido.getIdProduto().split(",");
+        String[] quantidades = pedido.getQuantidadeProduto().split(",");
+        for (int i = 0; i<idsProdutos.length; i++){
+            Produto produtoBuscaId = produtoServicoImplInject.buscaProdutoPorId(Long.parseLong(idsProdutos[i]));
+            valorTotal += (produtoBuscaId.getPreco().getPreco().doubleValue()) * (Double.parseDouble(quantidades[i]));
+        }
+        PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(valorTotal), "RECEBIDO", "01:00");
         springDataPedidoRepository.save(pedidoDb);
     }
 
     @Override
-    public Boolean atualizar(Long id) {
+    public Pedido atualizar(Long id) {
 
-    Optional<PedidoEntidade> pedidoBusca =  this.springDataPedidoRepository.findById(id);
+        Optional<PedidoEntidade> pedidoBusca =  this.springDataPedidoRepository.findById(id);
+        if (!pedidoBusca.isPresent()){
+            throw new IDPedidoNaoEncontradoException();
+        }
         if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.RECEBIDO){
-          
-             pedidoBusca.get().setStatus("EM_PREPARACAO");
+            pedidoBusca.get().setStatus("EM_PREPARACAO");
+        }else if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.EM_PREPARACAO){
+            pedidoBusca.get().setStatus("PRONTO");
+        }else if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.PRONTO){
+            pedidoBusca.get().setStatus("FINALIZADO");
+        }else if (StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.FINALIZADO){
+           throw new PedidoJaFinalizadoException();
         }
-        
-        if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.EM_PREPARACAO){
-          
-              pedidoBusca.get().setStatus("PRONTO");
-        }
-          if(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.PRONTO){
-         
-               pedidoBusca.get().setStatus("FINALIZADO");
-        }
-
-        if (StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.get().getStatus()) == StatusPedidoEnum.FINALIZADO){
-            return false;
-        }
-        
-         this.springDataPedidoRepository.save(pedidoBusca.get());
-
-        return true;
-
-  
+        this.springDataPedidoRepository.save(pedidoBusca.get());
+        return buscarPedidoPorId(id);
     }
 
     @Override
     public List<Pedido> listarTodosOsPedidos() {
         List<PedidoEntidade> pedido = this.springDataPedidoRepository.findAll();
+        if(pedido.isEmpty()){
+            throw new IDPedidoNaoEncontradoException();
+        }
         List<Produto> produtosBusca = new ArrayList<>();
         List<Pedido> pedidoRetorno = new ArrayList<>();
         
         for (PedidoEntidade pedidoBusca : pedido){
             Pedido pedidoObj = new Pedido(null, null, null, null,null);
             Map<Produto, Long> prods = new HashMap<>();
+            Double valorTotal = 0D;
             pedidoObj.setCliente(null);
-            //pedidoObj.setValorTotal(pedidoObj.getValorTotal().add(pedidoBusca.getValorTotal()));
-            pedidoObj.setValorTotal(BigDecimal.valueOf(10));
             pedidoObj.setStatus(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.getStatus()));
             String[] idsProdutos = pedidoBusca.getIdProduto().split(",");
             String[] quantidades = pedidoBusca.getQuantidadeProduto().split(",");
             for (int i = 0; i<idsProdutos.length; i++){
                 Produto produtoBuscaId = produtoServicoImplInject.buscaProdutoPorId(Long.parseLong(idsProdutos[i]));
+                valorTotal += (produtoBuscaId.getPreco().getPreco().doubleValue()) * (Double.parseDouble(quantidades[i]));
                 produtosBusca.add(produtoBuscaId);
                 prods.put(produtoBuscaId,Long.parseLong(quantidades[i]));
             }
+            pedidoObj.setValorTotal(BigDecimal.valueOf(valorTotal));
             pedidoObj.setProduto(prods);
             pedidoRetorno.add(pedidoObj);
         }
@@ -98,7 +103,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
 
         Optional<PedidoEntidade> pedidoEntidadeBusca = this.springDataPedidoRepository.findById(id);
         if (!pedidoEntidadeBusca.isPresent()){
-            //exceção
+            throw new IDPedidoNaoEncontradoException();
         }
 
         String[] idsProdutos = pedidoEntidadeBusca.get().getIdProduto().split(",");

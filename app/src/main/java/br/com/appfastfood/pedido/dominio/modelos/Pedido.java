@@ -2,7 +2,9 @@ package br.com.appfastfood.pedido.dominio.modelos;
 import java.math.BigDecimal;
 import java.util.Map;
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
+import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 
 public class Pedido { 
@@ -11,6 +13,7 @@ public class Pedido {
     private BigDecimal valorTotal;
     private StatusPedidoEnum status;
     private String tempoEspera;
+    private ProdutoResposta resp;
 
     public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status, String tempoEspera){
         this.produto = produto;
