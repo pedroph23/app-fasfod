@@ -1,5 +1,4 @@
 package br.com.appfastfood.pedido.infraestrutura;
-import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.AtualizarPedidoRequisicao;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
@@ -7,14 +6,10 @@ import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
-import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
-import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
-import br.com.appfastfood.produto.infraestrutura.ProdutoRepositorioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
-// import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +76,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
             Pedido pedidoObj = new Pedido(null, null, null, null,null);
             Map<Produto, Long> prods = new HashMap<>();
             Double valorTotal = 0D;
-            pedidoObj.setCliente(null);
+            pedidoObj.setCliente(pedidoBusca.getClienteId());
             pedidoObj.setStatus(StatusPedidoEnum.buscaEnumPorStatusString(pedidoBusca.getStatus()));
             String[] idsProdutos = pedidoBusca.getIdProduto().split(",");
             String[] quantidades = pedidoBusca.getQuantidadeProduto().split(",");
@@ -92,6 +87,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
                 prods.put(produtoBuscaId,Long.parseLong(quantidades[i]));
             }
             pedidoObj.setValorTotal(BigDecimal.valueOf(valorTotal));
+            pedidoObj.setTempoEspera(pedidoBusca.getTempoEspera());
             pedidoObj.setProduto(prods);
             pedidoRetorno.add(pedidoObj);
         }
@@ -105,16 +101,17 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         if (!pedidoEntidadeBusca.isPresent()){
             throw new IDPedidoNaoEncontradoException();
         }
-
+        Double valorTotal = 0D;
         String[] idsProdutos = pedidoEntidadeBusca.get().getIdProduto().split(",");
         String[] quantidades = pedidoEntidadeBusca.get().getQuantidadeProduto().split(",");
         Map<Produto, Long> listaProdutos = new HashMap<>();
         for (int i = 0; i<idsProdutos.length; i++){
             Produto produtoBuscaId = produtoServicoImplInject.buscaProdutoPorId(Long.parseLong(idsProdutos[i]));
             listaProdutos.put(produtoBuscaId, Long.parseLong(quantidades[i]));
+            valorTotal += (produtoBuscaId.getPreco().getPreco().doubleValue()) * (Double.parseDouble(quantidades[i]));
         }
-
-        Pedido pedidoRetorno = new Pedido(listaProdutos, null, pedidoEntidadeBusca.get().getValorTotal(), StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()),pedidoEntidadeBusca.get().getTempoEspera());
+       
+        Pedido pedidoRetorno = new Pedido(listaProdutos, pedidoEntidadeBusca.get().getClienteId(),BigDecimal.valueOf(valorTotal), StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()),pedidoEntidadeBusca.get().getTempoEspera());
         return pedidoRetorno;
     }   
    

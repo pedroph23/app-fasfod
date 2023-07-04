@@ -30,4 +30,13 @@ public enum StatusPedidoEnum {
         }
         throw new IllegalArgumentException("Status Iválido: " + nome);
     }
+
+    public static String retornaNomeEnum(StatusPedidoEnum status){
+        for (StatusPedidoEnum statusEnum : values()) {
+            if (statusEnum == status) {
+                return statusEnum.getNome();
+            }
+        }
+        throw new IllegalArgumentException("Enum de status de pedido Iválido");
+    }
 }

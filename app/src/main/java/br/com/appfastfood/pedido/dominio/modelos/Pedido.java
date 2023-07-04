@@ -1,21 +1,17 @@
 package br.com.appfastfood.pedido.dominio.modelos;
 import java.math.BigDecimal;
 import java.util.Map;
-import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 
 public class Pedido { 
     private Map<Produto, Long> produto;
-    private Cliente cliente;
+    private String cliente;
     private BigDecimal valorTotal;
     private StatusPedidoEnum status;
     private String tempoEspera;
-    private ProdutoResposta resp;
 
-    public Pedido(Map<Produto,Long> produto, Cliente cliente, BigDecimal valorTotal, StatusPedidoEnum status, String tempoEspera){
+    public Pedido(Map<Produto,Long> produto, String cliente, BigDecimal valorTotal, StatusPedidoEnum status, String tempoEspera){
         this.produto = produto;
          this.cliente = cliente;
         this.valorTotal = valorTotal;
@@ -31,11 +27,11 @@ public class Pedido {
         this.produto = produto;
     }
 
-    public Cliente getCliente() {
+    public String getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(String cliente) {
         this.cliente = cliente;
     }
 
@@ -59,8 +55,8 @@ public class Pedido {
         return tempoEspera;
     }
 
-  
-
-   
+    public void setTempoEspera(String tempoEspera) {
+        this.tempoEspera = tempoEspera;
+    }
 
 } 
