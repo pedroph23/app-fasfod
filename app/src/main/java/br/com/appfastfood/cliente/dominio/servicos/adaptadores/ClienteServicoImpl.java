@@ -2,9 +2,6 @@
 package br.com.appfastfood.cliente.dominio.servicos.adaptadores;
  
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.dominio.modelos.Cpf;
-import br.com.appfastfood.cliente.dominio.modelos.Email;
-import br.com.appfastfood.cliente.dominio.modelos.Nome;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
