@@ -4,18 +4,22 @@ package br.com.appfastfood.cliente.aplicacao.adaptadores;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoCliente;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.dominio.modelos.Cpf;
-import br.com.appfastfood.cliente.dominio.modelos.Email;
-import br.com.appfastfood.cliente.dominio.modelos.Nome;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
 import br.com.appfastfood.configuracoes.logs.Log;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@Tag(name = "Clientes", description = "Cadastro do cliente")
 public class ClienteController {
     private ClienteServico clienteServico;
     private Log logger;
@@ -24,6 +28,15 @@ public class ClienteController {
         this.logger = logger;
     }
 
+    @Operation(summary = "Cadastrar Cliente",
+            description = "Funcionalidade que realiza o cadastro do cliente a partir de seus dados pessoais")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RequisicaoCliente.class)) }),
+            @ApiResponse(responseCode = "400", description = "",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RequisicaoExcecao.class)))})
     @PostMapping("/clientes")
     public ResponseEntity<?> cadastrar(@RequestBody RequisicaoCliente requisicaoCliente) {
         try {
@@ -36,6 +49,15 @@ public class ClienteController {
         }
     }
 
+    @Operation(summary = "Consultar Cliente",
+            description = "Funcionalidade que retorna os dados do cliente a partir de seu CPF")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dados do cliente",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RequisicaoCliente.class)) }),
+            @ApiResponse(responseCode = "404", description = "",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = RequisicaoExcecao.class)))})
     @GetMapping("/clientes/{id}")
     public ResponseEntity<?> buscarPorCpf(@PathVariable("id") String cpf) {
         try {

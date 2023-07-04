@@ -1,4 +1,7 @@
-package br.com.appfastfood.cliente.dominio.modelos;
+package br.com.appfastfood.cliente.dominio.VO;
+
+import br.com.appfastfood.cliente.dominio.modelos.Validacoes;
+
 public class Cpf {
     private String cpf;
 
