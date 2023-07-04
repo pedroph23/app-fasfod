@@ -1,6 +1,8 @@
 package br.com.appfastfood.cliente.dominio.modelos;
 
-import java.util.UUID;
+import br.com.appfastfood.cliente.dominio.VO.Cpf;
+import br.com.appfastfood.cliente.dominio.VO.Email;
+import br.com.appfastfood.cliente.dominio.VO.Nome;
 
 public class Cliente {
     private Nome nome;
