@@ -1,5 +1,6 @@
 package br.com.appfastfood.cliente.dominio.modelos;
 
+import br.com.appfastfood.cliente.dominio.VO.Email;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
