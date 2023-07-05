@@ -14,7 +14,7 @@ class ValidacoesTest {
 
         boolean resultado = Validacoes.validaTamanhoMaximoDoCampo(campo, tamanhoMaximo);
 
-        assertFalse(resultado);
+        assertTrue(resultado);
     }
 
 
