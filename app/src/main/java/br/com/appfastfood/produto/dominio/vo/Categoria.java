@@ -1,8 +1,7 @@
-package br.com.appfastfood.produto.dominio.modelos;
+package br.com.appfastfood.produto.dominio.vo;
 
-import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
+import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
-import br.com.appfastfood.produto.exceptions.CategoriaObrigatorioException;
 
 public class Categoria {
     private CategoriaEnum categoria;
@@ -13,7 +12,6 @@ public class Categoria {
         return categoria;
     }
     private CategoriaEnum isValid(String categoria) {
-        this.isEmpty(categoria);
         return this.existCategoria(categoria);
     }
 
@@ -22,12 +20,6 @@ public class Categoria {
             return CategoriaEnum.valueOf(categoria);
         } catch (IllegalArgumentException e) {
             throw new CategoriaNaoEncontradaException();
-        }
-    }
-
-    private void isEmpty(String categoria) {
-        if(categoria == null || categoria.isEmpty()) {
-            throw new CategoriaObrigatorioException();
         }
     }
 
