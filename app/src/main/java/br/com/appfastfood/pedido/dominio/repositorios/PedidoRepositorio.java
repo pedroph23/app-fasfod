@@ -8,4 +8,5 @@ public interface PedidoRepositorio {
     Pedido atualizar(Long id) ;
     List<Pedido> listarTodosOsPedidos();
     Pedido buscarPedidoPorId(Long id);
+    Boolean realizarPagamento();
 } 

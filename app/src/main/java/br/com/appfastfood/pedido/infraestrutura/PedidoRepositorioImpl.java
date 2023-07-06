@@ -3,6 +3,7 @@ import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
@@ -40,7 +41,12 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
             valorTotal += (produtoBuscaId.getPreco().getPreco().doubleValue()) * (Double.parseDouble(quantidades[i]));
         }
         PedidoEntidade pedidoDb = new PedidoEntidade(null, pedido.getIdProduto().toString(), pedido.getQuantidadeProduto(), pedido.getClienteId().toString(), BigDecimal.valueOf(valorTotal), "RECEBIDO", "01:00");
-        springDataPedidoRepository.save(pedidoDb);
+
+        if (realizarPagamento()){
+            springDataPedidoRepository.save(pedidoDb);
+        }else{
+            throw new PagamentoNaoRealizado();
+        }
     }
 
     @Override
@@ -113,6 +119,11 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
        
         Pedido pedidoRetorno = new Pedido(listaProdutos, pedidoEntidadeBusca.get().getClienteId(),BigDecimal.valueOf(valorTotal), StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()),pedidoEntidadeBusca.get().getTempoEspera());
         return pedidoRetorno;
-    }   
+    }
+
+    @Override
+    public Boolean realizarPagamento(){
+        return true;
+    }
    
 }

@@ -22,6 +22,7 @@ import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
@@ -64,6 +65,9 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
         } catch (IDNaoEncontradoException e) {
+              RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }catch (PagamentoNaoRealizado e) {
               RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
         }
