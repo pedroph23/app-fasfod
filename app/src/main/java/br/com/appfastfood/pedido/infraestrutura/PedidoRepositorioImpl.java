@@ -8,8 +8,7 @@ import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
+import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,16 +18,16 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-@Import(ProdutoServicoImpl.class)
 public class PedidoRepositorioImpl implements PedidoRepositorio {
 
-    @Autowired
-    private ProdutoServicoImpl produtoServicoImplInject;
+
+    private final ProdutoServico produtoServicoImplInject;
 
     private final SpringDataPedidoRepository springDataPedidoRepository;
 
-    public PedidoRepositorioImpl(SpringDataPedidoRepository springDataPedidoRepository) {
+    public PedidoRepositorioImpl(SpringDataPedidoRepository springDataPedidoRepository, ProdutoServico produtoServicoImplInject) {
         this.springDataPedidoRepository = springDataPedidoRepository;
+        this.produtoServicoImplInject = produtoServicoImplInject;
     }
 
     @Override
