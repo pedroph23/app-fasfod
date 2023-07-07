@@ -1,7 +1,6 @@
 package br.com.appfastfood.pedido.dominio.repositorios;
 
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
-import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 
 import java.util.List;
 

@@ -1,10 +1,7 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
 
-import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
-import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 

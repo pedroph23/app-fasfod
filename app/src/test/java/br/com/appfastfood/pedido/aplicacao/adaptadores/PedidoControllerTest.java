@@ -1,77 +1,223 @@
- import br.com.appfastfood.pedido.aplicacao.adaptadores.PedidoController;
- import org.junit.jupiter.api.BeforeEach;
- import org.junit.jupiter.api.Test;
- import org.mockito.Mock;
- import org.mockito.MockitoAnnotations;
- import org.springframework.http.HttpStatus;
- import org.springframework.http.ResponseEntity;
+package br.com.appfastfood.pedido.aplicacao.adaptadores;
 
- import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
- import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
- import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
- import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
- import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
+import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
+import br.com.appfastfood.pedido.dominio.modelos.Pedido;
+import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
+import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
+import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
+import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
+import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
+import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
+import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
- import static org.junit.jupiter.api.Assertions.*;
- import static org.mockito.Answers.valueOf;
- import static org.mockito.Mockito.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
- import java.math.BigDecimal;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
 
  public class PedidoControllerTest {
+  @Mock
+  private PedidoServico pedidoServico;
 
-     private PedidoController pedidoController;
+  @InjectMocks
+  private PedidoController pedidoController;
 
-     @Mock
-     private PedidoServico pedidoServicoMock;
+  @BeforeEach
+  void setUp() {
+   MockitoAnnotations.openMocks(this);
+  }
 
-     @BeforeEach
-     public void setUp() {
-         MockitoAnnotations.openMocks(this);
-         pedidoController = new PedidoController(pedidoServicoMock);
-     }
+  @Test
+  void criar_DeveRetornarPedidoCriado() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+   // Dados de entrada
+   PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
+           .produtos(Arrays.asList(ProdutosReq.builder()
+                   .idProduto("1")
+                   .quantidadeProduto("2")
+                   .build()))
+           .idCliente("123")
+           .valorTotal(10.0)
+           .status("RECEBIDO")
+           .tempoEspera("1:00")
+           .idPedido(null)
+           .build();
 
-     @Test
-     public void criar_DeveRetornarStatus201_QuandoPedidoCriadoComSucesso() {
-         // Defina os objetos de teste e comportamento do mock
-         PedidoRequisicao pedidoRequisicao = new PedidoRequisicao("1", "12345678999", BigDecimal.valueOf(10), "1");
+   // Mock do serviço
+   when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
+           .thenReturn("123456789");
 
-         // Configurar o comportamento do mock
-         //when(pedidoServicoMock.criar(any(PedidoEntidade.class))).thenReturn(new PedidoEntidade(null, null, null, null, null, null, null));
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
 
-         // Executar o método a ser testado
-         ResponseEntity<Object> response = pedidoController.criar(pedidoRequisicao);
+   // Verificações
+   assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+   PedidoRequisicao responseBody = (PedidoRequisicao) responseEntity.getBody();
+   assertEquals("123456789", responseBody.getIdPedido());
+  }
 
-         // Verificar os resultados
-         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-         verify(pedidoServicoMock, times(1)).criar(any(PedidoEntidade.class));
-     }
+  @Test
+  void criar_DeveRetornarBadRequestQuandoIDNaoEncontradoException() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+   // Dados de entrada
+   PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
+           .produtos(Arrays.asList(ProdutosReq.builder()
+                   .idProduto("1")
+                   .quantidadeProduto("2")
+                   .build()))
+           .idCliente("123")
+           .valorTotal(10.0)
+           .status("RECEBIDO")
+           .tempoEspera("1:00")
+           .idPedido(null)
+           .build();
 
-     @Test
-     public void criar_DeveRetornarStatus400_QuandoProdutoIDNaoEncontradoExceptionLancada() {
-         // Definir objetos de teste e comportamento do mock
-         PedidoRequisicao pedidoRequisicao = new PedidoRequisicao("1", "12345678999", BigDecimal.valueOf(10), "1");
+   // Mock do serviço lançando exceção
+   when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
+           .thenThrow(new IDNaoEncontradoException());
 
-         doAnswer(invocation -> {
-             throw new IDNaoEncontradoException();
-         }).when(pedidoServicoMock).criar(any(PedidoEntidade.class));
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
 
-         // Executar o método a ser testado
-         ResponseEntity<Object> response = pedidoController.criar(pedidoRequisicao);
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
 
-         // Verificar os resultados
-         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-         assertEquals(RequisicaoExcecao.class, response.getBody().getClass());
-         //assertEquals("ID não encontrado", ((RequisicaoExcecao) response.getBody()).getMessage());
-     }
+  }
 
-     // Escreva testes para os demais métodos da classe PedidoController
+  @Test
+  void criar_DeveRetornarBadRequestQuandoPagamentoNaoRealizado() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+   // Dados de entrada
+   PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
+           .produtos(Arrays.asList(ProdutosReq.builder()
+                   .idProduto("1")
+                   .quantidadeProduto("2")
+                   .build()))
+           .idCliente("123")
+           .valorTotal(10.0)
+           .status("RECEBIDO")
+           .tempoEspera("1:00")
+           .idPedido(null)
+           .build();
 
-     // Exemplo:
-     @Test
-     public void atualizarStatus_DeveRetornarStatus200_QuandoStatusAtualizadoComSucesso() {
-         // Implementar o teste para o método atualizarStatus
-     }
+   // Mock do serviço lançando exceção
+   when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
+           .thenThrow(new PagamentoNaoRealizado());
 
-     // ...
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
+
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
+  }
+
+
+
+  @Test
+  void atualizarStatus_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws IDPedidoNaoEncontradoException, PedidoJaFinalizadoException {
+   // Dados de entrada
+   Long idPedido = 123L;
+
+   // Mock do serviço lançando exceção
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
+
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
+
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
+  }
+
+  @Test
+  void atualizarStatus_DeveRetornarBadRequestQuandoPedidoJaFinalizadoException() throws IDPedidoNaoEncontradoException, PedidoJaFinalizadoException {
+   // Dados de entrada
+   Long idPedido = 123L;
+
+   // Mock do serviço lançando exceção
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new PedidoJaFinalizadoException());
+
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
+
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
+  }
+
+
+
+  @Test
+  void buscarPedidoPorID_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws IDPedidoNaoEncontradoException, JsonProcessingException {
+   // Dados de entrada
+   Long idPedido = 123L;
+
+   // Mock do serviço lançando exceção
+   when(pedidoServico.buscarPedidoPorId(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
+
+   // Execução do método
+   ResponseEntity<?> responseEntity = pedidoController.buscarPedidoPorID(idPedido);
+
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
+  }
+
+
+  @Test
+  void listarPedidos_DeveRetornarBadRequestQuandoCategoriaNaoEncontradaException() throws CategoriaNaoEncontradaException, JsonProcessingException{
+   // Mock do serviço lançando exceção
+   when(pedidoServico.listarTodosPedidos()).thenThrow(new CategoriaNaoEncontradaException());
+
+   // Execução do método
+   ResponseEntity<Object> responseEntity = pedidoController.listarPedidos();
+
+   // Verificações
+   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
+  }
+
+  private Pedido criarPedido() {
+   Pedido pedido = new Pedido(Arrays.asList(
+           new ProdutoVO("1", "5.0"),
+           new ProdutoVO("2", "3.0")
+   ), "123", 10.0, StatusPedidoEnum.RECEBIDO, "1:00");
+   return pedido;
+  }
+
+  private void assertPedidoRequisicaoEqualsPedido(Pedido pedido, PedidoRequisicao pedidoRequisicao) {
+   assertEquals(pedido.getId().toString(), pedidoRequisicao.getIdPedido());
+   assertEquals(pedido.getCliente(), pedidoRequisicao.getIdCliente());
+   assertEquals(pedido.getValorTotal(), pedidoRequisicao.getValorTotal());
+   assertEquals(pedido.getStatus().getNome(), pedidoRequisicao.getStatus());
+   assertEquals(pedido.getTempoEspera(), pedidoRequisicao.getTempoEspera());
+
+   List<ProdutosReq> produtosReq = pedido.getProdutos().stream()
+           .map(produto -> ProdutosReq.builder()
+                   .idProduto(produto.getIdProduto())
+                   .quantidadeProduto(produto.getQuantidadeProduto())
+                   .build())
+           .collect(Collectors.toList());
+
+   assertEquals(produtosReq, pedidoRequisicao.getProdutos());
+  }
+
  }

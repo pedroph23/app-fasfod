@@ -1,5 +1,6 @@
 package br.com.appfastfood.produto.dominio.modelo;
-import br.com.appfastfood.produto.dominio.modelos.*;
+
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.vo.Descricao;
 import br.com.appfastfood.produto.dominio.vo.Nome;
 import br.com.appfastfood.produto.dominio.vo.Preco;

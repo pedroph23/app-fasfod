@@ -2,8 +2,6 @@ package br.com.appfastfood.produto.aplicacao.adaptadores.requisicao;
 
 import lombok.Builder;
 import lombok.Getter;
-
-import java.math.BigDecimal;
 @Builder()
 @Getter
 public class ProdutoRequisicao {

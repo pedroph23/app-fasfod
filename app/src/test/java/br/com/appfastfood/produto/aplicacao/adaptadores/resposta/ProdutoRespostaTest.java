@@ -5,14 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.math.BigDecimal;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProdutoRespostaTest {
 
     @Mock
-    private BigDecimal precoMock;
+    private Double precoMock;
 
     @InjectMocks
     private ProdutoRequisicao produtoRequisicao;

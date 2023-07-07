@@ -6,15 +6,13 @@ import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
-import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.pedido.infraestrutura.entidades.ProdEnt;
-import br.com.appfastfood.produto.dominio.modelos.Produto;
-import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

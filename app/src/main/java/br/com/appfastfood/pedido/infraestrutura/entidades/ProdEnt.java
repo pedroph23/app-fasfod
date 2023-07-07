@@ -1,7 +1,6 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
 @Embeddable
 public class ProdEnt {
 

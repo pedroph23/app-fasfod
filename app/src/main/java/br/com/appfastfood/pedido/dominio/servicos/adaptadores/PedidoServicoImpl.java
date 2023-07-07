@@ -9,13 +9,11 @@ import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
-import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 public class PedidoServicoImpl implements PedidoServico{

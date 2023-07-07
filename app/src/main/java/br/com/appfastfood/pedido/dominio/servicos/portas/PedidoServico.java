@@ -2,7 +2,6 @@ package br.com.appfastfood.pedido.dominio.servicos.portas;
 
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
-import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 
 import java.util.List;
 

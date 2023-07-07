@@ -10,13 +10,9 @@ import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
-import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
-import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
-import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,11 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
