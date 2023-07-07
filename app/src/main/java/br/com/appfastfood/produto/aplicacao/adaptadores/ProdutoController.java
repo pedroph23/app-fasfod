@@ -4,10 +4,10 @@ import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExc
 import br.com.appfastfood.configuracoes.logs.Log;
 import br.com.appfastfood.produto.aplicacao.adaptadores.requisicao.ProdutoRequisicao;
 import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
-import br.com.appfastfood.produto.dominio.modelos.*;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import br.com.appfastfood.produto.dominio.vo.*;
-import br.com.appfastfood.produto.exceptions.*;
+import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

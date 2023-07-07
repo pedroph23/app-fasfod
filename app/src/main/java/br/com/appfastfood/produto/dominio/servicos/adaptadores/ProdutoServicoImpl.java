@@ -1,6 +1,5 @@
 package br.com.appfastfood.produto.dominio.servicos.adaptadores;
 
-import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;

@@ -12,7 +12,6 @@ import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +30,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    PedidoServico pedidoServico(PedidoRepositorio pedidoRepositorio){
-        return new PedidoServicoImpl(pedidoRepositorio);
+    PedidoServico pedidoServico(PedidoRepositorio pedidoRepositorio, ProdutoServico produtoServico ){
+        return new PedidoServicoImpl(pedidoRepositorio, produtoServico);
     }
     @Bean
     Log log(){

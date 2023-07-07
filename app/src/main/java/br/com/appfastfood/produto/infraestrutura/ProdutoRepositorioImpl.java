@@ -1,6 +1,6 @@
 package br.com.appfastfood.produto.infraestrutura;
 
-import br.com.appfastfood.produto.dominio.modelos.*;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.vo.*;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;

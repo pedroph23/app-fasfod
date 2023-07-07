@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Getter
 public class ProdutoResposta {
     private String nome;
-    private BigDecimal preco;
+    private Double preco;
     private String uriImagem;
     private String categoria;
     private String descricao;

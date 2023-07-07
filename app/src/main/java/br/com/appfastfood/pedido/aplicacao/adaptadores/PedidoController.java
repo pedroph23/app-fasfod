@@ -1,14 +1,5 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
@@ -23,12 +14,23 @@ import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -41,7 +43,7 @@ public class PedidoController {
         this.pedidoServico = pedidoServico;
     }
 
-   @PostMapping
+    @PostMapping
     @Operation(summary = "Cadastrar Pedido", description = "Funcionalidade de criar um pedido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "pedido cadastrado com sucesso",
@@ -52,11 +54,9 @@ public class PedidoController {
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity<Object> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
        try {
-            
-            PedidoEntidade pedido = new PedidoEntidade(null, pedidoRequisicao.getIdProduto().toString(), pedidoRequisicao.getQuantidadeProduto().toString(), pedidoRequisicao.getIdCliente().toString(), BigDecimal.valueOf(0), "recebido","01:00");
-            
-            this.pedidoServico.criar(pedido);
-            return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+
+            this.pedidoServico.criar(pedidoRequisicao,"RECEBIDO", "1:00");
+            return ResponseEntity.status(HttpStatus.CREATED).body("ok");
 
         } catch (IDNaoEncontradoException e) {
               RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
@@ -100,40 +100,40 @@ public class PedidoController {
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity buscarPedidoPorID(@PathVariable(value = "id") Long id) throws JsonProcessingException {
-        try {
-            Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
-            Map<String, Long> produtosRet = new HashMap<>();
+//        try {
+//            Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+//            Map<String, Long> produtosRet = new HashMap<>();
+//
+//            for(Map.Entry<Produto, Long> prods : pedidoRetorno.getProduto().entrySet()){
+//                ProdutoResposta produtoResposta = ProdutoResposta
+//                    .builder()
+//                    .nome(prods.getKey().getNome().getNome())
+//                    .preco(prods.getKey().getPreco().getPreco())
+//                    .descricao(prods.getKey().getDescricao().getDescricao())
+//                    .categoria(prods.getKey().getCategoria().name())
+//                    .uriImagem(prods.getKey().getUriImagem().getUriImagem())
+//                    .build();
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                String jsonProd = objectMapper.writeValueAsString(produtoResposta);
+//                produtosRet.put(jsonProd, prods.getValue());
+//            }
+//
+//            PedidoResposta pedidoResposta = PedidoResposta
+//            .builder()
+//            .produto(produtosRet)
+//            .idCliente(pedidoRetorno.getCliente())
+//            .tempoEspera(pedidoRetorno.getTempoEspera())
+//            .valorTotal(pedidoRetorno.getValorTotal())
+//            .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus())).build();
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String json = objectMapper.writeValueAsString(pedidoResposta);
+            return ResponseEntity.status(HttpStatus.OK).body("ok");
+//        } catch (IDPedidoNaoEncontradoException e) {
+//            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+//        }
 
-            for(Map.Entry<Produto, Long> prods : pedidoRetorno.getProduto().entrySet()){
-                ProdutoResposta produtoResposta = ProdutoResposta
-                    .builder()
-                    .nome(prods.getKey().getNome().getNome())
-                    .preco(prods.getKey().getPreco().getPreco())
-                    .descricao(prods.getKey().getDescricao().getDescricao())
-                    .categoria(prods.getKey().getCategoria().name())
-                    .uriImagem(prods.getKey().getUriImagem().getUriImagem())
-                    .build();
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonProd = objectMapper.writeValueAsString(produtoResposta);
-                produtosRet.put(jsonProd, prods.getValue());
-            }
-
-            PedidoResposta pedidoResposta = PedidoResposta
-            .builder()
-            .produto(produtosRet)
-            .idCliente(pedidoRetorno.getCliente())
-            .tempoEspera(pedidoRetorno.getTempoEspera())
-            .valorTotal(pedidoRetorno.getValorTotal())
-            .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus())).build();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(pedidoResposta);
-            return ResponseEntity.status(HttpStatus.OK).body(json);
-        } catch (IDPedidoNaoEncontradoException e) {
-            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-        }
-        
     }
 
     @GetMapping
@@ -146,43 +146,43 @@ public class PedidoController {
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})    
     public ResponseEntity<Object> listarPedidos() throws JsonProcessingException{
-        try {
-            List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
-            List<PedidoResposta> pedidoRespostas = new ArrayList<>();
-            for(Pedido pedidos : pedido){
-                Map<String, Long> produtosRet = new HashMap<>();
-
-                for(Map.Entry<Produto, Long> prods : pedidos.getProduto().entrySet()){
-                     ProdutoResposta produtoResposta = ProdutoResposta
-                        .builder()
-                        .nome(prods.getKey().getNome().getNome())
-                        .preco(prods.getKey().getPreco().getPreco())
-                        .descricao(prods.getKey().getDescricao().getDescricao())
-                        .categoria(prods.getKey().getCategoria().name())
-                        .uriImagem(prods.getKey().getUriImagem().getUriImagem())
-                        .build();
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    String jsonProd = objectMapper.writeValueAsString(produtoResposta);
-                    produtosRet.put(jsonProd, prods.getValue());
-                }
-
-                PedidoResposta pedidoResposta = PedidoResposta
-                    .builder()
-                    .produto(produtosRet)
-                    .idCliente(pedidos.getCliente())
-                    .tempoEspera(pedidos.getTempoEspera())
-                    .valorTotal(pedidos.getValorTotal())
-                    .status(StatusPedidoEnum.retornaNomeEnum(pedidos.getStatus())).build();
-
-                pedidoRespostas.add(pedidoResposta);
-            }
-            ObjectMapper objectMapper = new ObjectMapper();
-            String json = objectMapper.writeValueAsString(pedidoRespostas);
-           
-            return ResponseEntity.status(HttpStatus.OK).body(json);
-        } catch (CategoriaNaoEncontradaException e) {
-            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-        }
+//        try {
+//            List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
+//            List<PedidoResposta> pedidoRespostas = new ArrayList<>();
+//            for(Pedido pedidos : pedido){
+//                Map<String, Long> produtosRet = new HashMap<>();
+//
+//                for(Map.Entry<Produto, Long> prods : pedidos.getProduto().entrySet()){
+//                     ProdutoResposta produtoResposta = ProdutoResposta
+//                        .builder()
+//                        .nome(prods.getKey().getNome().getNome())
+//                        .preco(prods.getKey().getPreco().getPreco())
+//                        .descricao(prods.getKey().getDescricao().getDescricao())
+//                        .categoria(prods.getKey().getCategoria().name())
+//                        .uriImagem(prods.getKey().getUriImagem().getUriImagem())
+//                        .build();
+//                    ObjectMapper objectMapper = new ObjectMapper();
+//                    String jsonProd = objectMapper.writeValueAsString(produtoResposta);
+//                    produtosRet.put(jsonProd, prods.getValue());
+//                }
+//
+//                PedidoResposta pedidoResposta = PedidoResposta
+//                    .builder()
+//                    .produto(produtosRet)
+//                    .idCliente(pedidos.getCliente())
+//                    .tempoEspera(pedidos.getTempoEspera())
+//                    .valorTotal(pedidos.getValorTotal())
+//                    .status(StatusPedidoEnum.retornaNomeEnum(pedidos.getStatus())).build();
+//
+//                pedidoRespostas.add(pedidoResposta);
+//            }
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            String json = objectMapper.writeValueAsString(pedidoRespostas);
+//
+           return ResponseEntity.status(HttpStatus.OK).body("ok");
+//        } catch (CategoriaNaoEncontradaException e) {
+//            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+//        }
     }
 } 

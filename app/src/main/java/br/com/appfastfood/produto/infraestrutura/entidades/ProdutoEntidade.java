@@ -4,10 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Builder;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity(name = "produto")
 public class ProdutoEntidade {
@@ -17,12 +15,12 @@ public class ProdutoEntidade {
     protected ProdutoEntidade() {}
 
     private String nome;
-    private BigDecimal preco;
+    private Double preco;
     private String uriImagem;
     private String categoria;
     private String descricao;
 
-    public ProdutoEntidade(Long id, String nome, BigDecimal preco, String uriImagem, String categoria, String descricao) {
+    public ProdutoEntidade(Long id, String nome, Double preco, String uriImagem, String categoria, String descricao) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -31,7 +29,7 @@ public class ProdutoEntidade {
         this.descricao = descricao;
     }
 
-    public ProdutoEntidade(String nome, BigDecimal preco, String uriImagem, String categoria, String descricao) {
+    public ProdutoEntidade(String nome, Double preco, String uriImagem, String categoria, String descricao) {
         this.nome = nome;
         this.preco = preco;
         this.uriImagem = uriImagem;
@@ -47,7 +45,7 @@ public class ProdutoEntidade {
         return nome;
     }
 
-    public BigDecimal getPreco() {
+    public Double getPreco() {
         return preco;
     }
 

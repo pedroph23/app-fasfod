@@ -1,10 +1,11 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
-import java.math.BigDecimal;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
+import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 
 @Entity(name = "pedido")
@@ -13,22 +14,18 @@ public class PedidoEntidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     protected PedidoEntidade() {}
-    
-    private String idProduto;
-    private String quantidadeProduto;
+    @ElementCollection
+    List<ProdEnt> produtos;
     private String clienteId;
-    private BigDecimal valorTotal;
+    private Double valorTotal;
     private String status;
     private String tempoEspera;
 
 
-    public PedidoEntidade(Long id, String idProduto, String quantidadeProduto, String clienteId, BigDecimal valorTotal,
-            String status, String tempoEspera) {
-        this.id = id;
-        this.idProduto = idProduto;
-        this.quantidadeProduto = quantidadeProduto;
+    public PedidoEntidade(List<ProdEnt> produtos, String clienteId, Double valorTotal,
+                          String status, String tempoEspera) {
+        this.produtos = produtos;
         this.clienteId = clienteId;
         this.valorTotal = valorTotal;
         this.status = status;
@@ -36,6 +33,10 @@ public class PedidoEntidade {
 
     }
 
+
+    public List<ProdEnt> getProdutos() {
+        return produtos;
+    }
 
     public Long getId() {
         return id;
@@ -47,22 +48,12 @@ public class PedidoEntidade {
     }
 
 
-    public String getIdProduto() {
-        return idProduto;
-    }
-
-
-    public String getQuantidadeProduto() {
-        return quantidadeProduto;
-    }
-
-
     public String getClienteId() {
         return clienteId;
     }
 
 
-    public BigDecimal getValorTotal() {
+    public Double getValorTotal() {
         return valorTotal;
     }
 

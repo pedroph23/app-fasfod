@@ -1,62 +1,43 @@
 package br.com.appfastfood.pedido.dominio.modelos;
-import java.math.BigDecimal;
-import java.util.Map;
+
+import br.com.appfastfood.pedido.dominio.modelos.VO.Produto;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.produto.dominio.modelos.Produto;
+
+import java.util.List;
 
 public class Pedido { 
-    private Map<Produto, Long> produto;
+    private List<Produto> produtos;
     private String cliente;
-    private BigDecimal valorTotal;
+    private Double valorTotal;
     private StatusPedidoEnum status;
     private String tempoEspera;
 
-    public Pedido(Map<Produto,Long> produto, String cliente, BigDecimal valorTotal, StatusPedidoEnum status, String tempoEspera){
-        this.produto = produto;
+    public Pedido(List<Produto> produtos, String cliente, Double valorTotal, StatusPedidoEnum status, String tempoEspera){
+        this.produtos = produtos;
          this.cliente = cliente;
         this.valorTotal = valorTotal;
         this.status = status;
         this.tempoEspera = tempoEspera;
     }
 
-    public Map<Produto, Long> getProduto() {
-        return produto;
-    }
 
-    public void setProduto(Map<Produto, Long> produto) {
-        this.produto = produto;
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 
     public String getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public BigDecimal getValorTotal() {
+    public Double getValorTotal() {
         return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
     }
 
     public StatusPedidoEnum getStatus() {
         return status;
     }
 
-    public void setStatus(StatusPedidoEnum status) {
-        this.status = status;
-    }
-
     public String getTempoEspera() {
         return tempoEspera;
     }
-
-    public void setTempoEspera(String tempoEspera) {
-        this.tempoEspera = tempoEspera;
-    }
-
-} 
+}
