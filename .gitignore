@@ -16,6 +16,7 @@
 
 # IDE
 /app/.idea
+*.idea
 
 # Package Files #
 *.jar

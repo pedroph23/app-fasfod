@@ -1,8 +1,8 @@
 package br.com.appfastfood.produto.dominio.modelos;
 
-import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
-
-import java.math.BigDecimal;
+import br.com.appfastfood.produto.dominio.vo.*;
+import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
+import br.com.appfastfood.produto.exceptions.CamposObrigatorioException;
 
 public class Produto {
     private Long id;
@@ -14,11 +14,17 @@ public class Produto {
 
     public Produto(Long id, Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
         this.id = id;
+        this.validarCampos(nome, preco, uriImagem, categoria, descricao);
         this.nome = nome;
         this.preco = preco;
         this.uriImagem = uriImagem;
         this.categoria = categoria;
         this.descricao = descricao;
+    }
+    private void validarCampos(Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
+        if(Validacoes.validaCamposVaziosOuNulos(nome, preco, uriImagem, categoria, descricao)){
+            throw new CamposObrigatorioException();
+        }
     }
 
     public Long getId() {

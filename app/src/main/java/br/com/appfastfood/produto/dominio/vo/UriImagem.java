@@ -1,4 +1,4 @@
-package br.com.appfastfood.produto.dominio.modelos;
+package br.com.appfastfood.produto.dominio.vo;
 
 import br.com.appfastfood.produto.exceptions.UriImagemFormatoInvalidoException;
 import br.com.appfastfood.produto.exceptions.UriImagemObrigatorioException;
@@ -19,7 +19,6 @@ public class UriImagem {
     }
 
     private void isValid(String nome) {
-        isEmpty(nome);
         isUrl(nome);
     }
 
@@ -30,9 +29,4 @@ public class UriImagem {
         }
     }
 
-    private void isEmpty(String nome) {
-        if(nome == null || nome.isEmpty()) {
-            throw new UriImagemObrigatorioException();
-        }
-    }
 }

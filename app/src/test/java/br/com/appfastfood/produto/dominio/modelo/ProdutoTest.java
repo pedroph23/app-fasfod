@@ -1,10 +1,11 @@
 package br.com.appfastfood.produto.dominio.modelo;
 import br.com.appfastfood.produto.dominio.modelos.*;
-import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
-import br.com.appfastfood.produto.exceptions.*;
+import br.com.appfastfood.produto.dominio.vo.Descricao;
+import br.com.appfastfood.produto.dominio.vo.Nome;
+import br.com.appfastfood.produto.dominio.vo.Preco;
+import br.com.appfastfood.produto.dominio.vo.UriImagem;
+import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;

@@ -1,6 +1,6 @@
-package br.com.appfastfood.produto.dominio.modelo.enums;
+package br.com.appfastfood.produto.dominio.vo.enums;
 
-import br.com.appfastfood.produto.dominio.modelos.enums.CategoriaEnum;
+import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
