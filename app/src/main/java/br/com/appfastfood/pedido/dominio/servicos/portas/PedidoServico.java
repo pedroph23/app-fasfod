@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PedidoServico {
 
-    void criar(PedidoRequisicao pedido, String status, String tempo);
+    String criar(PedidoRequisicao pedido, String status, String tempo);
     Pedido atualizar(Long id);
     Pedido buscarPedidoPorId(Long id);
     List<Pedido> listarTodosPedidos();

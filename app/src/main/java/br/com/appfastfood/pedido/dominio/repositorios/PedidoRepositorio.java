@@ -6,8 +6,8 @@ import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import java.util.List;
 
 public interface PedidoRepositorio {
-    void criar(Pedido pedido);
-    Pedido atualizar(Long id) ;
+    String criar(Pedido pedido);
+    Pedido atualizar(Pedido pedido) ;
     List<Pedido> listarTodosOsPedidos();
     Pedido buscarPedidoPorId(Long id);
     Boolean realizarPagamento();

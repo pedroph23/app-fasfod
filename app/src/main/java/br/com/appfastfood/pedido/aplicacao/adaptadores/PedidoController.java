@@ -2,6 +2,7 @@ package br.com.appfastfood.pedido.aplicacao.adaptadores;
 
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
@@ -31,6 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+
 
 
 @RestController
@@ -52,11 +56,11 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity<Object> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
+    public ResponseEntity<?> criar(@RequestBody PedidoRequisicao pedidoRequisicao){
        try {
 
-            this.pedidoServico.criar(pedidoRequisicao,"RECEBIDO", "1:00");
-            return ResponseEntity.status(HttpStatus.CREATED).body("ok");
+         String id =   this.pedidoServico.criar(pedidoRequisicao,"RECEBIDO", "1:00");
+         return ResponseEntity.status(HttpStatus.CREATED).body(PedidoRequisicao.builder().idPedido(id).build());
 
         } catch (IDNaoEncontradoException e) {
               RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
@@ -78,8 +82,23 @@ public class PedidoController {
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id){
         try {
-            Pedido pedidoResultado = this.pedidoServico.atualizar(id);
-            return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
+            Pedido pedidoRetorno = this.pedidoServico.atualizar(id);
+
+            PedidoRequisicao pedidoResposta = PedidoRequisicao
+                    .builder()
+                    .produtos(pedidoRetorno.getProdutos().stream().map(produto ->
+                            ProdutosReq.builder()
+                                    .idProduto(produto.getIdProduto())
+                                    .quantidadeProduto(produto.getQuantidadeProduto())
+                                    .build()
+                    ).collect(Collectors.toList()))
+                    .idCliente(pedidoRetorno.getCliente())
+                    .tempoEspera(pedidoRetorno.getTempoEspera())
+                    .valorTotal(pedidoRetorno.getValorTotal())
+                    .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
+                    .idPedido(pedidoRetorno.getId().toString()).build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
         } catch (IDPedidoNaoEncontradoException e) {
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
@@ -95,44 +114,33 @@ public class PedidoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedido filtrado com sucesso",
                     content = { @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = List.class, subTypes = { PedidoResposta.class }))}),
+                    schema = @Schema(implementation = List.class, subTypes = { PedidoRequisicao.class }))}),
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity buscarPedidoPorID(@PathVariable(value = "id") Long id) throws JsonProcessingException {
-//        try {
-//            Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
-//            Map<String, Long> produtosRet = new HashMap<>();
-//
-//            for(Map.Entry<Produto, Long> prods : pedidoRetorno.getProduto().entrySet()){
-//                ProdutoResposta produtoResposta = ProdutoResposta
-//                    .builder()
-//                    .nome(prods.getKey().getNome().getNome())
-//                    .preco(prods.getKey().getPreco().getPreco())
-//                    .descricao(prods.getKey().getDescricao().getDescricao())
-//                    .categoria(prods.getKey().getCategoria().name())
-//                    .uriImagem(prods.getKey().getUriImagem().getUriImagem())
-//                    .build();
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                String jsonProd = objectMapper.writeValueAsString(produtoResposta);
-//                produtosRet.put(jsonProd, prods.getValue());
-//            }
-//
-//            PedidoResposta pedidoResposta = PedidoResposta
-//            .builder()
-//            .produto(produtosRet)
-//            .idCliente(pedidoRetorno.getCliente())
-//            .tempoEspera(pedidoRetorno.getTempoEspera())
-//            .valorTotal(pedidoRetorno.getValorTotal())
-//            .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus())).build();
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String json = objectMapper.writeValueAsString(pedidoResposta);
-            return ResponseEntity.status(HttpStatus.OK).body("ok");
-//        } catch (IDPedidoNaoEncontradoException e) {
-//            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-//        }
+       try {
+            Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+
+            PedidoRequisicao pedidoResposta = PedidoRequisicao
+            .builder()
+            .produtos(pedidoRetorno.getProdutos().stream().map(produto ->
+                    ProdutosReq.builder()
+                            .idProduto(produto.getIdProduto())
+                            .quantidadeProduto(produto.getQuantidadeProduto())
+                            .build()
+            ).collect(Collectors.toList()))
+            .idCliente(pedidoRetorno.getCliente())
+            .tempoEspera(pedidoRetorno.getTempoEspera())
+            .valorTotal(pedidoRetorno.getValorTotal())
+            .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
+                    .idPedido(pedidoRetorno.getId().toString()).build();
+
+            return ResponseEntity.status(HttpStatus.OK).body(pedidoResposta);
+        } catch (IDPedidoNaoEncontradoException e) {
+            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+        }
 
     }
 
@@ -141,48 +149,35 @@ public class PedidoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedidos filtrado com sucesso",
                     content = { @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = List.class, subTypes = { PedidoResposta.class }))}),
+                    schema = @Schema(implementation = List.class, subTypes = { PedidoRequisicao.class }))}),
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})    
     public ResponseEntity<Object> listarPedidos() throws JsonProcessingException{
-//        try {
-//            List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
-//            List<PedidoResposta> pedidoRespostas = new ArrayList<>();
-//            for(Pedido pedidos : pedido){
-//                Map<String, Long> produtosRet = new HashMap<>();
-//
-//                for(Map.Entry<Produto, Long> prods : pedidos.getProduto().entrySet()){
-//                     ProdutoResposta produtoResposta = ProdutoResposta
-//                        .builder()
-//                        .nome(prods.getKey().getNome().getNome())
-//                        .preco(prods.getKey().getPreco().getPreco())
-//                        .descricao(prods.getKey().getDescricao().getDescricao())
-//                        .categoria(prods.getKey().getCategoria().name())
-//                        .uriImagem(prods.getKey().getUriImagem().getUriImagem())
-//                        .build();
-//                    ObjectMapper objectMapper = new ObjectMapper();
-//                    String jsonProd = objectMapper.writeValueAsString(produtoResposta);
-//                    produtosRet.put(jsonProd, prods.getValue());
-//                }
-//
-//                PedidoResposta pedidoResposta = PedidoResposta
-//                    .builder()
-//                    .produto(produtosRet)
-//                    .idCliente(pedidos.getCliente())
-//                    .tempoEspera(pedidos.getTempoEspera())
-//                    .valorTotal(pedidos.getValorTotal())
-//                    .status(StatusPedidoEnum.retornaNomeEnum(pedidos.getStatus())).build();
-//
-//                pedidoRespostas.add(pedidoResposta);
-//            }
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String json = objectMapper.writeValueAsString(pedidoRespostas);
-//
-           return ResponseEntity.status(HttpStatus.OK).body("ok");
-//        } catch (CategoriaNaoEncontradaException e) {
-//            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-//        }
+      try {
+         List<Pedido> pedidos = this.pedidoServico.listarTodosPedidos();
+         List<PedidoRequisicao> pedidoRespostas = new ArrayList<>();
+         pedidos.forEach(pedido -> {
+                PedidoRequisicao pedidoResposta = PedidoRequisicao
+                        .builder()
+                        .produtos(pedido.getProdutos().stream().map(produto ->
+                                ProdutosReq.builder()
+                                        .idProduto(produto.getIdProduto())
+                                        .quantidadeProduto(produto.getQuantidadeProduto())
+                                        .build()
+                        ).collect(Collectors.toList()))
+                        .idCliente(pedido.getCliente())
+                        .tempoEspera(pedido.getTempoEspera())
+                        .valorTotal(pedido.getValorTotal())
+                        .status(StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()))
+                        .idPedido(pedido.getId().toString()).build();
+                pedidoRespostas.add(pedidoResposta);
+            });
+
+           return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
+       } catch (CategoriaNaoEncontradaException e) {
+          RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+       }
     }
 } 

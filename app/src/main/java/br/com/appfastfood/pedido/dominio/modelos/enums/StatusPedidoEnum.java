@@ -24,7 +24,7 @@ public enum StatusPedidoEnum {
 
     public static StatusPedidoEnum buscaEnumPorStatusString(String nome) {
         for (StatusPedidoEnum status : values()) {
-            if (status.getNome().toUpperCase() == nome.toUpperCase()) {
+            if (status.getNome().equalsIgnoreCase(nome)){
                 return status;
             }
         }

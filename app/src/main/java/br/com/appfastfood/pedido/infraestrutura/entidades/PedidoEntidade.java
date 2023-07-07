@@ -33,7 +33,16 @@ public class PedidoEntidade {
 
     }
 
+    public PedidoEntidade(Long id, List<ProdEnt> produtos, String clienteId, Double valorTotal,
+                          String status, String tempoEspera) {
+        this.produtos = produtos;
+        this.id = id;
+        this.clienteId = clienteId;
+        this.valorTotal = valorTotal;
+        this.status = status;
+        this.tempoEspera = tempoEspera;
 
+    }
     public List<ProdEnt> getProdutos() {
         return produtos;
     }
