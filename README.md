@@ -16,8 +16,6 @@ Seja bem vindo(a)!
 A aplicação esta recheada de ferramentas, como:
 - Java 17
 - Spring Boot
-- Spring Data
-- JPA
 - Docker
 - Maven
 - Postgres
