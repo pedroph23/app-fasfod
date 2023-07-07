@@ -32,19 +32,25 @@ Para iniciarmos, precisamos de algumas ferramentas para poder incializar a aplic
 Para poder estar instalando essas ferramentas, siga o link de instalação.
 
 - **Windows**
-        - https://docs.docker.com/desktop/install/windows-install/ [Docker & Docker Composer]
-        - https://git-scm.com/download/win [Git]
+   - https://docs.docker.com/desktop/install/windows-install/ [Docker & Docker Composer]
+   - https://git-scm.com/download/win [Git]
  - **Linux**
-        - https://docs.docker.com/desktop/install/linux-install/ [Docker]
-        - https://git-scm.com/book/pt-br/v2/Come%C3%A7ando-Instalando-o-Git [Git]
-        - https://docs.docker.com/compose/install/linux/ [Docker Compose]
+   - https://docs.docker.com/desktop/install/linux-install/ [Docker]
+   - https://git-scm.com/book/pt-br/v2/Come%C3%A7ando-Instalando-o-Git [Git]
+   - https://docs.docker.com/compose/install/linux/ [Docker Compose]
  - **Mac**
-        - https://docs.docker.com/desktop/install/mac-install/ [Docker & Docker Composer]
-        - https://git-scm.com/download/mac [Git]
+   - https://docs.docker.com/desktop/install/mac-install/ [Docker & Docker Composer]
+   - https://git-scm.com/download/mac [Git]
 
 Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa aplicação rodando o container docker, utilizando o docker compose.
 
 ## Inicializando a aplicação com o container Docker
+
+
+> ⚠️ **Atenção!**
+>  Verifique se as variáveis de ambiente estão em mãos para poder inicializar corretamente a aplicação para cada ambiente. Certifique de inserir o arquivo .env dentro da **/infra/prod** !
+
+
 - Build dev. :
 
     Esse comando compila o código java, executa o jar do monolito e gera uma imagem nova, usem quando forem testar alteracoes do codigo:
@@ -74,7 +80,7 @@ Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa ap
     
 ## Inicializando a aplicação sem o container
 
-Para poder estar rodando em maquina local sem o container docker, deve realizar a instalação das seguintes ferramentas:
+Para poder estar rodando em maquina local sem o container docker e sem o Postgres, pois estará utiliza o banco H2. Deve realizar a instalação das seguintes ferramentas:
 
 - Amazon Corretto 17 JDK
 - Maven
