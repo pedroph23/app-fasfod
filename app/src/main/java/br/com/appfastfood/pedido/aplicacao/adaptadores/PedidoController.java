@@ -6,13 +6,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
@@ -74,7 +68,7 @@ public class PedidoController {
 
     }
 
-    @PutMapping("/atualizar-status")
+    @PutMapping("/{id}")
      @Operation(summary = "Atualizar status do pedido", description = "Funcionalidade de atualizar o status do pedido passando o parametro 'id' do pedido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
@@ -82,7 +76,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity<?> atualizarStatus(@RequestParam(value = "id") Long id){
+    public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id){
         try {
             Pedido pedidoResultado = this.pedidoServico.atualizar(id);
             return ResponseEntity.status(HttpStatus.OK).body(pedidoResultado);
@@ -96,7 +90,7 @@ public class PedidoController {
     }
 
 
-    @GetMapping("/listarPorId")
+    @GetMapping("/{id}")
     @Operation(summary = "Buscar pedidos por id", description = "Funcionalidade que retorna o pedido passando o parametro id do pedido")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedido filtrado com sucesso",
@@ -105,7 +99,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity buscarPedidoPorID(@RequestParam(value = "id") Long id) throws JsonProcessingException {
+    public ResponseEntity buscarPedidoPorID(@PathVariable(value = "id") Long id) throws JsonProcessingException {
         try {
             Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
             Map<String, Long> produtosRet = new HashMap<>();
@@ -142,7 +136,7 @@ public class PedidoController {
         
     }
 
-    @GetMapping("/listar-pedidos")
+    @GetMapping
        @Operation(summary = "Buscar todos pedidos", description = "Funcionalidade que retorna todos pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedidos filtrado com sucesso",
@@ -151,7 +145,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})    
-    public ResponseEntity<Object> ListarPedidos() throws JsonProcessingException{
+    public ResponseEntity<Object> listarPedidos() throws JsonProcessingException{
         try {
             List<Pedido> pedido = this.pedidoServico.listarTodosPedidos();
             List<PedidoResposta> pedidoRespostas = new ArrayList<>();
