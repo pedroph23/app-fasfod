@@ -17,6 +17,7 @@
 # IDE
 /app/.idea
 *.idea
+*.vscode
 
 # Package Files #
 *.jar
