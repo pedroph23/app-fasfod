@@ -50,6 +50,13 @@ Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa ap
 > ⚠️ **Atenção!**
 >  Verifique se as variáveis de ambiente estão em mãos para poder inicializar corretamente a aplicação para cada ambiente. Certifique de inserir o arquivo .env dentro da **/infra/prod** !
 
+- Build prod. :
+
+    Builda a imagem com o jar compilado:
+
+    ```sh
+    docker build -f ./infra/prod/Dockerfile . -t mvgv/appfastfood:LATEST
+    ```
 
 - Build dev. :
 
@@ -58,14 +65,6 @@ Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa ap
     ```sh
     docker-compose -f ./infra/dev/docker-compose.yaml up 
     ```
-- Build prod. :
-
-    Builda a imagem com o jar compilado:
-
-    ```sh
-    docker build -f ./infra/prod/Dockerfile . -t mvgv/appfastfood:LATEST
-    ```
-    
     
 - Imagem da aplicação no Docker Hub:
     
