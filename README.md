@@ -47,13 +47,7 @@ Para poder estar instalando essas ferramentas, siga o link de instalação.
 Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa aplicação rodando o container docker, utilizando o docker compose.
 
 ## Inicializando a aplicação com o container Docker
-- Build dev. :
 
-    Esse comando compila o código java, executa o jar do monolito e gera uma imagem nova, usem quando forem testar alteracoes do codigo:
-
-    ```sh
-    docker-compose -f ./infra/dev/docker-compose.yaml up 
-    ```
 - Build prod. :
 
     Builda a imagem com o jar compilado:
@@ -61,7 +55,14 @@ Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa ap
     ```sh
     docker build -f ./infra/prod/Dockerfile . -t mvgv/appfastfood:LATEST
     ```
-    
+
+- Build dev. :
+
+    Esse comando compila o código java, executa o jar do monolito e gera uma imagem nova, usem quando forem testar alteracoes do codigo:
+
+    ```sh
+    docker-compose -f ./infra/dev/docker-compose.yaml up 
+    ```
     
 - Imagem da aplicação no Docker Hub:
     
