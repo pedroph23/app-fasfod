@@ -168,7 +168,7 @@ public class PedidoController {
             });
 
            return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
-       } catch (CategoriaNaoEncontradaException e) {
+       } catch (IDPedidoNaoEncontradoException e) {
           RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
        }

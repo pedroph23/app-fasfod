@@ -38,7 +38,7 @@ public class ClienteControllerTest {
     @Test
     public void cadastrar_DeveRetornarStatusCreated_QuandoCadastrarComSucesso() {
         // Arrange
-        RequisicaoCliente requisicaoCliente = new RequisicaoCliente("João", "12345678901", "joao@example.com");
+        RequisicaoCliente requisicaoCliente = new RequisicaoCliente("João", "12345678901", "joao@example.com", null);
         when(clienteServico.cadastrar(requisicaoCliente.getNome(), requisicaoCliente.getCpf(),
                 requisicaoCliente.getEmail())).thenReturn(UUID.randomUUID());
 
@@ -53,7 +53,7 @@ public class ClienteControllerTest {
     @Test
     public void cadastrar_DeveRetornarStatusBadRequest_QuandoCadastrarComDadosInvalidos() {
         // Arrange
-        RequisicaoCliente requisicaoCliente = new RequisicaoCliente("João", null, "joao@example.com");
+        RequisicaoCliente requisicaoCliente = new RequisicaoCliente("João", null, "joao@example.com", null);
         when(clienteServico.cadastrar(requisicaoCliente.getNome(),
                 requisicaoCliente.getCpf(),
                 requisicaoCliente.getEmail())).thenThrow(new IllegalArgumentException("a"));

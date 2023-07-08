@@ -46,7 +46,7 @@ public class ProdutoController {
 
     public ResponseEntity cadastrar(@RequestBody ProdutoRequisicao produtoRequisicao){
 
-Produto produto = new Produto(
+        Produto produto = new Produto(
                     produtoRequisicao.getId(),
                     new Nome(produtoRequisicao.getNome()),
                     new Preco(produtoRequisicao.getPreco()),
@@ -123,13 +123,14 @@ Produto produto = new Produto(
             @ApiResponse(responseCode = "400", description = "",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
-    public ResponseEntity buscarPorCategoria(@Parameter(description = "Deve ser buscado por: lanche, bebida, sobremesa")@RequestParam(value = "categoria") String categoria){
+    public ResponseEntity buscarPorCategoria(@Parameter(description = "Deve ser buscado por: lanche, bebida, sobremesa ou todos")@RequestParam(value = "categoria") String categoria){
 
         try {
             List<Produto> produtos = this.produtoServico.buscarPorCategoria(categoria);
 
             List<ProdutoResposta> produtosResposta =  produtos.stream().map(produto -> ProdutoResposta
                     .builder()
+                    .id(produto.getId().toString())
                     .nome(produto.getNome().getNome())
                     .preco(produto.getPreco().getPreco())
                     .descricao(produto.getDescricao().getDescricao())

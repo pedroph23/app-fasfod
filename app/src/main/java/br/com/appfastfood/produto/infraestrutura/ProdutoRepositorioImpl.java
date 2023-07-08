@@ -3,6 +3,7 @@ package br.com.appfastfood.produto.infraestrutura;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.vo.*;
+import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
@@ -36,12 +37,7 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
 
     @Override
     public void remover(Long id) {
-
-       if (this.springDataProdutoRepository.existsById(id)) {
-           this.springDataProdutoRepository.deleteById(id);
-        }
-
-        throw new IDNaoEncontradoException();
+        this.springDataProdutoRepository.deleteById(id); 
     }
 
     @Override
@@ -68,7 +64,13 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
     public Optional<List<Produto>> buscarPorCategoria(String categoria) {
         List<Produto> produtos = new ArrayList<>();
         Optional<List<ProdutoEntidade>> produtoEntidadeCategoria;
-        produtoEntidadeCategoria = this.springDataProdutoRepository.findProdutoEntidadeByCategoria(categoria);
+
+        if(categoria.toUpperCase().equals(CategoriaEnum.todos.toString().toUpperCase())){
+            produtoEntidadeCategoria = Optional.of(this.springDataProdutoRepository.findAll());
+        }else{
+            produtoEntidadeCategoria = this.springDataProdutoRepository.findProdutoEntidadeByCategoria(categoria);
+        }
+        
 
             if(produtoEntidadeCategoria.isPresent() && !produtoEntidadeCategoria.get().isEmpty()) {
                 produtoEntidadeCategoria.get().forEach(produtoEntidade -> {
