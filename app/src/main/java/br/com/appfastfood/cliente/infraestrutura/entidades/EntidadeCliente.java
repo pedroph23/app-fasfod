@@ -1,7 +1,8 @@
 package br.com.appfastfood.cliente.infraestrutura.entidades;
- 
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import org.springframework.util.DigestUtils;
 
 import java.util.Objects;

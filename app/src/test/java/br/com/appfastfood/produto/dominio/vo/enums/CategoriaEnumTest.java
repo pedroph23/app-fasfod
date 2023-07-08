@@ -1,7 +1,7 @@
 package br.com.appfastfood.produto.dominio.vo.enums;
 
-import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CategoriaEnumTest {

@@ -1,7 +1,6 @@
 package br.com.appfastfood.produto.dominio.vo;
 
 import br.com.appfastfood.produto.exceptions.UriImagemFormatoInvalidoException;
-import br.com.appfastfood.produto.exceptions.UriImagemObrigatorioException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

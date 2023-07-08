@@ -5,13 +5,15 @@ import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
 import br.com.appfastfood.produto.exceptions.CamposObrigatorioException;
 
 public class Produto {
+    private Long id;
     private Nome nome;
     private Preco preco;
     private UriImagem uriImagem;
     private CategoriaEnum categoria;
     private Descricao descricao;
 
-    public Produto(Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
+    public Produto(Long id, Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
+        this.id = id;
         this.validarCampos(nome, preco, uriImagem, categoria, descricao);
         this.nome = nome;
         this.preco = preco;
@@ -23,6 +25,10 @@ public class Produto {
         if(Validacoes.validaCamposVaziosOuNulos(nome, preco, uriImagem, categoria, descricao)){
             throw new CamposObrigatorioException();
         }
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Nome getNome() {
@@ -44,4 +50,5 @@ public class Produto {
     public Descricao getDescricao() {
         return descricao;
     }
+
 }

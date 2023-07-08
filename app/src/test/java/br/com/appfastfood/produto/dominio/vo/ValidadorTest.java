@@ -1,9 +1,8 @@
 package br.com.appfastfood.produto.dominio.vo;
-import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidacoesTest {
 

@@ -3,8 +3,6 @@ package br.com.appfastfood.cliente.infraestrutura.entidades;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 class EntidadeClienteTest {
 
     @Test

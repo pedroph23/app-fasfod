@@ -1,6 +1,5 @@
 package br.com.appfastfood.produto.dominio.servicos.adaptadores;
 
-import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
@@ -35,4 +34,10 @@ public class ProdutoServicoImpl implements ProdutoServico {
     public List<Produto> buscarPorCategoria(String categoria) {
         return this.produtoRepositorio.buscarPorCategoria(categoria).get();
     }
+
+    @Override
+    public Produto buscaProdutoPorId(Long id){
+        return this.produtoRepositorio.buscarProdutoPorId(id);
+    }
+ 
 }
