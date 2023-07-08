@@ -1,5 +1,6 @@
 package br.com.appfastfood.produto.dominio.modelo;
-import br.com.appfastfood.produto.dominio.modelos.*;
+
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.vo.Descricao;
 import br.com.appfastfood.produto.dominio.vo.Nome;
 import br.com.appfastfood.produto.dominio.vo.Preco;
@@ -20,7 +21,7 @@ public class ProdutoTest {
         CategoriaEnum categoria = CategoriaEnum.bebida;
         Descricao descricao = mock(Descricao.class);
 
-        Produto produto = new Produto(nome, preco, uriImagem, categoria, descricao);
+        Produto produto = new Produto(null, nome, preco, uriImagem, categoria, descricao);
 
         assertEquals(nome, produto.getNome());
         assertEquals(preco, produto.getPreco());

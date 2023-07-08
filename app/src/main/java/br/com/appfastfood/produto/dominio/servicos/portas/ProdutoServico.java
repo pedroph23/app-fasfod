@@ -9,5 +9,5 @@ public interface ProdutoServico {
     void remover (Long id);
     Produto atualizar(Long id, Produto produto);
     List<Produto> buscarPorCategoria(String categoria);
-
+    Produto buscaProdutoPorId(Long id);
 } 

@@ -15,5 +15,5 @@ public interface ProdutoRepositorio {
     void remover (Long id);
     Produto atualizar(Long id, Produto produtos);
     Optional<List<Produto>> buscarPorCategoria(String categoria);
-
+    Produto buscarProdutoPorId(Long id);
 } 

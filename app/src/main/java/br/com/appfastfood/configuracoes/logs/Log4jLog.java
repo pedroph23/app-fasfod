@@ -2,8 +2,6 @@ package br.com.appfastfood.configuracoes.logs;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 
 public class Log4jLog implements Log{

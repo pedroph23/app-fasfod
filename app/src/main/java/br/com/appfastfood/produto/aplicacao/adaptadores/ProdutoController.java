@@ -4,10 +4,10 @@ import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExc
 import br.com.appfastfood.configuracoes.logs.Log;
 import br.com.appfastfood.produto.aplicacao.adaptadores.requisicao.ProdutoRequisicao;
 import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta;
-import br.com.appfastfood.produto.dominio.modelos.*;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import br.com.appfastfood.produto.dominio.vo.*;
-import br.com.appfastfood.produto.exceptions.*;
+import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,7 +37,7 @@ public class ProdutoController {
     @PostMapping
     @Operation(summary = "Cadastrar Produto", description = "Funcionalidade de criar um produto")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Produto cadastrado com suceso",
+            @ApiResponse(responseCode = "201", description = "Produto cadastrado com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProdutoResposta.class)) }),
             @ApiResponse(responseCode = "400", description = "",
@@ -46,14 +46,14 @@ public class ProdutoController {
 
     public ResponseEntity cadastrar(@RequestBody ProdutoRequisicao produtoRequisicao){
 
-        Produto produto = new Produto(
-                new Nome(produtoRequisicao.getNome()),
-                new Preco(produtoRequisicao.getPreco()),
-                new UriImagem(produtoRequisicao.getUriImagem()),
-                new Categoria(produtoRequisicao.getCategoria()).getCategoria(),
-                new Descricao(produtoRequisicao.getDescricao())
-        );
-
+Produto produto = new Produto(
+                    produtoRequisicao.getId(),
+                    new Nome(produtoRequisicao.getNome()),
+                    new Preco(produtoRequisicao.getPreco()),
+                    new UriImagem(produtoRequisicao.getUriImagem()),
+                    new Categoria(produtoRequisicao.getCategoria()).getCategoria(),
+                    new Descricao(produtoRequisicao.getDescricao())
+            );
         this.produtoServico.cadastrar(produto);
 
         ProdutoResposta produtoResposta = ProdutoResposta
@@ -84,7 +84,7 @@ public class ProdutoController {
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar Produto", description = "Funcionalidade de atualização de um produto passando o parametro 'id' e o corpo da requisição")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Produto atualizado com suceso",
+            @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProdutoResposta.class))}),
             @ApiResponse(responseCode = "400", description = "",
@@ -92,14 +92,14 @@ public class ProdutoController {
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ProdutoRequisicao produtoRequisicao){
 
-        Produto produto = new Produto(
-                new Nome(produtoRequisicao.getNome()),
-                new Preco(produtoRequisicao.getPreco()),
-                new UriImagem(produtoRequisicao.getUriImagem()),
-                new Categoria(produtoRequisicao.getCategoria()).getCategoria(),
-                new Descricao(produtoRequisicao.getDescricao())
-        );
-
+Produto produto = new Produto(
+                    produtoRequisicao.getId(),
+                    new Nome(produtoRequisicao.getNome()),
+                    new Preco(produtoRequisicao.getPreco()),
+                    new UriImagem(produtoRequisicao.getUriImagem()),
+                    new Categoria(produtoRequisicao.getCategoria()).getCategoria(),
+                    new Descricao(produtoRequisicao.getDescricao())
+            );
         Produto produtoResultado = this.produtoServico.atualizar(id, produto);
 
         ProdutoResposta produtoResposta = ProdutoResposta
@@ -117,7 +117,7 @@ public class ProdutoController {
     @GetMapping()
     @Operation(summary = "Buscar Produtos por Categoria", description = "Funcionalidade que retorna uma lista de produtos por um filtro de Categoria")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Produtos filtrados com suceso",
+            @ApiResponse(responseCode = "200", description = "Produtos filtrados com sucesso",
                     content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = List.class, subTypes = { ProdutoResposta.class }))}),
             @ApiResponse(responseCode = "400", description = "",

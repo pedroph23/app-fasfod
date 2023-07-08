@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface SpringDataProdutoRepository extends JpaRepository<ProdutoEntidade, Long> {
     Optional<List<ProdutoEntidade>> findProdutoEntidadeByCategoria(String categoria);
+    ProdutoEntidade findProdutoById(Long id);
 }
 

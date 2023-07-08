@@ -5,23 +5,19 @@ import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExc
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
-import br.com.appfastfood.configuracoes.logs.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 
 @SpringBootTest
@@ -30,8 +26,7 @@ public class ClienteControllerTest {
     @Autowired
     private ClienteController clienteController;
 
-    @Mock
-    private Log log;
+
     @MockBean
     private ClienteServico clienteServico;
 

@@ -1,9 +1,5 @@
 package br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao;
 
-import org.springframework.http.HttpStatus;
-
-import java.io.Serializable;
-
 public class RequisicaoExcecao {
 
 
