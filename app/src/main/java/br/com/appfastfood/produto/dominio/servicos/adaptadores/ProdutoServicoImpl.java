@@ -3,6 +3,7 @@ package br.com.appfastfood.produto.dominio.servicos.adaptadores;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
+import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 
 import java.util.List;
 
@@ -21,7 +22,12 @@ public class ProdutoServicoImpl implements ProdutoServico {
 
     @Override
     public void remover(Long id) {
-        this.produtoRepositorio.remover(id);
+        Produto buscarProdutoId = buscaProdutoPorId(id);
+        if (buscarProdutoId != null){
+            this.produtoRepositorio.remover(id);
+        }else{
+            throw new IDNaoEncontradoException();
+        }
     }
 
     @Override

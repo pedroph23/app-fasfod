@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +43,8 @@ public class ClienteController {
     @PostMapping("/clientes")
     public ResponseEntity<?> cadastrar(@RequestBody RequisicaoCliente requisicaoCliente) {
         try {
-            this.clienteServico.cadastrar(requisicaoCliente.getNome(), requisicaoCliente.getCpf(), requisicaoCliente.getEmail());
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            UUID identificadorCliente = this.clienteServico.cadastrar(requisicaoCliente.getNome(), requisicaoCliente.getCpf(), requisicaoCliente.getEmail());
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RequisicaoCliente(null, null, null, identificadorCliente.toString()));
         }catch (IllegalArgumentException e){
             RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
             //logger.aviso(jsonExcecao.toString());
@@ -62,7 +65,7 @@ public class ClienteController {
     public ResponseEntity<?> buscarPorCpf(@PathVariable("id") String cpf) {
         try {
             Cliente cliente = this.clienteServico.buscarPorCpf(cpf);
-            RequisicaoCliente clienteJson = new RequisicaoCliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail());
+            RequisicaoCliente clienteJson = new RequisicaoCliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail(), null);
             return ResponseEntity.status(HttpStatus.OK).body(clienteJson);
         }catch(ClienteNaoEncontradoException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequisicaoExcecao(e.getMessage(), HttpStatus.NOT_FOUND.value()));
