@@ -1,6 +1,6 @@
 services:
-  app-techchallenge-fastfood:
-    image: mvgv/appfastfood:LATEST
+  app-fastfood:
+    image: mvgv/appfastfood:1.0.3
     networks:
       - techchallenge-fastfood-net
     ports:
@@ -14,7 +14,7 @@ services:
     depends_on:
       - postgres
     scale: 1
-    command: ["sh", "-c", " java -jar /app/app-fastfood.jar"]
+g
 
 
   postgres:
