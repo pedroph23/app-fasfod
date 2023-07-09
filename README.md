@@ -6,7 +6,7 @@ Seja bem vindo(a)!
  
  - [Caike Burgos](https://github.com/caikeburgos)
  - [Pedro Ramalho](https://github.com/pedroph23)
- - [Marcos Gomes](https://github.com/mvgv)
+ - [Marcus Gomes](https://github.com/mvgv)
  - [Maria Eulina Melo](https://github.com/xLinaMeloox)
  - [Filipe Fernandes](https://github.com/LipeDev1/LipeDev1)
 
@@ -49,34 +49,33 @@ Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa ap
 
 > ⚠️ **Atenção!**
 >  Verifique se as variáveis de ambiente estão em mãos para poder inicializar corretamente a aplicação para cada ambiente. Certifique de inserir o arquivo .env dentro da **/infra/prod** !
+>  Verifique no arquivo ".app/mvnw", se EOL está configurado como "LF". 
 
-- Build prod. :
-
-    Builda a imagem com o jar compilado:
+**Para executar o projeto, siga os passos abaixo:**
+- Executar a Build de Produção:
+    > ⚠️ **Atenção! Para executar, é necessário estar dentro da raiz do projeto.**
+    Executa a imagem com o jar compilado:
 
     ```sh
-    docker build -f ./infra/prod/Dockerfile . -t mvgv/appfastfood:LATEST
+    docker-compose -f ./infra/prod/docker-compose.yaml up
     ```
+    Depois de executada, a aplicação estará disponível para uso em: http://localhost:8080/swagger-ui/index.html#/
+    Se desejar, é possível também, realizar as chamadas via Postman, Insomnia ou outro app desejado, utilizando a Collection ("AppFastFood.postman_collection") disponível na raíz do projeto.
 
-- Build dev. :
+    > Como inserir informações na aplicação:
+      - **Opcional** Criar Clientes,
+      - Cadastrar Produtos,
+      - Criar Pedidos.
+      Não é possível criar um pedido, caso não exista produtos cadastrados.
 
+- Caso deseje compilar e executar o projeto em ambiente de desenvolvimento, execute os comando abaixo:
+    > ⚠️ **Atenção! Para executar, é necessário estar dentro da raiz do projeto.**
     Esse comando compila o código java, executa o jar do monolito e gera uma imagem nova, usem quando forem testar alteracoes do codigo:
 
     ```sh
     docker-compose -f ./infra/dev/docker-compose.yaml up 
     ```
-    
-- Imagem da aplicação no Docker Hub:
-    
-   Publica a imagem no Docker Hub:
-    ```sh
-    docker build -f ./infra/prod/Dockerfile . -t mvgv/appfastfood:LATEST
-    ```
-    Executa o nosso projeto a partir da imagem disponibilizada no Docker Hub:
-    ```sh
-    docker-compose -f ./infra/prod/docker-compose.yaml up
-    ```
-    
+
 ## Inicializando a aplicação sem o container
 
 Para poder estar rodando em maquina local sem o container docker e sem o Postgres, pois estará utiliza o banco H2. Deve realizar a instalação das seguintes ferramentas:
