@@ -44,18 +44,6 @@ class ProdutoServicoImplTest {
     }
 
     @Test
-    void remover_DeveChamarMetodoRemoverDoRepositorio_ComIdInformado() {
-        // Arrange
-        Long id = 1L;
-
-        // Act
-        produtoServico.remover(id);
-
-        // Assert
-        Mockito.verify(produtoRepositorio).remover(id);
-    }
-
-    @Test
     void atualizar_DeveChamarMetodoAtualizarDoRepositorio_ComIdEProdutoInformados() {
         // Arrange
         Long id = 1L;

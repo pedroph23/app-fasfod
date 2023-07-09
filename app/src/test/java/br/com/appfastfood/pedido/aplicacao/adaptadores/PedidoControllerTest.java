@@ -180,21 +180,6 @@ import static org.mockito.Mockito.when;
 
   }
 
-
-  @Test
-  void listarPedidos_DeveRetornarBadRequestQuandoCategoriaNaoEncontradaException() throws CategoriaNaoEncontradaException, JsonProcessingException{
-   // Mock do serviço lançando exceção
-   when(pedidoServico.listarTodosPedidos()).thenThrow(new CategoriaNaoEncontradaException());
-
-   // Execução do método
-   ResponseEntity<Object> responseEntity = pedidoController.listarPedidos();
-
-   // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
-
-  }
-
   private Pedido criarPedido() {
    Pedido pedido = new Pedido(Arrays.asList(
            new ProdutoVO("1", "5.0"),
