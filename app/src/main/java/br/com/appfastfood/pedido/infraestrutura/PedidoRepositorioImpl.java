@@ -8,7 +8,14 @@ import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.pedido.infraestrutura.entidades.ProdEnt;
+import br.com.appfastfood.produto.dominio.modelos.Produto;
+
+import org.springdoc.core.converters.models.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +60,11 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
     }
 
     @Override
+    
     public List<Pedido> listarTodosOsPedidos() {
-       List<PedidoEntidade> pedido = this.springDataPedidoRepository.findAll();
+        
+       List<PedidoEntidade> pedido = this.springDataPedidoRepository.findNotInFinalzado();
+
         if(pedido.isEmpty()){
             throw new IDPedidoNaoEncontradoException();
         }
