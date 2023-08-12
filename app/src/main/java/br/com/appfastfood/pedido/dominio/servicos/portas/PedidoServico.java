@@ -12,4 +12,5 @@ public interface PedidoServico {
     Pedido atualizar(Long id);
     Pedido buscarPedidoPorId(Long id);
     List<Pedido> listarTodosPedidos();
+    Pedido atualizarPagamento(Long id, String statusPagameto);
 } 

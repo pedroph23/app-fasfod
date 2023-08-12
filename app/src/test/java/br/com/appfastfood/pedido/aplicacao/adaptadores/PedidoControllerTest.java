@@ -5,12 +5,12 @@ import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisic
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
+import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
-import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
@@ -184,7 +184,7 @@ import static org.mockito.Mockito.when;
    Pedido pedido = new Pedido(Arrays.asList(
            new ProdutoVO("1", "5.0"),
            new ProdutoVO("2", "3.0")
-   ), "123", 10.0, StatusPedidoEnum.RECEBIDO, "1:00");
+   ), "123", 10.0, StatusPedidoEnum.RECEBIDO, "1:00", StatusPagamentoEnum.PENDENTE);
    return pedido;
   }
 

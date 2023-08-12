@@ -2,21 +2,15 @@ package br.com.appfastfood.pedido.infraestrutura;
 
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
+import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.pedido.infraestrutura.entidades.ProdEnt;
-import br.com.appfastfood.produto.dominio.modelos.Produto;
 
-import org.springdoc.core.converters.models.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,13 +30,15 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         Double valorTotal = 0D;
         List<ProdEnt> produtosEntidade = new ArrayList<>();
         pedido.getProdutos().forEach(produto -> {
-           produtosEntidade.add(new ProdEnt(produto.getIdProduto(), produto.getQuantidadeProduto()));
+            produtosEntidade.add(new ProdEnt(produto.getIdProduto(), produto.getQuantidadeProduto()));
         });
-        PedidoEntidade pedidoDb = new PedidoEntidade(produtosEntidade, pedido.getCliente(), pedido.getValorTotal(), StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()), pedido.getTempoEspera());
+        PedidoEntidade pedidoDb = new PedidoEntidade(produtosEntidade, pedido.getCliente(), pedido.getValorTotal(),
+                StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()), pedido.getTempoEspera(),
+                StatusPagamentoEnum.retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()));
 
-        if (realizarPagamento()){
+        if (realizarPagamento()) {
             springDataPedidoRepository.save(pedidoDb);
-        }else{
+        } else {
             throw new PagamentoNaoRealizado();
         }
         return pedidoDb.getId().toString();
@@ -54,18 +50,19 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         pedido.getProdutos().forEach(produto -> {
             produtosEntidade.add(new ProdEnt(produto.getIdProduto(), produto.getQuantidadeProduto()));
         });
-        PedidoEntidade pedidoDb = new PedidoEntidade(pedido.getId(),produtosEntidade, pedido.getCliente(), pedido.getValorTotal(), StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()), pedido.getTempoEspera());
+        PedidoEntidade pedidoDb = new PedidoEntidade(pedido.getId(), produtosEntidade, pedido.getCliente(),
+                pedido.getValorTotal(), StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()), pedido.getTempoEspera(),
+                StatusPagamentoEnum.retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()));
         this.springDataPedidoRepository.save(pedidoDb);
         return pedido;
     }
 
     @Override
-    
     public List<Pedido> listarTodosOsPedidos() {
-        
-       List<PedidoEntidade> pedido = this.springDataPedidoRepository.findNotInFinalzado();
 
-        if(pedido.isEmpty()){
+        List<PedidoEntidade> pedido = this.springDataPedidoRepository.findNotInFinalzado();
+
+        if (pedido.isEmpty()) {
             throw new IDPedidoNaoEncontradoException();
         }
         List<Pedido> pedidosRetorno = new ArrayList<>();
@@ -77,7 +74,8 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
             Pedido pedidoRetorno = new Pedido(pedidoEntidade.getId(), produtosVO, pedidoEntidade.getClienteId(),
                     pedidoEntidade.getValorTotal(),
                     StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidade.getStatus()),
-                    pedidoEntidade.getTempoEspera());
+                    pedidoEntidade.getTempoEspera(),
+                    StatusPagamentoEnum.buscaEnumPorStatusString(pedidoEntidade.getStatusPagamento()));
             pedidosRetorno.add(pedidoRetorno);
         });
         return pedidosRetorno;
@@ -87,23 +85,38 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
     public Pedido buscarPedidoPorId(Long id) {
 
         Optional<PedidoEntidade> pedidoEntidadeBusca = this.springDataPedidoRepository.findById(id);
-        if (!pedidoEntidadeBusca.isPresent()){
+        if (!pedidoEntidadeBusca.isPresent()) {
             throw new IDPedidoNaoEncontradoException();
         }
         List<ProdutoVO> produtosVO = pedidoEntidadeBusca.get().getProdutos().stream()
                 .map(prodEnt -> new ProdutoVO(prodEnt.getIdProduto(), prodEnt.getQuantidadeProduto()))
                 .collect(Collectors.toList());
 
-        Pedido pedidoRetorno = new Pedido(pedidoEntidadeBusca.get().getId(), produtosVO, pedidoEntidadeBusca.get().getClienteId(),
+        Pedido pedidoRetorno = new Pedido(pedidoEntidadeBusca.get().getId(), produtosVO,
+                pedidoEntidadeBusca.get().getClienteId(),
                 pedidoEntidadeBusca.get().getValorTotal(),
                 StatusPedidoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatus()),
-                pedidoEntidadeBusca.get().getTempoEspera());
+                pedidoEntidadeBusca.get().getTempoEspera(),
+                StatusPagamentoEnum.buscaEnumPorStatusString(pedidoEntidadeBusca.get().getStatusPagamento()));
         return pedidoRetorno;
     }
 
     @Override
-    public Boolean realizarPagamento(){
+    public Boolean realizarPagamento() {
         return true;
     }
-   
+
+    @Override
+    public Pedido atualizarPagamento(Pedido pedido) {
+        List<ProdEnt> produtosEntidade = new ArrayList<>();
+        pedido.getProdutos().forEach(produto -> {
+            produtosEntidade.add(new ProdEnt(produto.getIdProduto(), produto.getQuantidadeProduto()));
+        });
+        PedidoEntidade pedidoDb = new PedidoEntidade(pedido.getId(), produtosEntidade, pedido.getCliente(),
+                pedido.getValorTotal(), StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()), pedido.getTempoEspera(),
+                StatusPagamentoEnum.retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()));
+        this.springDataPedidoRepository.save(pedidoDb);
+        return pedido;
+    }
+
 }
