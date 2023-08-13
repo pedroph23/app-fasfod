@@ -17,11 +17,10 @@ spec:
           image: mvgv/appfastfood:1.0.3
           ports:
             - containerPort: 8080
-          dependsOn:
-            - postgres-deployment
           envFrom:
             - configMapRef:
                 name: appfastfood-configmap
+
 
 ---
 apiVersion: apps/v1
@@ -49,6 +48,16 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-data
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -p
+                - "5432"
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
