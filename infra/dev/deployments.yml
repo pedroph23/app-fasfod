@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appfastfood-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appfastfood
+  template:
+    metadata:
+      labels:
+        app: appfastfood
+    spec:
+      containers:
+        - name: appfastfood
+          image: mvgv/appfastfood:1.0.3
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: appfastfood-configmap
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          envFrom:
+            - configMapRef:
+                name: db-configmap
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: my-postgres-data
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-postgres-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
