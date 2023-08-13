@@ -17,6 +17,8 @@ spec:
           image: mvgv/appfastfood:1.0.3
           ports:
             - containerPort: 8080
+          dependsOn:
+            - postgres-deployment
           envFrom:
             - configMapRef:
                 name: appfastfood-configmap
