@@ -7,11 +7,8 @@ import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
-import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
-import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
-import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
-import br.com.appfastfood.pedido.exceptions.StatusPagamentoNaoEncontrado;
+import br.com.appfastfood.pedido.exceptions.*;
+import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,6 +91,10 @@ public class PedidoController {
                                         HttpStatus.BAD_REQUEST.value());
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
                 } catch (PedidoJaFinalizadoException e) {
+                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
+                                        HttpStatus.BAD_REQUEST.value());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
+                } catch (StatusPagamentoRecusadoException e) {
                         RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
                                         HttpStatus.BAD_REQUEST.value());
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
@@ -188,28 +189,6 @@ public class PedidoController {
 
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoRetorno.getStatusPagamento());
                 } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
-        }
-
-        @PutMapping("/alterar_status_pagamento/{id}/{status}")
-        @Operation(summary = "Atualizar status do pagamento", description = "Funcionalidade de atualizar o status do pagamento passando o parametro 'id' do pedido")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Pagamento atualizado com sucesso", content = {
-                                        @Content() }),
-                        @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
-        public ResponseEntity<?> atualizarStatusPagamento(@PathVariable(value = "id") Long id, @PathVariable(value = "status") String status) {
-                try {
-                        Pedido pedidoRetorno = this.pedidoServico.atualizarPagamento(id, status);
-
-                        return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
-                } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                } catch (StatusPagamentoNaoEncontrado e) {
                         RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
                                         HttpStatus.BAD_REQUEST.value());
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);

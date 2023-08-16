@@ -1,4 +1,4 @@
-package br.com.appfastfood.pedido.dominio.servicos.portas;
+package br.com.appfastfood.pedido.usecase.portas;
 
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
@@ -12,5 +12,4 @@ public interface PedidoServico {
     Pedido atualizar(Long id);
     Pedido buscarPedidoPorId(Long id);
     List<Pedido> listarTodosPedidos();
-    Pedido atualizarPagamento(Long id, String statusPagameto);
-} 
+}

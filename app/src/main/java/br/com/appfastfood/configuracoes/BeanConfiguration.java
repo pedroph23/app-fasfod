@@ -2,13 +2,13 @@ package br.com.appfastfood.configuracoes;
 
 import br.com.appfastfood.AppFastfoodApplication;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
-import br.com.appfastfood.cliente.dominio.servicos.adaptadores.ClienteServicoImpl;
-import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
+import br.com.appfastfood.cliente.usecase.adaptadores.ClienteServicoImpl;
+import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
 import br.com.appfastfood.configuracoes.logs.Log;
 import br.com.appfastfood.configuracoes.logs.Log4jLog;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
-import br.com.appfastfood.pedido.dominio.servicos.adaptadores.PedidoServicoImpl;
-import br.com.appfastfood.pedido.dominio.servicos.portas.PedidoServico;
+import br.com.appfastfood.pedido.usecase.adaptadores.PedidoServicoImpl;
+import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;

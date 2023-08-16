@@ -1,6 +1,7 @@
 package br.com.appfastfood.pedido.dominio.modelos.enums;
 
 import br.com.appfastfood.pedido.exceptions.StatusPagamentoNaoEncontrado;
+import br.com.appfastfood.pedido.exceptions.StatusPagamentoRecusadoException;
 
 public enum StatusPagamentoEnum {
     PENDENTE(1, "PENDENTE"),
@@ -30,6 +31,15 @@ public enum StatusPagamentoEnum {
             }
         }
         throw new StatusPagamentoNaoEncontrado();
+    }
+
+    public static StatusPagamentoEnum validaPagamento(StatusPagamentoEnum statusPagamento) {
+
+        if(statusPagamento == StatusPagamentoEnum.RECUSADO) {
+            throw new StatusPagamentoRecusadoException();
+        }
+
+        return statusPagamento;
     }
 
     public static String retornaNomeStatusPagamentoEnum(StatusPagamentoEnum status){

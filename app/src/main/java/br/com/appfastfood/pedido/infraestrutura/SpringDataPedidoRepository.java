@@ -1,11 +1,10 @@
 package br.com.appfastfood.pedido.infraestrutura;
 
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
-
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 
 public interface SpringDataPedidoRepository extends JpaRepository<PedidoEntidade, Long> {

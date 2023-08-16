@@ -35,6 +35,18 @@ public class Pedido {
         this.tempoEspera = tempoEspera;
         this.statusPagamento = statusPagamento;
     }
+    
+    public Pedido atualizaStatus() {
+
+        return new Pedido(
+                this.getId(),
+                this.getProdutos(),
+                this.getCliente(),
+                this.getValorTotal(),
+                StatusPedidoEnum.statusSeguinte(this.getStatus()),
+                this.getTempoEspera(),
+                StatusPagamentoEnum.validaPagamento(this.getStatusPagamento()));
+    }
 
     public List<ProdutoVO> getProdutos() {
         return produtoVOS;

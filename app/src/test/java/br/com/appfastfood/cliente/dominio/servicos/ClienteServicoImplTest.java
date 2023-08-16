@@ -2,11 +2,11 @@ package br.com.appfastfood.cliente.dominio.servicos;
 
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
-import br.com.appfastfood.cliente.dominio.servicos.adaptadores.ClienteServicoImpl;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
 import br.com.appfastfood.cliente.infraestrutura.ClienteRepositorioImpl;
 import br.com.appfastfood.cliente.infraestrutura.SpringDataClienteRepository;
 import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
+import br.com.appfastfood.cliente.usecase.adaptadores.ClienteServicoImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
