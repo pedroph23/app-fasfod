@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
-
 @Getter
 @Setter
 @Builder()
@@ -34,17 +33,20 @@ public class PedidoRequisicao implements Serializable {
     @JsonProperty("id_pedido")
     private String idPedido;
 
-     public PedidoRequisicao(List<ProdutosReq> produtos,
-                             String idCliente,
-                             Double valorTotal,
-                             String status,
-                             String tempoEspera, String idPedido){
+    @JsonProperty("status_pagamento")
+    private String statusPagamento;
+
+    public PedidoRequisicao(List<ProdutosReq> produtos,
+            String idCliente,
+            Double valorTotal,
+            String status,
+            String tempoEspera, String idPedido, String statusPagamento) {
         this.idCliente = idCliente;
         this.valorTotal = valorTotal;
         this.produtos = produtos;
-        this.status   = status;
+        this.status = status;
         this.tempoEspera = tempoEspera;
         this.idPedido = idPedido;
-
+        this.statusPagamento = statusPagamento;
     }
 }

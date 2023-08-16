@@ -1,11 +1,11 @@
 
-package br.com.appfastfood.cliente.dominio.servicos.adaptadores;
+package br.com.appfastfood.cliente.usecase.adaptadores;
  
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
-import br.com.appfastfood.cliente.dominio.servicos.portas.ClienteServico;
 import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
 import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
+import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
 
 import java.util.UUID;
 
