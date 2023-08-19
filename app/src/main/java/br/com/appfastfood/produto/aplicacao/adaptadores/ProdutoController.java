@@ -7,7 +7,6 @@ import br.com.appfastfood.produto.aplicacao.adaptadores.resposta.ProdutoResposta
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
 import br.com.appfastfood.produto.dominio.vo.*;
-import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -92,7 +91,7 @@ public class ProdutoController {
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ProdutoRequisicao produtoRequisicao){
 
-Produto produto = new Produto(
+            Produto produto = new Produto(
                     produtoRequisicao.getId(),
                     new Nome(produtoRequisicao.getNome()),
                     new Preco(produtoRequisicao.getPreco()),
@@ -125,7 +124,6 @@ Produto produto = new Produto(
                     schema = @Schema(implementation = RequisicaoExcecao.class)))})
     public ResponseEntity buscarPorCategoria(@Parameter(description = "Deve ser buscado por: lanche, bebida, sobremesa ou todos")@RequestParam(value = "categoria") String categoria){
 
-        try {
             List<Produto> produtos = this.produtoServico.buscarPorCategoria(categoria);
 
             List<ProdutoResposta> produtosResposta =  produtos.stream().map(produto -> ProdutoResposta
@@ -139,12 +137,6 @@ Produto produto = new Produto(
                     .build()).toList();
 
             return ResponseEntity.status(HttpStatus.OK).body(produtosResposta);
-        } catch (CategoriaNaoEncontradaException e) {
-            RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(), HttpStatus.BAD_REQUEST.value());
-            logger.aviso(jsonExcecao.toString());
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-        }
-
     }
 
 }

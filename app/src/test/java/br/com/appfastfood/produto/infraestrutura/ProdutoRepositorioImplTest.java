@@ -2,7 +2,6 @@ package br.com.appfastfood.produto.infraestrutura;
 
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
-import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
 import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

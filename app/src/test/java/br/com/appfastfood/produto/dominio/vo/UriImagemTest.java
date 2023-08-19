@@ -1,6 +1,5 @@
 package br.com.appfastfood.produto.dominio.vo;
 
-import br.com.appfastfood.produto.exceptions.UriImagemFormatoInvalidoException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

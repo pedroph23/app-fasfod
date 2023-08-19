@@ -11,7 +11,8 @@ import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
 import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
-import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,7 @@ import static org.mockito.Mockito.when;
 
    // Mock do serviço lançando exceção
    when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
-           .thenThrow(new IDNaoEncontradoException());
+           .thenThrow(new BadRequestException(ExceptionsMessages.ID_NAO_ENCONTRADO.getValue());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
