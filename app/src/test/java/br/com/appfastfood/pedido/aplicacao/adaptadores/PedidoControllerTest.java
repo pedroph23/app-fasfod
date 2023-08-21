@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarPedidoCriado() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+  void criar_DeveRetornarPedidoCriado() throws PagamentoNaoRealizado {
    // Dados de entrada
    PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
            .produtos(Arrays.asList(ProdutosReq.builder()
@@ -71,26 +71,15 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarBadRequestQuandoIDNaoEncontradoException() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+  void criar_DeveRetornarBadRequestQuandoIDNaoEncontradoException() throws  PagamentoNaoRealizado {
    // Dados de entrada
-   PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
-           .produtos(Arrays.asList(ProdutosReq.builder()
-                   .idProduto("1")
-                   .quantidadeProduto("2")
-                   .build()))
-           .idCliente("123")
-           .valorTotal(10.0)
-           .status("RECEBIDO")
-           .tempoEspera("1:00")
-           .idPedido(null)
-           .build();
+   Long idPedido = 123L;
 
    // Mock do serviço lançando exceção
-   when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
-           .thenThrow(new BadRequestException(ExceptionsMessages.ID_NAO_ENCONTRADO.getValue());
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
+   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
 
    // Verificações
    assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
@@ -99,7 +88,7 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarBadRequestQuandoPagamentoNaoRealizado() throws IDNaoEncontradoException, PagamentoNaoRealizado {
+  void criar_DeveRetornarBadRequestQuandoPagamentoNaoRealizado() throws PagamentoNaoRealizado {
    // Dados de entrada
    PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
            .produtos(Arrays.asList(ProdutosReq.builder()

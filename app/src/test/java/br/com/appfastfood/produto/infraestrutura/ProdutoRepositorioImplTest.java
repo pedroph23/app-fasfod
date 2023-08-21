@@ -1,5 +1,6 @@
 package br.com.appfastfood.produto.infraestrutura;
 
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
@@ -70,7 +71,7 @@ public class ProdutoRepositorioImplTest {
                 .thenReturn(Optional.empty());
 
         // Execução do método a ser testado e verificação da exceção
-        Assertions.assertThrows(CategoriaNaoEncontradaException.class,
+        Assertions.assertThrows(BadRequestException.class,
                 () -> produtoRepositorio.buscarPorCategoria(categoria));
 
         // Verificação de chamadas de métodos
