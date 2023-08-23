@@ -1,7 +1,7 @@
 package br.com.appfastfood.pedido.dominio.modelos.enums;
 
-import br.com.appfastfood.pedido.exceptions.StatusPagamentoNaoEncontrado;
-import br.com.appfastfood.pedido.exceptions.StatusPagamentoRecusadoException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
 
 public enum StatusPagamentoEnum {
     PENDENTE(1, "PENDENTE"),
@@ -30,13 +30,13 @@ public enum StatusPagamentoEnum {
                 return status;
             }
         }
-        throw new StatusPagamentoNaoEncontrado();
+        throw new BadRequestException(ExceptionsMessages.STATUS_PAGAMENTO_NAO_ENCONTRADO.getValue());
     }
 
     public static StatusPagamentoEnum validaPagamento(StatusPagamentoEnum statusPagamento) {
 
         if(statusPagamento == StatusPagamentoEnum.RECUSADO) {
-            throw new StatusPagamentoRecusadoException();
+            throw new BadRequestException(ExceptionsMessages.PAGAMENTO_RECUSADO.getValue());
         }
 
         return statusPagamento;
@@ -48,6 +48,6 @@ public enum StatusPagamentoEnum {
                 return statusEnum.getNome();
             }
         }
-        throw new StatusPagamentoNaoEncontrado();
+        throw new BadRequestException(ExceptionsMessages.STATUS_PAGAMENTO_NAO_ENCONTRADO.getValue());
     }
 }

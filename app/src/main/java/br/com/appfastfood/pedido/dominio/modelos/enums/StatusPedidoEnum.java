@@ -1,7 +1,7 @@
 package br.com.appfastfood.pedido.dominio.modelos.enums;
 
-import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
-import br.com.appfastfood.pedido.exceptions.StatusPedidoNaoPermitidoException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
 
 public enum StatusPedidoEnum {
     RECEBIDO(1, "RECEBIDO"),
@@ -48,10 +48,10 @@ public enum StatusPedidoEnum {
         }
 
         if(statusPedidoEnum == StatusPedidoEnum.FINALIZADO) {
-            throw new PedidoJaFinalizadoException();
+            throw new BadRequestException(ExceptionsMessages.PEDIDO_JA_FINALIZADO.getValue());
         }
 
-        throw new StatusPedidoNaoPermitidoException();
+        throw new BadRequestException(ExceptionsMessages.STATUS_PEDIDO_NAO_PERMITIDO.getValue());
 
     }
 

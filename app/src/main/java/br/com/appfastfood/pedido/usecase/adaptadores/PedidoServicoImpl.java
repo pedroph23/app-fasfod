@@ -1,5 +1,6 @@
 package br.com.appfastfood.pedido.usecase.adaptadores;
 
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
@@ -7,7 +8,7 @@ import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
-import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
+import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
 import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.usecase.portas.ProdutoServico;
@@ -59,7 +60,7 @@ public class PedidoServicoImpl implements PedidoServico {
         Pedido pedido = null;
 
         if (pedidoBusca == null) {
-            throw new IDPedidoNaoEncontradoException();
+            throw new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue());
         }
 
         if(pedidoBusca.getStatus() == StatusPedidoEnum.RECEBIDO) {
