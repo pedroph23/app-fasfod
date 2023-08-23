@@ -1,4 +1,4 @@
-package br.com.appfastfood.cliente.dominio.servicos.portas;
+package br.com.appfastfood.cliente.usecase.portas;
 
 
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
