@@ -1,6 +1,7 @@
 package br.com.appfastfood.produto.dominio.vo;
 
-import br.com.appfastfood.produto.exceptions.CamposObrigatorioException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 
 public class Nome {
     private String nome;
@@ -14,7 +15,7 @@ public class Nome {
     }
     private void isValid(String nome) {
         if(nome == null || nome.isEmpty()) {
-            throw new CamposObrigatorioException();
+            throw new BadRequestException(ExceptionsMessages.CAMPOS_OBRIGATORIOS.getValue());
         }
     }
 

@@ -1,7 +1,8 @@
 package br.com.appfastfood.produto.dominio.vo;
 
 import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
-import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 
 public class Categoria {
     private CategoriaEnum categoria;
@@ -19,7 +20,7 @@ public class Categoria {
         try {
             return CategoriaEnum.valueOf(categoria);
         } catch (IllegalArgumentException e) {
-            throw new CategoriaNaoEncontradaException();
+            throw new BadRequestException(ExceptionsMessages.CATEGORIA_NAO_ENCONTRADA.getValue());
         }
     }
 

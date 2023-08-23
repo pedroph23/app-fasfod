@@ -2,8 +2,8 @@ package br.com.appfastfood.produto.servicos;
 
 import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
-import br.com.appfastfood.produto.dominio.servicos.adaptadores.ProdutoServicoImpl;
 import br.com.appfastfood.produto.dominio.vo.*;
+import br.com.appfastfood.produto.usecase.adaptadores.ProdutoServicoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
