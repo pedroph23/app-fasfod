@@ -4,8 +4,8 @@ import br.com.appfastfood.produto.dominio.modelos.Produto;
 import br.com.appfastfood.produto.dominio.repositorios.ProdutoRepositorio;
 import br.com.appfastfood.produto.dominio.vo.*;
 import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
-import br.com.appfastfood.produto.exceptions.CategoriaNaoEncontradaException;
-import br.com.appfastfood.produto.exceptions.IDNaoEncontradoException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 import br.com.appfastfood.produto.infraestrutura.entidades.ProdutoEntidade;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +56,7 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
             return produto;
         }
 
-        throw new IDNaoEncontradoException();
+        throw new BadRequestException(ExceptionsMessages.ID_NAO_ENCONTRADO.getValue());
 
     }
 
@@ -87,7 +87,7 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
                 return Optional.of(produtos);
         }
 
-        throw new CategoriaNaoEncontradaException();
+        throw new BadRequestException(ExceptionsMessages.CATEGORIA_NAO_ENCONTRADA.getValue());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class ProdutoRepositorioImpl implements ProdutoRepositorio {
         ProdutoEntidade produtoBusca = this.springDataProdutoRepository.findProdutoById(id);
         
         if (produtoBusca == null){
-            throw new IDNaoEncontradoException();
+            throw new BadRequestException(ExceptionsMessages.ID_NAO_ENCONTRADO.getValue());
         }
 
         Produto produtoRetorno = new Produto(produtoBusca.getId(), 

@@ -10,7 +10,7 @@ import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
 import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
 import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import br.com.appfastfood.produto.dominio.modelos.Produto;
-import br.com.appfastfood.produto.dominio.servicos.portas.ProdutoServico;
+import br.com.appfastfood.produto.usecase.portas.ProdutoServico;
 
 import java.util.ArrayList;
 import java.util.List;

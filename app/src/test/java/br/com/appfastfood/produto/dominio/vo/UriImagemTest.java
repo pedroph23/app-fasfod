@@ -1,6 +1,6 @@
 package br.com.appfastfood.produto.dominio.vo;
 
-import br.com.appfastfood.produto.exceptions.UriImagemFormatoInvalidoException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,6 +17,6 @@ public class UriImagemTest {
     @Test
     public void testConstrutorComUriImagemInvalida() {
         String uriImagem = "invalid-url";
-        assertThrows(UriImagemFormatoInvalidoException.class, () -> new UriImagem(uriImagem));
+        assertThrows(BadRequestException.class, () -> new UriImagem(uriImagem));
     }
 }
