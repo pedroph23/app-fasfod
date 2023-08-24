@@ -2,7 +2,8 @@ package br.com.appfastfood.produto.dominio.modelos;
 
 import br.com.appfastfood.produto.dominio.vo.*;
 import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
-import br.com.appfastfood.produto.exceptions.CamposObrigatorioException;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 
 public class Produto {
     private Long id;
@@ -23,7 +24,7 @@ public class Produto {
     }
     private void validarCampos(Nome nome, Preco preco, UriImagem uriImagem, CategoriaEnum categoria, Descricao descricao) {
         if(Validacoes.validaCamposVaziosOuNulos(nome, preco, uriImagem, categoria, descricao)){
-            throw new CamposObrigatorioException();
+            throw new BadRequestException(ExceptionsMessages.CAMPOS_OBRIGATORIOS.getValue());
         }
     }
 
