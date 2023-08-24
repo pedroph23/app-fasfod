@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: appfastfood
-          image: mvgv/appfastfood:1.0.3
+          image: mvgv/appfastfood:1.0.4-SNAPSHOT
           ports:
             - containerPort: 8080
           envFrom:
