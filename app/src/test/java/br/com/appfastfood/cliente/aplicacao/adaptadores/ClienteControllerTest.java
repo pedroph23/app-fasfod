@@ -3,8 +3,10 @@ package br.com.appfastfood.cliente.aplicacao.adaptadores;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoCliente;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
+import br.com.appfastfood.cliente.exceptions.ExceptionsMessages;
 import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -90,7 +92,7 @@ public class ClienteControllerTest {
     public void buscarPorCpf_DeveRetornarStatusNotFound_QuandoClienteNaoEncontrado() {
         // Arrange
         String cpf = "12345678901";
-        when(clienteServico.buscarPorCpf(cpf)).thenThrow(new ClienteNaoEncontradoException());
+        when(clienteServico.buscarPorCpf(cpf)).thenThrow(new BadRequestException(ExceptionsMessages.CLIENTE_NAO_ENCONTRADO.getValue()).getClass());
 
         // Act
         ResponseEntity<?> responseEntity = clienteController.buscarPorCpf(cpf);

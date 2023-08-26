@@ -4,7 +4,6 @@ package br.com.appfastfood.cliente.aplicacao.adaptadores;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoCliente;
 import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.cliente.dominio.modelos.Cliente;
-import br.com.appfastfood.cliente.exceptions.ClienteNaoEncontradoException;
 import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
 import br.com.appfastfood.configuracoes.logs.Log;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,12 +61,8 @@ public class ClienteController {
                             schema = @Schema(implementation = RequisicaoExcecao.class)))})
     @GetMapping("/clientes/{id}")
     public ResponseEntity<?> buscarPorCpf(@PathVariable("id") String cpf) {
-        try {
             Cliente cliente = this.clienteServico.buscarPorCpf(cpf);
             RequisicaoCliente clienteJson = new RequisicaoCliente(cliente.getNome(), cliente.getCpf(), cliente.getEmail(), null);
             return ResponseEntity.status(HttpStatus.OK).body(clienteJson);
-        }catch(ClienteNaoEncontradoException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RequisicaoExcecao(e.getMessage(), HttpStatus.NOT_FOUND.value()));
-        }
     }
 }
