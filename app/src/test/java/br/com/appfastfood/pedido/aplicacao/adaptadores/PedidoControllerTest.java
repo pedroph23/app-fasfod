@@ -7,12 +7,9 @@ import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
-import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
-import br.com.appfastfood.pedido.exceptions.PedidoJaFinalizadoException;
 import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import br.com.appfastfood.configuracoes.execption.BadRequestException;
-import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
+import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +41,7 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarPedidoCriado() throws PagamentoNaoRealizado {
+  void criar_DeveRetornarPedidoCriado() throws JsonProcessingException {
    // Dados de entrada
    PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
            .produtos(Arrays.asList(ProdutosReq.builder()
@@ -71,12 +69,12 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarBadRequestQuandoIDNaoEncontradoException() throws  PagamentoNaoRealizado {
+  void criar_DeveRetornarBadRequestQuandoIDNaoEncontradoException() throws  JsonProcessingException {
    // Dados de entrada
    Long idPedido = 123L;
 
    // Mock do serviço lançando exceção
-   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
@@ -88,7 +86,7 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void criar_DeveRetornarBadRequestQuandoPagamentoNaoRealizado() throws PagamentoNaoRealizado {
+  void criar_DeveRetornarBadRequestQuandoPagamentoNaoRealizado() throws JsonProcessingException {
    // Dados de entrada
    PedidoRequisicao pedidoRequisicao = PedidoRequisicao.builder()
            .produtos(Arrays.asList(ProdutosReq.builder()
@@ -104,7 +102,7 @@ import static org.mockito.Mockito.when;
 
    // Mock do serviço lançando exceção
    when(pedidoServico.criar(eq(pedidoRequisicao), eq("RECEBIDO"), eq("1:00")))
-           .thenThrow(new PagamentoNaoRealizado());
+           .thenThrow(new BadRequestException(ExceptionsMessages.PAGAMENTO_RECUSADO.getValue()).getClass());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
@@ -118,12 +116,12 @@ import static org.mockito.Mockito.when;
 
 
   @Test
-  void atualizarStatus_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws IDPedidoNaoEncontradoException, PedidoJaFinalizadoException {
+  void atualizarStatus_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws JsonProcessingException {
    // Dados de entrada
    Long idPedido = 123L;
 
    // Mock do serviço lançando exceção
-   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
@@ -135,12 +133,12 @@ import static org.mockito.Mockito.when;
   }
 
   @Test
-  void atualizarStatus_DeveRetornarBadRequestQuandoPedidoJaFinalizadoException() throws IDPedidoNaoEncontradoException, PedidoJaFinalizadoException {
+  void atualizarStatus_DeveRetornarBadRequestQuandoPedidoJaFinalizadoException() throws  JsonProcessingException {
    // Dados de entrada
    Long idPedido = 123L;
 
    // Mock do serviço lançando exceção
-   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new PedidoJaFinalizadoException());
+   when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_JA_FINALIZADO.getValue()).getClass());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
@@ -154,12 +152,12 @@ import static org.mockito.Mockito.when;
 
 
   @Test
-  void buscarPedidoPorID_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws IDPedidoNaoEncontradoException, JsonProcessingException {
+  void buscarPedidoPorID_DeveRetornarBadRequestQuandoIDPedidoNaoEncontradoException() throws JsonProcessingException {
    // Dados de entrada
    Long idPedido = 123L;
 
    // Mock do serviço lançando exceção
-   when(pedidoServico.buscarPedidoPorId(eq(idPedido))).thenThrow(new IDPedidoNaoEncontradoException());
+   when(pedidoServico.buscarPedidoPorId(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
    ResponseEntity<?> responseEntity = pedidoController.buscarPedidoPorID(idPedido);
