@@ -41,17 +41,10 @@ public class PedidoController {
                                         @Content(mediaType = "application/json", schema = @Schema(implementation = PedidoResposta.class)) }),
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<?> criar(@RequestBody PedidoRequisicao pedidoRequisicao) {
-                try {
 
                         String id = this.pedidoServico.criar(pedidoRequisicao, "RECEBIDO", "1:00");
                         return ResponseEntity.status(HttpStatus.CREATED)
                                         .body(PedidoRequisicao.builder().idPedido(id).build());
-
-                } catch (PagamentoNaoRealizado e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
 
         }
 
@@ -62,7 +55,7 @@ public class PedidoController {
                                         @Content() }),
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id) {
-                try {
+
                         Pedido pedidoRetorno = this.pedidoServico.atualizar(id);
 
                         PedidoRequisicao pedidoResposta = PedidoRequisicao
@@ -81,19 +74,6 @@ public class PedidoController {
                                         .idPedido(pedidoRetorno.getId().toString()).build();
 
                         return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
-                } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                } catch (PedidoJaFinalizadoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                } catch (StatusPagamentoRecusadoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
         }
 
         @GetMapping("/{id}")
@@ -104,7 +84,7 @@ public class PedidoController {
                                                         PedidoRequisicao.class })) }),
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity buscarPedidoPorID(@PathVariable(value = "id") Long id) throws JsonProcessingException {
-                try {
+
                         Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
 
                         PedidoRequisicao pedidoResposta = PedidoRequisicao
@@ -123,11 +103,7 @@ public class PedidoController {
                                         .idPedido(pedidoRetorno.getId().toString()).build();
 
                         return ResponseEntity.status(HttpStatus.OK).body(pedidoResposta);
-                } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
+
 
         }
 
@@ -139,7 +115,7 @@ public class PedidoController {
                                                         PedidoRequisicao.class })) }),
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<Object> listarPedidos() throws JsonProcessingException {
-                try {
+
                         List<Pedido> pedidos = this.pedidoServico.listarTodosPedidos();
                         List<PedidoRequisicao> pedidoRespostas = new ArrayList<>();
                         pedidos.forEach(pedido -> {
@@ -163,11 +139,6 @@ public class PedidoController {
                         });
 
                         return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
-                } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
         }
 
         @GetMapping("/status_pagamento/{id}")
@@ -179,15 +150,11 @@ public class PedidoController {
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity buscarStatusPagamento(@PathVariable(value = "id") Long id)
                         throws JsonProcessingException {
-                try {
+
                         Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
 
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoRetorno.getStatusPagamento());
-                } catch (IDPedidoNaoEncontradoException e) {
-                        RequisicaoExcecao jsonExcecao = new RequisicaoExcecao(e.getMessage(),
-                                        HttpStatus.BAD_REQUEST.value());
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonExcecao);
-                }
+
         }
 
 }
