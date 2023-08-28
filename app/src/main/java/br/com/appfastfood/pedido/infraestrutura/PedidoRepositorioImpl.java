@@ -1,12 +1,12 @@
 package br.com.appfastfood.pedido.infraestrutura;
 
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
-import br.com.appfastfood.pedido.exceptions.IDPedidoNaoEncontradoException;
-import br.com.appfastfood.pedido.exceptions.PagamentoNaoRealizado;
+import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
 import br.com.appfastfood.pedido.infraestrutura.entidades.PedidoEntidade;
 import br.com.appfastfood.pedido.infraestrutura.entidades.ProdEnt;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         if (realizarPagamento()) {
             springDataPedidoRepository.save(pedidoDb);
         } else {
-            throw new PagamentoNaoRealizado();
+            throw new BadRequestException(ExceptionsMessages.PAGAMENTO_NAO_FOI_APROVADO.getValue());
         }
         return pedidoDb.getId().toString();
     }
@@ -63,7 +63,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
         List<PedidoEntidade> pedido = this.springDataPedidoRepository.findNotInFinalzado();
 
         if (pedido.isEmpty()) {
-            throw new IDPedidoNaoEncontradoException();
+            throw new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue());
         }
         List<Pedido> pedidosRetorno = new ArrayList<>();
         pedido.forEach(pedidoEntidade -> {
@@ -86,7 +86,7 @@ public class PedidoRepositorioImpl implements PedidoRepositorio {
 
         Optional<PedidoEntidade> pedidoEntidadeBusca = this.springDataPedidoRepository.findById(id);
         if (!pedidoEntidadeBusca.isPresent()) {
-            throw new IDPedidoNaoEncontradoException();
+           throw new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue());
         }
         List<ProdutoVO> produtosVO = pedidoEntidadeBusca.get().getProdutos().stream()
                 .map(prodEnt -> new ProdutoVO(prodEnt.getIdProduto(), prodEnt.getQuantidadeProduto()))
