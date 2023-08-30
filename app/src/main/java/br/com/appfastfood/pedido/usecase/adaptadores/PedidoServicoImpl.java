@@ -15,6 +15,7 @@ import br.com.appfastfood.produto.usecase.portas.ProdutoServico;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PedidoServicoImpl implements PedidoServico {
 
@@ -86,7 +87,17 @@ public class PedidoServicoImpl implements PedidoServico {
 
     @Override
     public List<Pedido> listarTodosPedidos() {
-        return this.pedidoRepositorio.listarTodosOsPedidos();
+        
+        List<Pedido> listaTotal = this.pedidoRepositorio.listarTodosOsPedidos();
+        List<Pedido> listaEmPreparacao = listaTotal.stream().filter(ped -> ped.getStatus() == StatusPedidoEnum.EM_PREPARACAO).collect(Collectors.toList());
+        List<Pedido> listaPronto = listaTotal.stream().filter(ped -> ped.getStatus() == StatusPedidoEnum.PRONTO).collect(Collectors.toList());
+        List<Pedido> listaEmRecebibo = listaTotal.stream().filter(ped -> ped.getStatus() == StatusPedidoEnum.RECEBIDO).collect(Collectors.toList());
+
+        listaTotal = new ArrayList();
+        listaTotal.addAll(listaPronto);
+        listaTotal.addAll(listaEmPreparacao);
+        listaTotal.addAll(listaEmRecebibo);
+        return listaTotal;
     }
 
    private StatusPagamentoEnum atualizarPagamento(Long id) {

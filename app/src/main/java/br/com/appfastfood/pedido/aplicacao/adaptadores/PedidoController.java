@@ -122,12 +122,12 @@ public class PedidoController {
                                 PedidoRequisicao pedidoResposta = PedidoRequisicao
                                                 .builder()
                                                 .produtos(pedido.getProdutos().stream()
-                                                                .map(produto -> ProdutosReq.builder()
-                                                                                .idProduto(produto.getIdProduto())
-                                                                                .quantidadeProduto(produto
-                                                                                                .getQuantidadeProduto())
-                                                                                .build())
-                                                                .collect(Collectors.toList()))
+                                                .map(produto -> ProdutosReq.builder()
+                                                .idProduto(produto.getIdProduto())
+                                                .quantidadeProduto(produto
+                                                .getQuantidadeProduto())
+                                                .build())
+                                                .collect(Collectors.toList()))
                                                 .idCliente(pedido.getCliente())
                                                 .tempoEspera(pedido.getTempoEspera())
                                                 .valorTotal(pedido.getValorTotal())
@@ -141,7 +141,7 @@ public class PedidoController {
                         return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
         }
 
-        @GetMapping("/status_pagamento/{id}")
+        @GetMapping("/{id}/status_pagamento")
         @Operation(summary = "Buscar status pagamento", description = "Funcionalidade o status do pagamento do pedido por id.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Pedidos filtrados com sucesso", content = {
@@ -151,9 +151,15 @@ public class PedidoController {
         public ResponseEntity buscarStatusPagamento(@PathVariable(value = "id") Long id)
                         throws JsonProcessingException {
 
-                        Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+                        Pedido pedido = this.pedidoServico.buscarPedidoPorId(id);
 
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoRetorno.getStatusPagamento());
+                                PedidoRequisicao pedidoResposta = PedidoRequisicao
+                                                .builder()
+                                                .idPedido(pedido.getId().toString())
+                                                .statusPagamento(StatusPagamentoEnum.retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()))
+                                                .build();
+
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoResposta);
 
         }
 
