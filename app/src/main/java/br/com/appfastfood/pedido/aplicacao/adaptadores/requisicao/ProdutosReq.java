@@ -20,6 +20,16 @@ public class ProdutosReq implements Serializable {
     @JsonProperty("quantidade_produto")
     private String quantidadeProduto;
 
+    @JsonProperty("nome")
+    private String nome;
 
+    @JsonProperty("preco")
+    private Double preco;
+
+    @JsonProperty("categoria")
+    private String categoria;
+
+    @JsonProperty("uriImagem")
+    private String uriImagem;
 
 }
