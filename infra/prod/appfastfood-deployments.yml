@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: appfastfood-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: appfastfood
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: appfastfood
-          image: mvgv/appfastfood:1.0.4-SNAPSHOT
+          image: mvgv/appfastfood:2.0.0
           ports:
             - containerPort: 8080
           envFrom:
