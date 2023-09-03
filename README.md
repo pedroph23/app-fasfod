@@ -8,7 +8,6 @@ Seja bem vindo(a)!
  - [Pedro Ramalho](https://github.com/pedroph23)
  - [Marcus Gomes](https://github.com/mvgv)
  - [Maria Eulina Melo](https://github.com/xLinaMeloox)
- - [Filipe Fernandes](https://github.com/LipeDev1/LipeDev1)
 
  
 ## Ferramentas
@@ -17,6 +16,7 @@ A aplicação esta recheada de ferramentas, como:
 - Java 17
 - Spring Boot
 - Docker
+- Kubernetes
 - Maven
 - Postgres
 - Swagger
@@ -27,6 +27,7 @@ Para iniciarmos, precisamos de algumas ferramentas para poder incializar a aplic
 - Docker 
 - Git
 - Docker Compose
+- Kubernetes
 
 
 Para poder estar instalando essas ferramentas, siga o link de instalação.
@@ -34,33 +35,36 @@ Para poder estar instalando essas ferramentas, siga o link de instalação.
 - **Windows**
    - https://docs.docker.com/desktop/install/windows-install/ [Docker & Docker Composer]
    - https://git-scm.com/download/win [Git]
+   - https://kubernetes.io/docs/setup/ [Kubernetes]
  - **Linux**
    - https://docs.docker.com/desktop/install/linux-install/ [Docker]
    - https://git-scm.com/book/pt-br/v2/Come%C3%A7ando-Instalando-o-Git [Git]
    - https://docs.docker.com/compose/install/linux/ [Docker Compose]
+   - https://kubernetes.io/docs/setup/ [Kubernetes]
  - **Mac**
    - https://docs.docker.com/desktop/install/mac-install/ [Docker & Docker Composer]
    - https://git-scm.com/download/mac [Git]
+   - https://kubernetes.io/docs/setup/ [Kubernetes]
 
-Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa aplicação rodando o container docker, utilizando o docker compose.
+Logo após de ter instalado as ferramentas, agora podemos inicializar a nossa aplicação com o cluster kubernetes
 
-## Inicializando a aplicação com o container Docker
+## Inicializando a aplicação com o Kubernetes
 
 
-> ⚠️ **Atenção!**
->  Verifique se as variáveis de ambiente estão em mãos para poder inicializar corretamente a aplicação para cada ambiente. Certifique de inserir o arquivo .env dentro da **/infra/prod** !
+> ⚠️ **Atenção!** 
+>  Não é necessário alterar ou fornecer variáveis de ambiente para conectar com o banco
 >  Verifique no arquivo ".app/mvnw", se EOL está configurado como "LF". 
 
 **Para executar o projeto, siga os passos abaixo:**
 - Executar a Build de Produção:
     > ⚠️ **Atenção! Para executar, é necessário estar dentro da raiz do projeto.**
-    Executa a imagem com o jar compilado:
+    Dentro da raiz do projeto execute o comando a seguir:
 
     ```sh
-    docker-compose -f ./infra/prod/docker-compose.yaml up
+    kubectl apply -f infra/prod
     ```
-    Depois de executada, a aplicação estará disponível para uso em: http://localhost:8080/swagger-ui/index.html#/
-    Se desejar, é possível também, realizar as chamadas via Postman, Insomnia ou outro app desejado, utilizando a Collection ("AppFastFood.postman_collection") disponível na raíz do projeto.
+    Depois de executada, é necessário verificar se os pods estão prontos, através do comando kubectl get pods, a partir dai a aplicação estará disponível para uso em: http://localhost:8080/swagger-ui/index.html#/
+    Se desejar, é possível também, realizar as chamadas via Postman, Insomnia ou outro app desejado, utilizando a Collection ("AppfastfoodCollection") disponível na raíz do projeto.
 
     > Como inserir informações na aplicação:
       - **Opcional** Criar Clientes,

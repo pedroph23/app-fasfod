@@ -4,7 +4,7 @@
 		"name": "Jsons de Exemplo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "28100404",
-		"_collection_link": "https://cloudy-satellite-653183.postman.co/workspace/fghf~cdd0d0f1-3080-4e13-a08c-dbb39612156c/collection/28100404-7d8a6317-261c-48a4-bf5e-f6bb7721af5b?action=share&creator=28100404&source=collection_link"
+		"_collection_link": "https://cloudy-satellite-653183.postman.co/workspace/fghf~cdd0d0f1-3080-4e13-a08c-dbb39612156c/collection/28100404-7d8a6317-261c-48a4-bf5e-f6bb7721af5b?action=share&source=collection_link&creator=28100404"
 	},
 	"item": [
 		{
@@ -157,6 +157,15 @@
 				"method": "PUT",
 				"header": [],
 				"url": "localhost:8080/pedidos/1"
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Status do Pagamento",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8080/pedidos/status_pagamento/1"
 			},
 			"response": []
 		}
