@@ -15,13 +15,14 @@ import br.com.appfastfood.produto.usecase.portas.ProdutoServico;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PedidoServicoImpl implements PedidoServico {
 
     private final PedidoRepositorio pedidoRepositorio;
     private final ProdutoServico produtoServicoImplInject;
 
-//    private final PagamentoServico pagamentoServico;
+    // private final PagamentoServico pagamentoServico;
 
     public PedidoServicoImpl(PedidoRepositorio pedidoRepositorio, ProdutoServico produtoServicoImplInject) {
 
@@ -29,12 +30,13 @@ public class PedidoServicoImpl implements PedidoServico {
         this.produtoServicoImplInject = produtoServicoImplInject;
     }
 
-//    public PedidoServicoImpl(PedidoRepositorio pedidoRepositorio, ProdutoServico produtoServicoImplInject,  PagamentoServico pagamentoServico) {
-//
-//        this.pedidoRepositorio = pedidoRepositorio;
-//        this.produtoServicoImplInject = produtoServicoImplInject;
-//        this.pagamentoServico = pagamentoServico;
-//    }
+    // public PedidoServicoImpl(PedidoRepositorio pedidoRepositorio, ProdutoServico
+    // produtoServicoImplInject, PagamentoServico pagamentoServico) {
+    //
+    // this.pedidoRepositorio = pedidoRepositorio;
+    // this.produtoServicoImplInject = produtoServicoImplInject;
+    // this.pagamentoServico = pagamentoServico;
+    // }
 
     @Override
     public String criar(PedidoRequisicao pedidoReq, String status, String tempo) {
@@ -63,15 +65,15 @@ public class PedidoServicoImpl implements PedidoServico {
             throw new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue());
         }
 
-        if(pedidoBusca.getStatus() == StatusPedidoEnum.RECEBIDO) {
-           pedido = new Pedido(
-            pedidoBusca.getId(),
-            pedidoBusca.getProdutos(), 
-            pedidoBusca.getCliente(), 
-            pedidoBusca.getValorTotal(), 
-            pedidoBusca.getStatus(), 
-            pedidoBusca.getTempoEspera(), 
-            atualizarPagamento(pedidoBusca.getId()));
+        if (pedidoBusca.getStatus() == StatusPedidoEnum.RECEBIDO) {
+            pedido = new Pedido(
+                    pedidoBusca.getId(),
+                    pedidoBusca.getProdutos(),
+                    pedidoBusca.getCliente(),
+                    pedidoBusca.getValorTotal(),
+                    pedidoBusca.getStatus(),
+                    pedidoBusca.getTempoEspera(),
+                    atualizarPagamento(pedidoBusca.getId()));
         } else {
             pedido = pedidoBusca;
         }
@@ -81,17 +83,49 @@ public class PedidoServicoImpl implements PedidoServico {
 
     @Override
     public Pedido buscarPedidoPorId(Long id) {
-        return this.pedidoRepositorio.buscarPedidoPorId(id);
+        Pedido pedido = this.pedidoRepositorio.buscarPedidoPorId(id);
+        return popularProdutoVo(pedido);
     }
 
     @Override
     public List<Pedido> listarTodosPedidos() {
-        return this.pedidoRepositorio.listarTodosOsPedidos();
+
+        List<Pedido> listaTotal = this.pedidoRepositorio.listarTodosOsPedidos();
+        List<Pedido> listaEmPreparacao = listaTotal.stream()
+                .filter(ped -> ped.getStatus() == StatusPedidoEnum.EM_PREPARACAO).collect(Collectors.toList());
+        List<Pedido> listaPronto = listaTotal.stream().filter(ped -> ped.getStatus() == StatusPedidoEnum.PRONTO)
+                .collect(Collectors.toList());
+        List<Pedido> listaEmRecebibo = listaTotal.stream().filter(ped -> ped.getStatus() == StatusPedidoEnum.RECEBIDO)
+                .collect(Collectors.toList());
+
+        listaTotal = new ArrayList();
+        listaTotal.addAll(listaPronto);
+        listaTotal.addAll(listaEmPreparacao);
+        listaTotal.addAll(listaEmRecebibo);
+
+        listaTotal.stream().forEach(pedido -> {
+            pedido = popularProdutoVo(pedido);
+        });
+
+        return listaTotal;
     }
 
-   private StatusPagamentoEnum atualizarPagamento(Long id) {
-    //    return pagamentoServico.realizarPagemto(id);
-       return StatusPagamentoEnum.APROVADO;
-   }
+    private StatusPagamentoEnum atualizarPagamento(Long id) {
+        // return pagamentoServico.realizarPagemto(id);
+        return StatusPagamentoEnum.APROVADO;
+    }
+
+    private Pedido popularProdutoVo(Pedido pedido) {
+
+        pedido.getProdutos().stream().forEach(prod -> {
+            Produto produtoResposta = produtoServicoImplInject.buscaProdutoPorId(Long.parseLong(prod.getIdProduto()));
+            prod.setNome(produtoResposta.getNome().getNome());
+            prod.setCategoria(produtoResposta.getCategoria().name());
+            prod.setPreco(produtoResposta.getPreco().getPreco());
+            prod.setUriImagem(produtoResposta.getUriImagem().getUriImagem());
+        });
+
+        return pedido;
+    }
 
 }
