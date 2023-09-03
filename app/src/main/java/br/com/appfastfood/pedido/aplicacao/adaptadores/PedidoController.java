@@ -42,9 +42,9 @@ public class PedidoController {
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<?> criar(@RequestBody PedidoRequisicao pedidoRequisicao) {
 
-                        String id = this.pedidoServico.criar(pedidoRequisicao, "RECEBIDO", "1:00");
-                        return ResponseEntity.status(HttpStatus.CREATED)
-                                        .body(PedidoRequisicao.builder().idPedido(id).build());
+                String id = this.pedidoServico.criar(pedidoRequisicao, "RECEBIDO", "1:00");
+                return ResponseEntity.status(HttpStatus.CREATED)
+                                .body(PedidoRequisicao.builder().idPedido(id).build());
 
         }
 
@@ -56,24 +56,24 @@ public class PedidoController {
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<?> atualizarStatus(@PathVariable("id") Long id) {
 
-                        Pedido pedidoRetorno = this.pedidoServico.atualizar(id);
+                Pedido pedidoRetorno = this.pedidoServico.atualizar(id);
 
-                        PedidoRequisicao pedidoResposta = PedidoRequisicao
-                                        .builder()
-                                        .produtos(pedidoRetorno.getProdutos().stream()
-                                                        .map(produto -> ProdutosReq.builder()
-                                                                        .idProduto(produto.getIdProduto())
-                                                                        .quantidadeProduto(
-                                                                                        produto.getQuantidadeProduto())
-                                                                        .build())
-                                                        .collect(Collectors.toList()))
-                                        .idCliente(pedidoRetorno.getCliente())
-                                        .tempoEspera(pedidoRetorno.getTempoEspera())
-                                        .valorTotal(pedidoRetorno.getValorTotal())
-                                        .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
-                                        .idPedido(pedidoRetorno.getId().toString()).build();
+                PedidoRequisicao pedidoResposta = PedidoRequisicao
+                                .builder()
+                                .produtos(pedidoRetorno.getProdutos().stream()
+                                                .map(produto -> ProdutosReq.builder()
+                                                                .idProduto(produto.getIdProduto())
+                                                                .quantidadeProduto(
+                                                                                produto.getQuantidadeProduto())
+                                                                .build())
+                                                .collect(Collectors.toList()))
+                                .idCliente(pedidoRetorno.getCliente())
+                                .tempoEspera(pedidoRetorno.getTempoEspera())
+                                .valorTotal(pedidoRetorno.getValorTotal())
+                                .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
+                                .idPedido(pedidoRetorno.getId().toString()).build();
 
-                        return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
+                return ResponseEntity.status(HttpStatus.OK).body(pedidoRetorno);
         }
 
         @GetMapping("/{id}")
@@ -85,25 +85,28 @@ public class PedidoController {
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity buscarPedidoPorID(@PathVariable(value = "id") Long id) throws JsonProcessingException {
 
-                        Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+                Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
 
-                        PedidoRequisicao pedidoResposta = PedidoRequisicao
-                                        .builder()
-                                        .produtos(pedidoRetorno.getProdutos().stream()
-                                                        .map(produto -> ProdutosReq.builder()
-                                                                        .idProduto(produto.getIdProduto())
-                                                                        .quantidadeProduto(
-                                                                                        produto.getQuantidadeProduto())
-                                                                        .build())
-                                                        .collect(Collectors.toList()))
-                                        .idCliente(pedidoRetorno.getCliente())
-                                        .tempoEspera(pedidoRetorno.getTempoEspera())
-                                        .valorTotal(pedidoRetorno.getValorTotal())
-                                        .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
-                                        .idPedido(pedidoRetorno.getId().toString()).build();
+                PedidoRequisicao pedidoResposta = PedidoRequisicao
+                                .builder()
+                                .produtos(pedidoRetorno.getProdutos().stream()
+                                                .map(produto -> ProdutosReq.builder()
+                                                                .idProduto(produto.getIdProduto())
+                                                                .quantidadeProduto(
+                                                                                produto.getQuantidadeProduto())
+                                                                .categoria(produto.getCategoria())
+                                                                .preco(produto.getPreco())
+                                                                .nome(produto.getNome())
+                                                                .uriImagem(produto.getUriImagem())
+                                                                .build())
+                                                .collect(Collectors.toList()))
+                                .idCliente(pedidoRetorno.getCliente())
+                                .tempoEspera(pedidoRetorno.getTempoEspera())
+                                .valorTotal(pedidoRetorno.getValorTotal())
+                                .status(StatusPedidoEnum.retornaNomeEnum(pedidoRetorno.getStatus()))
+                                .idPedido(pedidoRetorno.getId().toString()).build();
 
-                        return ResponseEntity.status(HttpStatus.OK).body(pedidoResposta);
-
+                return ResponseEntity.status(HttpStatus.OK).body(pedidoResposta);
 
         }
 
@@ -116,32 +119,37 @@ public class PedidoController {
                         @ApiResponse(responseCode = "400", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RequisicaoExcecao.class))) })
         public ResponseEntity<Object> listarPedidos() throws JsonProcessingException {
 
-                        List<Pedido> pedidos = this.pedidoServico.listarTodosPedidos();
-                        List<PedidoRequisicao> pedidoRespostas = new ArrayList<>();
-                        pedidos.forEach(pedido -> {
-                                PedidoRequisicao pedidoResposta = PedidoRequisicao
-                                                .builder()
-                                                .produtos(pedido.getProdutos().stream()
-                                                                .map(produto -> ProdutosReq.builder()
-                                                                                .idProduto(produto.getIdProduto())
-                                                                                .quantidadeProduto(produto
-                                                                                                .getQuantidadeProduto())
-                                                                                .build())
-                                                                .collect(Collectors.toList()))
-                                                .idCliente(pedido.getCliente())
-                                                .tempoEspera(pedido.getTempoEspera())
-                                                .valorTotal(pedido.getValorTotal())
-                                                .status(StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()))
-                                                .idPedido(pedido.getId().toString())
-                                                .statusPagamento(StatusPagamentoEnum.retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()))
-                                                .build();
-                                pedidoRespostas.add(pedidoResposta);
-                        });
+                List<Pedido> pedidos = this.pedidoServico.listarTodosPedidos();
+                List<PedidoRequisicao> pedidoRespostas = new ArrayList<>();
+                pedidos.forEach(pedido -> {
+                        PedidoRequisicao pedidoResposta = PedidoRequisicao
+                                        .builder()
+                                        .produtos(pedido.getProdutos().stream()
+                                        .map(produto -> ProdutosReq.builder()
+                                        .idProduto(produto.getIdProduto())
+                                        .quantidadeProduto(produto
+                                        .getQuantidadeProduto())
+                                        .categoria(produto.getCategoria())
+                                        .preco(produto.getPreco())
+                                        .nome(produto.getNome())
+                                        .uriImagem(produto.getUriImagem())
+                                        .build())
+                                        .collect(Collectors.toList()))
+                                        .idCliente(pedido.getCliente())
+                                        .tempoEspera(pedido.getTempoEspera())
+                                        .valorTotal(pedido.getValorTotal())
+                                        .status(StatusPedidoEnum.retornaNomeEnum(pedido.getStatus()))
+                                        .idPedido(pedido.getId().toString())
+                                        .statusPagamento(StatusPagamentoEnum
+                                                        .retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()))
+                                        .build();
+                        pedidoRespostas.add(pedidoResposta);
+                });
 
-                        return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
+                return ResponseEntity.status(HttpStatus.OK).body(pedidoRespostas);
         }
 
-        @GetMapping("/status_pagamento/{id}")
+        @GetMapping("/{id}/status_pagamento")
         @Operation(summary = "Buscar status pagamento", description = "Funcionalidade o status do pagamento do pedido por id.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Pedidos filtrados com sucesso", content = {
@@ -151,9 +159,16 @@ public class PedidoController {
         public ResponseEntity buscarStatusPagamento(@PathVariable(value = "id") Long id)
                         throws JsonProcessingException {
 
-                        Pedido pedidoRetorno = this.pedidoServico.buscarPedidoPorId(id);
+                Pedido pedido = this.pedidoServico.buscarPedidoPorId(id);
 
-                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoRetorno.getStatusPagamento());
+                PedidoRequisicao pedidoResposta = PedidoRequisicao
+                                .builder()
+                                .idPedido(pedido.getId().toString())
+                                .statusPagamento(StatusPagamentoEnum
+                                                .retornaNomeStatusPagamentoEnum(pedido.getStatusPagamento()))
+                                .build();
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pedidoResposta);
 
         }
 
