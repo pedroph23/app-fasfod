@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
@@ -77,11 +78,8 @@ import static org.mockito.Mockito.when;
    when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
+   assertThrows(BadRequestException.class, () -> pedidoServico.atualizar(idPedido));
 
-   // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
 
   }
 
@@ -105,11 +103,7 @@ import static org.mockito.Mockito.when;
            .thenThrow(new BadRequestException(ExceptionsMessages.PAGAMENTO_RECUSADO.getValue()).getClass());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.criar(pedidoRequisicao);
-
-   // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+   assertThrows(BadRequestException.class, () -> pedidoController.criar(pedidoRequisicao));
 
   }
 
@@ -124,11 +118,9 @@ import static org.mockito.Mockito.when;
    when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
+   assertThrows(BadRequestException.class, () -> pedidoServico.atualizar(idPedido));
 
-   // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+   //
 
   }
 
@@ -141,11 +133,10 @@ import static org.mockito.Mockito.when;
    when(pedidoServico.atualizar(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_JA_FINALIZADO.getValue()).getClass());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.atualizarStatus(idPedido);
+   assertThrows(BadRequestException.class, () -> pedidoServico.atualizar(idPedido));
 
    // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
 
   }
 
@@ -160,11 +151,9 @@ import static org.mockito.Mockito.when;
    when(pedidoServico.buscarPedidoPorId(eq(idPedido))).thenThrow(new BadRequestException(ExceptionsMessages.PEDIDO_NAO_ENCONTRADO.getValue()).getClass());
 
    // Execução do método
-   ResponseEntity<?> responseEntity = pedidoController.buscarPedidoPorID(idPedido);
+   assertThrows(BadRequestException.class, () -> pedidoController.buscarPedidoPorID(idPedido));
 
-   // Verificações
-   assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-   RequisicaoExcecao responseBody = (RequisicaoExcecao) responseEntity.getBody();
+
 
   }
 

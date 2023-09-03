@@ -1,15 +1,10 @@
 services:
-  app-techchallenge-fastfood:
-    build:
-      context: ../..
-      dockerfile: /infra/dev/Dockerfile
-      args:
-      - AMBIENTE=${AMBIENTE}
+  app-fastfood:
+    image: mvgv/appfastfood:1.0.3
     networks:
       - techchallenge-fastfood-net
     ports:
       - "8080:8080"
-      - "5005:5005"
     environment:
       - SPRING_PROFILES_ACTIVE=${AMBIENTE}
       - SPRING_DATASOURCE_URL=${DB_URL}
@@ -20,9 +15,8 @@ services:
       - postgres
     scale: 1
 
-
   postgres:
-    container_name: postgres_container
+    container_name: postgres_prod
     image: postgres
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -30,34 +24,18 @@ services:
       PGDATA: /var/lib/postgresql/data
       POSTGRES_DB: ${DB_NAME}
     volumes:
-        - postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - techchallenge-fastfood-net
     restart: unless-stopped
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    networks:
-      - techchallenge-fastfood-net
-    depends_on:
-      - postgres
-
 volumes:
   postgres:
   pgadmin:
 networks:
-    techchallenge-fastfood-net:
-      driver: bridge
-    postgres:
-      driver: bridge
+  techchallenge-fastfood-net:
+    driver: bridge
+  postgres:
+    driver: bridge

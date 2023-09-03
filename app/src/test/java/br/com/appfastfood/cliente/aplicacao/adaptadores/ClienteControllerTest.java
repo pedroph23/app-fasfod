@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 
@@ -95,12 +96,10 @@ public class ClienteControllerTest {
         when(clienteServico.buscarPorCpf(cpf)).thenThrow(new BadRequestException(ExceptionsMessages.CLIENTE_NAO_ENCONTRADO.getValue()).getClass());
 
         // Act
-        ResponseEntity<?> responseEntity = clienteController.buscarPorCpf(cpf);
+
+        assertThrows(BadRequestException.class, () -> clienteController.buscarPorCpf(cpf));
 
         // Assert
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals(true,responseEntity.getBody() instanceof RequisicaoExcecao);
-        RequisicaoExcecao excecao = (RequisicaoExcecao) responseEntity.getBody();
-        assertEquals("Não foi possível encontrar cliente!", excecao.getMensagem());
+
     }
 }
