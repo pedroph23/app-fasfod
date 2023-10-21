@@ -1,17 +1,13 @@
 package br.com.appfastfood.produto.infraestrutura.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
-@Entity(name = "produto")
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(value = "produto")
 public class ProdutoEntidade {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     protected ProdutoEntidade() {}
-
     private String nome;
     private Double preco;
     private String uriImagem;
@@ -34,6 +30,7 @@ public class ProdutoEntidade {
         this.categoria = categoria;
         this.descricao = descricao;
     }
+
 
     public Long getId() {
         return id;

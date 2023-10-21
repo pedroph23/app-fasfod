@@ -7,7 +7,6 @@ import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.pedido.exceptions.*;
 import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;

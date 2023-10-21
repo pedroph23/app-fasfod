@@ -8,7 +8,6 @@ import br.com.appfastfood.cliente.infraestrutura.SpringDataClienteRepository;
 import br.com.appfastfood.cliente.infraestrutura.entidades.EntidadeCliente;
 import br.com.appfastfood.cliente.usecase.adaptadores.ClienteServicoImpl;
 import br.com.appfastfood.configuracoes.execption.BadRequestException;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,14 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
 
-import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
 import br.com.appfastfood.pedido.dominio.modelos.Pedido;
 import br.com.appfastfood.pedido.dominio.modelos.VO.ProdutoVO;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPagamentoEnum;
 import br.com.appfastfood.pedido.dominio.modelos.enums.StatusPedidoEnum;
-import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
-import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.pedido.exceptions.ExceptionsMessages;
+import br.com.appfastfood.pedido.usecase.portas.PedidoServico;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 
  public class PedidoControllerTest {

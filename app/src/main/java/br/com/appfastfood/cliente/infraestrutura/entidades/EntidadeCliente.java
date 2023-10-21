@@ -1,14 +1,14 @@
 package br.com.appfastfood.cliente.infraestrutura.entidades;
 
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.util.DigestUtils;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity
+@Document(value = "cliente")
 public class EntidadeCliente {
     @Id
     private UUID  id;

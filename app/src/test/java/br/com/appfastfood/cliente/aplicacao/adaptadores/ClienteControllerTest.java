@@ -6,7 +6,6 @@ import br.com.appfastfood.cliente.dominio.modelos.Cliente;
 import br.com.appfastfood.cliente.exceptions.ExceptionsMessages;
 import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
 import br.com.appfastfood.configuracoes.execption.BadRequestException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
