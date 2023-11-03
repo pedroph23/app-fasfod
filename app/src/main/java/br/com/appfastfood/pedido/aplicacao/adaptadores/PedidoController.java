@@ -1,6 +1,6 @@
 package br.com.appfastfood.pedido.aplicacao.adaptadores;
 
-import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.PedidoRequisicao;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.ProdutosReq;
 import br.com.appfastfood.pedido.aplicacao.adaptadores.resposta.PedidoResposta;

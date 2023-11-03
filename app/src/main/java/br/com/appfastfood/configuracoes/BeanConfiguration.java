@@ -1,9 +1,6 @@
 package br.com.appfastfood.configuracoes;
 
 import br.com.appfastfood.AppFastfoodApplication;
-import br.com.appfastfood.cliente.dominio.repositorios.ClienteRepositorio;
-import br.com.appfastfood.cliente.usecase.adaptadores.ClienteServicoImpl;
-import br.com.appfastfood.cliente.usecase.portas.ClienteServico;
 import br.com.appfastfood.configuracoes.logs.Log;
 import br.com.appfastfood.configuracoes.logs.Log4jLog;
 import br.com.appfastfood.pedido.dominio.repositorios.PedidoRepositorio;
@@ -20,10 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackageClasses = AppFastfoodApplication.class)
 public class BeanConfiguration {
 
-    @Bean
-    ClienteServico clienteServico(final ClienteRepositorio clienteRepositorio){
-        return new ClienteServicoImpl(clienteRepositorio);
-    }
+
     @Bean
     ProdutoServico produtoServico(ProdutoRepositorio produtoRepositorio){
         return new ProdutoServicoImpl(produtoRepositorio);
