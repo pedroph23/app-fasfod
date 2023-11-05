@@ -143,6 +143,5 @@ jobs:
     #     tags: caikemury/appfastfood:latest
     - name: DOCKER BUILD AND PUSH
       run: |
-        cd app
         docker build -t caikemury/appfastfood:latest .
         docker push caikemury/appfastfood:latest
