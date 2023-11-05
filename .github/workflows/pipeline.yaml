@@ -174,21 +174,9 @@ jobs:
         kubectl get pods
         kubectl get svc
         kubectl get deployments
+        kubectl logs appfastfood-deployment-648659bfb5-c4zg7
 
     - name: Wait for pods to be ready and show logs
       run: |
-          while true; do
-            READY_PODS=$(kubectl get pods -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | grep -o 'True' | wc -l)
-            TOTAL_PODS=$(kubectl get pods | grep -v 'STATUS' | wc -l)
-            
-            if [[ "$READY_PODS" -eq "$TOTAL_PODS" ]]; then
-              echo "All pods are ready."
-              break
-            else
-              echo "Waiting for pods to be ready..."
-              for POD_NAME in $(kubectl get pods -o custom-columns=NAME:.metadata.name --no-headers); do
-                kubectl logs -f "$POD_NAME"
-              done
-              sleep 5
-            fi
-          done
+        kubectl wait --for=condition=ready pod --all --timeout=600s
+        kubectl logs -l app=appfastfood -f
