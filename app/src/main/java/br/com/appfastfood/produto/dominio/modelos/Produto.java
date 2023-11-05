@@ -1,8 +1,8 @@
 package br.com.appfastfood.produto.dominio.modelos;
 
+import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.produto.dominio.vo.*;
 import br.com.appfastfood.produto.dominio.vo.enums.CategoriaEnum;
-import br.com.appfastfood.configuracoes.execption.BadRequestException;
 import br.com.appfastfood.produto.exceptions.ExceptionsMessages;
 
 public class Produto {

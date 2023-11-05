@@ -1,6 +1,6 @@
 package br.com.appfastfood.configuracoes.execption;
 
-import br.com.appfastfood.cliente.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
+import br.com.appfastfood.pedido.aplicacao.adaptadores.requisicao.RequisicaoExcecao;
 import br.com.appfastfood.configuracoes.logs.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

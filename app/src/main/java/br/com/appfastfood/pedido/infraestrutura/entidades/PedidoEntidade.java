@@ -1,19 +1,16 @@
 package br.com.appfastfood.pedido.infraestrutura.entidades;
 
-import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-@Entity(name = "pedido")
+@Document(value = "pedido")
 public class PedidoEntidade {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     protected PedidoEntidade() {
     }
 
-    @ElementCollection
     List<ProdEnt> produtos;
     private String clienteId;
     private Double valorTotal;
