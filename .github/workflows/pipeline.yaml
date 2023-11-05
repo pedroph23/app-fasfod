@@ -130,7 +130,6 @@ jobs:
         pwd
         cd app
         ls -la
-        echo "JAR_DIR=${{ github.workspace }}/app" >> $GITHUB_ENV
  
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -148,5 +147,3 @@ jobs:
         file: ${{ github.workspace }}/app/Dockerfile
         push: true
         tags: caikemury/appfastfood:latest
-      env:
-        JAR_DIR: ${{ env.JAR_DIR }}
