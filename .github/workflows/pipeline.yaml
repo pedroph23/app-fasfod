@@ -169,4 +169,8 @@ jobs:
       run: |
         aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
         kubectl apply -f infra
+        kubectl get nodes
+        kubectl get pods
+        kubectl get svc
+        kubectl get deployments
  
