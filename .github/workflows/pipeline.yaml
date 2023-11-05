@@ -144,9 +144,9 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-       context: .
-       file: ${{ github.workspace }}/app/Dockerfile
-       push: true
-       tags: caikemury/appfastfood:latest
-       env:
+        context: .
+        file: ${{ github.workspace }}/app/Dockerfile
+        push: true
+        tags: caikemury/appfastfood:latest
+      env:
         JAR_DIR: ${{ env.JAR_DIR }}
