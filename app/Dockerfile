@@ -1,7 +1,7 @@
 FROM amazoncorretto:17-alpine-jdk
 
-WORKDIR /app
+ENV JAR_DIR /app
 
-COPY /home/runner/work/app-fastfood/app/app-fastfood.jar .
+WORKDIR $JAR_DIR
 
 CMD ["sh", "-c", "java -jar app-fastfood.jar"]
