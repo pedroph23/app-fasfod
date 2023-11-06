@@ -178,5 +178,6 @@ jobs:
 
     - name: Wait for pods to be ready and show logs
       run: |
-        kubectl wait --for=condition=ready pod --all --timeout=600s
         kubectl logs -l app=appfastfood -f
+        kubectl wait --for=condition=ready pod --all --timeout=60s
+        
