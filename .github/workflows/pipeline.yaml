@@ -175,7 +175,15 @@ jobs:
         kubectl get pods
         kubectl get svc
         kubectl get deployments
-        kubectl describe pod appfastfood-deployment-648659bfb5-ct867
+        
+        # Fetch the logs of all pods
+        pods=$(kubectl get pods --all-namespaces -o jsonpath='{.items[*].metadata.name}')
+        for pod in $pods
+        do
+          echo "Fetching logs for pod $pod"
+          kubectl logs $pod
+        done
+            
 
 
         
