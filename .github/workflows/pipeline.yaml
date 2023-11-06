@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - Caike_pipeline
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -174,7 +175,7 @@ jobs:
         kubectl get pods
         kubectl get svc
         kubectl get deployments
-        kubectl describe pod appfastfood-deployment-648659bfb5-c4zg7
+        kubectl describe pod appfastfood-deployment-648659bfb5-ct867
 
 
         
