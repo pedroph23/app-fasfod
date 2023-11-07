@@ -169,9 +169,9 @@ jobs:
     - name: Deploy to EKS
       run: |
         aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.2.0/docs/install/v1_11_00_full.yaml
+       
         kubectl apply -f infra
-        kubectl logs -n kube-system deployment.apps/aws-load-balancer-controller
+        
         kubectl config view
         kubectl get nodes
         kubectl get pods
