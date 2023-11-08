@@ -1,11 +1,12 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aws-auth
-  namespace: default
 data:
-  mapUsers: |
-    - userarn: arn:aws:iam::101478099523:root
-      username: root
-      groups:
-        - system:masters
+mapRoles: |
+  - groups:
+    - eks-console-dashboard-full-access-group
+    rolearn: arn:aws:iam::101478099523:role/role-eks
+    username: role-eks
+mapUsers: |
+  - groups:
+    - eks-console-dashboard-restricted-access-group
+    userarn: arn:aws:iam::101478099523:user/Marcus
+    username: Marcus
