@@ -178,13 +178,15 @@ jobs:
         kubectl get svc
         kubectl get deployments
         
+        kubectl get configmap aws-auth -n kube-system -o yaml
+        
         # Fetch the logs of all pods
-        pods=$(kubectl get pods --all-namespaces -o jsonpath='{.items[*].metadata.name}')
-        for pod in $pods
-        do
-          echo "Fetching logs for pod $pod"
-          kubectl logs $pod
-        done
+        #pods=$(kubectl get pods --all-namespaces -o jsonpath='{.items[*].metadata.name}')
+        #for pod in $pods
+        #do
+          #echo "Fetching logs for pod $pod"
+          #kubectl logs $pod
+       #done
             
 
 
