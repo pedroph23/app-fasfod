@@ -171,11 +171,9 @@ jobs:
         aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
         kubectl delete all --all
         kubectl apply -f infra
-        
         kubectl config view
         kubectl get nodes
         kubectl get pods
-        kubectl get svc
         kubectl get deployments
         
        
