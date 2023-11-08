@@ -186,6 +186,3 @@ jobs:
           #kubectl logs $pod
        #done
         
-        
-        
-        aws sts assume-role --role-arn arn:aws:iam::101478099523:role/deploy_lambda_dynamo --role-session-name pods
