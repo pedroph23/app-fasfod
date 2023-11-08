@@ -169,7 +169,7 @@ jobs:
     - name: Deploy to EKS
       run: |
         aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
-        kubectl apply -f https://s3.us-west-2.amazonaws.com/amazon-eks/docs/eks-console-full-access.yaml
+        kubectl delete all --all
         kubectl apply -f infra
         
         kubectl config view
@@ -187,7 +187,7 @@ jobs:
           #echo "Fetching logs for pod $pod"
           #kubectl logs $pod
        #done
-            
-
-
         
+        
+        
+        aws sts assume-role --role-arn arn:aws:iam::101478099523:role/deploy_lambda_dynamo --role-session-name pods
