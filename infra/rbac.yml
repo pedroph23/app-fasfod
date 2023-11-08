@@ -1,22 +1,23 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
-  metadata:
-    namespace: default
-    name: node-reader
-  rules:
-    - apiGroups: [""]
-      resources: ["nodes"]
-      verbs: ["get", "list", "watch"]
+metadata:
+  namespace: default
+  name: node-reader
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: root-cluster-admin-binding
+  name: root-node-reader-binding
+  namespace: default
 subjects:
-  - kind: Group
-    name: system:masters
+  - kind: User
+    name: root
     apiGroup: rbac.authorization.k8s.io
 roleRef:
-  kind: ClusterRole
-  name: cluster-admin
+  kind: Role
+  name: node-reader
   apiGroup: rbac.authorization.k8s.io
