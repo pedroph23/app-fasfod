@@ -3,8 +3,8 @@ kind: ClusterRoleBinding
 metadata:
   name: root-cluster-admin-binding
 subjects:
-  - kind: User
-    name: root
+  - kind: Group
+    name: system:masters
     apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
