@@ -9,6 +9,12 @@ Seja bem vindo(a)!
  - [Marcus Gomes](https://github.com/mvgv)
  - [Maria Eulina Melo](https://github.com/xLinaMeloox)
 
+## Repositórios desta aplicação
+
+ - [Repositório do cluster](https://github.com/pedroph23/app-fastfood-cluster)
+ - [Repositório do lambda](https://github.com/pedroph23/app-fastfood-lambda)
+ - [Repositório do database](https://github.com/pedroph23/app-fastfood-database)
+
  
 ## Ferramentas
 
@@ -18,7 +24,12 @@ A aplicação esta recheada de ferramentas, como:
 - Docker
 - Kubernetes
 - Maven
-- Postgres
+- MongoDB
+- EKS
+- DocumentDB
+- AWS Lambda
+- SonarCloud
+- GitHub Actions
 - Swagger
     
 
